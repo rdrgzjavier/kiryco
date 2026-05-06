@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div>
             <Link href="/" className="mb-4 inline-flex text-lg font-bold text-warm-900">
-              Proyecto Familias
+              Kiryco
             </Link>
             <p className="mb-5 text-sm leading-relaxed text-warm-600">
               Todo lo que necesitas alrededor del colegio, filtrado por tu zona y tu centro.
@@ -48,7 +48,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-10 border-t border-warm-200 pt-6 text-sm text-warm-500">
-          © {new Date().getFullYear()} Proyecto Familias. MVP preparado para conectar con Supabase o Firebase.
+          © {new Date().getFullYear()} Kiryco. MVP preparado para conectar con Supabase o Firebase.
         </div>
       </div>
     </footer>
