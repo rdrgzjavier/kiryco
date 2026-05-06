@@ -1,1 +1,11 @@
-export default function NormasComunidadPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Normas de comunidad</h1><ul><li>No publicar datos ni fotos de menores.</li><li>No crear grupos de clase ni mensajería juvenil.</li><li>Las reseñas deben ser respetuosas y moderadas.</li></ul></article></div>; }
+import LegalPage from "@/components/LegalPage";
+
+export default function CommunityRulesPage() {
+  return (
+    <LegalPage title="Normas de comunidad">
+      <p>No publicar datos personales de menores, fotografías de menores, horarios personales, grupos de clase ni información sensible.</p>
+      <p>No se permiten críticas personales a profesores concretos, acusaciones no verificables, rankings agresivos ni conversaciones privadas entre menores.</p>
+      <p>Las reseñas deben ser respetuosas, verificables, moderadas y centradas en criterios estructurados.</p>
+    </LegalPage>
+  );
+}

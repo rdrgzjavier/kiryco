@@ -1,1 +1,10 @@
-export default function AvisoLegalPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Aviso legal</h1><p>Placeholder legal. Plataforma dirigida exclusivamente a adultos. No publicar datos personales de menores.</p></article></div>; }
+import LegalPage from "@/components/LegalPage";
+
+export default function LegalNoticePage() {
+  return (
+    <LegalPage title="Aviso legal">
+      <p>Placeholder para el aviso legal de Proyecto Familias. La plataforma está dirigida exclusivamente a adultos: padres, madres, tutores legales, centros educativos y proveedores.</p>
+      <p>Las publicaciones pueden ser moderadas, rechazadas o archivadas cuando incumplan las normas de privacidad, respeto o seguridad.</p>
+    </LegalPage>
+  );
+}

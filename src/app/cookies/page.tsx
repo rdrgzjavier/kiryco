@@ -1,1 +1,10 @@
-export default function CookiesPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Política de cookies</h1><p>Placeholder para cookies técnicas y analíticas.</p></article></div>; }
+import LegalPage from "@/components/LegalPage";
+
+export default function CookiesPage() {
+  return (
+    <LegalPage title="Política de cookies">
+      <p>Placeholder para la política de cookies. El MVP podrá usar cookies técnicas para sesión, preferencias y seguridad cuando se conecte autenticación real.</p>
+      <p>Las cookies analíticas o de marketing deberán configurarse con consentimiento explícito cuando se incorporen.</p>
+    </LegalPage>
+  );
+}

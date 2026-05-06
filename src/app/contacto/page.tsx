@@ -1,1 +1,15 @@
-export default function ContactoPage() { return <div className="page-container max-w-2xl py-10"><h1 className="mb-4">Contacto</h1><form className="card grid gap-4 p-6"><input className="input" placeholder="Nombre" /><input className="input" type="email" placeholder="Email" /><textarea className="textarea" placeholder="Mensaje" /><button type="button" className="btn-primary">Enviar</button></form></div>; }
+import LegalPage from "@/components/LegalPage";
+
+export default function ContactPage() {
+  return (
+    <LegalPage title="Contacto">
+      <p>Formulario placeholder para contactar con el equipo de Proyecto Familias.</p>
+      <form className="grid gap-4">
+        <label className="field-label">Nombre del adulto<input className="field" required /></label>
+        <label className="field-label">Email<input className="field" type="email" required /></label>
+        <label className="field-label">Mensaje<textarea className="field min-h-28" required /></label>
+        <button className="btn-primary w-fit">Enviar</button>
+      </form>
+    </LegalPage>
+  );
+}
