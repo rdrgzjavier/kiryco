@@ -18,9 +18,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-warm-200 bg-white/95 backdrop-blur">
       <div className="page-container flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2" aria-label="Proyecto Familias, inicio">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-800 text-sm font-bold text-white">PF</span>
-          <span className="text-lg font-bold tracking-tight text-warm-900">Proyecto Familias</span>
+        <Link href="/" className="flex items-center gap-2" aria-label="Kiryco, inicio">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-800 text-sm font-bold text-white">K</span>
+          <span className="text-lg font-bold tracking-tight text-warm-900">Kiryco</span>
         </Link>
 
         <nav className="hidden items-center gap-5 md:flex" aria-label="Principal">
