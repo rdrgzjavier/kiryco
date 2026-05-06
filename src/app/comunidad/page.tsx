@@ -1,0 +1,2 @@
+import { communityPosts } from "@/lib/mock-data";
+export default function ComunidadPage() { return <div className="page-container py-10"><h1 className="mb-4">Tablón moderado</h1><div className="alert-warning mb-8">No es una red social: sin perfiles de alumnos, grupos de clase, fotos de menores ni mensajería juvenil.</div><div className="grid gap-5 lg:grid-cols-3">{communityPosts.map((p) => <article key={p.id} className="card p-6"><h2>{p.title}</h2><p>{p.body}</p></article>)}</div></div>; }

@@ -1,0 +1,1 @@
+export default function AvisoLegalPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Aviso legal</h1><p>Placeholder legal. Plataforma dirigida exclusivamente a adultos. No publicar datos personales de menores.</p></article></div>; }

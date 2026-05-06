@@ -1,0 +1,1 @@
+export default function CookiesPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Política de cookies</h1><p>Placeholder para cookies técnicas y analíticas.</p></article></div>; }

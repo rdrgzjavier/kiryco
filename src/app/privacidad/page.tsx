@@ -1,0 +1,1 @@
+export default function PrivacidadPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Política de privacidad</h1><p>No se recogen nombres, fotos, clase ni horarios personales de menores.</p></article></div>; }

@@ -1,0 +1,1 @@
+export default function NormasComunidadPage() { return <div className="page-container py-10"><article className="card p-6"><h1>Normas de comunidad</h1><ul><li>No publicar datos ni fotos de menores.</li><li>No crear grupos de clase ni mensajería juvenil.</li><li>Las reseñas deben ser respetuosas y moderadas.</li></ul></article></div>; }
