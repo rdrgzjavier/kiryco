@@ -1,115 +1,83 @@
-export type UserRole = "familia" | "proveedor" | "centro" | "admin";
-export type ListingStatus = "draft" | "pending_review" | "published" | "rejected" | "archived";
-export type ListingCondition = "nuevo" | "como_nuevo" | "buen_estado" | "aceptable";
+export type Role = "family" | "provider" | "center" | "admin";
+export type ModerationStatus = "draft" | "pending_review" | "published" | "rejected" | "archived";
 export type CenterType = "publico" | "concertado" | "privado";
-export type EducationalStage = "guarderia" | "infantil" | "primaria" | "secundaria" | "bachillerato";
 export type ProviderPlan = "gratuito" | "destacado" | "premium";
-export type ReviewStatus = "pending_review" | "published" | "rejected";
-export type ModalityType = "presencial" | "online" | "hibrido";
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  role: UserRole;
-  municipality: string;
-  relatedCenterId?: string;
-  createdAt: string;
-}
-
-export interface Center {
-  id: string;
-  name: string;
-  slug: string;
-  type: CenterType;
-  stages: EducationalStage[];
-  municipality: string;
-  address: string;
-  phone?: string;
-  email?: string;
-  website?: string;
-  languages?: string[];
-  description?: string;
-  services?: string[];
-  source?: string;
-  verified: boolean;
-  averageRating?: number;
-  totalReviews?: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Category {
+export type Municipality = {
   id: string;
   name: string;
   slug: string;
   description: string;
-  icon: string;
-  color: string;
-  listingsCount?: number;
-}
+};
 
-export interface Listing {
+export type Category = {
   id: string;
+  name: string;
+  slug: string;
+  description: string;
+  seoTitle: string;
+  seoDescription: string;
+};
+
+export type Center = {
+  id: string;
+  slug: string;
+  name: string;
+  type: CenterType;
+  stages: string[];
+  municipality: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
+  languages: string[];
+  services: string[];
+  description: string;
+  source: string;
+  verified: boolean;
+};
+
+export type Listing = {
+  id: string;
+  slug: string;
   userId: string;
   categoryId: string;
-  categoryName: string;
-  categorySlug: string;
   centerId?: string;
-  centerSlug?: string;
-  centerName?: string;
   title: string;
   description: string;
   municipality: string;
-  area?: string;
+  area: string;
   recommendedAgeMin?: number;
   recommendedAgeMax?: number;
   price?: number;
-  priceType?: "fijo" | "hora" | "mes" | "gratis" | "negociable";
-  condition?: ListingCondition;
-  images?: string[];
-  status: ListingStatus;
-  verified: boolean;
-  type?: "familia" | "proveedor" | "centro";
-  subject?: string;
-  modality?: ModalityType;
-  educationalLevel?: string;
-  experience?: string;
+  priceLabel?: string;
+  condition?: "nuevo" | "usado" | "buen estado";
   availability?: string;
-  activity?: string;
-  contactName?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  externalUrl?: string;
-  createdAt: string;
-  updatedAt: string;
-}
+  publicationType: "familia" | "proveedor" | "centro" | "comunidad";
+  status: ModerationStatus;
+  verified: boolean;
+  image?: string;
+  tags: string[];
+  details: Record<string, string>;
+};
 
-export interface Provider {
+export type Provider = {
   id: string;
   userId: string;
   businessName: string;
-  categorySlug: string;
-  categoryName: string;
+  category: string;
   description: string;
   municipality: string;
-  serviceArea: string[];
-  website?: string;
-  phone?: string;
-  email?: string;
-  logo?: string;
-  images?: string[];
+  serviceArea: string;
+  website: string;
+  phone: string;
+  email: string;
   verified: boolean;
   plan: ProviderPlan;
-  featured: boolean;
-  createdAt: string;
-}
+};
 
-export interface Review {
+export type Review = {
   id: string;
-  userId: string;
-  userName: string;
   centerId?: string;
   providerId?: string;
   ratingCommunication: number;
@@ -118,30 +86,15 @@ export interface Review {
   ratingActivities: number;
   ratingLanguages: number;
   ratingAttention: number;
-  comment?: string;
-  status: ReviewStatus;
-  createdAt: string;
-}
+  comment: string;
+  status: ModerationStatus;
+};
 
-export interface CommunityPost {
+export type CommunityPost = {
   id: string;
-  userId: string;
-  userName: string;
   title: string;
-  body: string;
-  municipality?: string;
-  centerId?: string;
-  categorySlug?: string;
-  tags?: string[];
-  status: ListingStatus;
-  createdAt: string;
-}
-
-export interface Municipality {
-  id: string;
-  name: string;
-  slug: string;
-  province: string;
-  listingsCount?: number;
-  centersCount?: number;
-}
+  category: string;
+  municipality: string;
+  summary: string;
+  status: ModerationStatus;
+};
