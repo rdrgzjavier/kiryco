@@ -1,6 +1,44 @@
-import ListingCard from "@/components/ListingCard";
-import CenterCard from "@/components/CenterCard";
-import { centers, getListingsByMunicipality, getMunicipalityBySlug, municipalities } from "@/lib/mock-data";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-export const generateStaticParams = () => municipalities.map((m) => ({ slug: m.slug }));
-export default async function ZonePage({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const m = getMunicipalityBySlug(slug); if (!m) notFound(); const zoneListings = getListingsByMunicipality(slug); const zoneCenters = centers.filter((c) => c.municipality === m.name); return <div className="page-container py-10"><h1 className="mb-6">Servicios para familias en {m.name}</h1><h2 className="mb-4">Publicaciones</h2><div className="mb-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{zoneListings.map((l) => <ListingCard key={l.id} listing={l} />)}</div><h2 className="mb-4">Centros</h2><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{zoneCenters.map((c) => <CenterCard key={c.id} center={c} />)}</div></div>; }
+import CenterCard from "@/components/CenterCard";
+import ListingCard from "@/components/ListingCard";
+import { centers, listings, municipalities } from "@/lib/mock-data";
+
+export function generateStaticParams() {
+  return municipalities.map((municipality) => ({ slug: municipality.slug }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const municipality = municipalities.find((item) => item.slug === params.slug);
+  return {
+    title: `Servicios para familias en ${municipality?.name ?? "Madrid noroeste"} | Proyecto Familias`,
+    description: municipality?.description
+  };
+}
+
+export default function ZonePage({ params }: { params: { slug: string } }) {
+  const municipality = municipalities.find((item) => item.slug === params.slug);
+  if (!municipality) notFound();
+  const zoneListings = listings.filter((listing) => listing.municipality === municipality.name);
+  const zoneCenters = centers.filter((center) => center.municipality === municipality.name);
+
+  return (
+    <div className="page py-10">
+      <p className="label">Zona</p>
+      <h1 className="mt-2 text-4xl font-bold text-ink">Servicios para familias en {municipality.name}</h1>
+      <p className="mt-3 max-w-3xl text-slatecopy">{municipality.description}</p>
+      <section className="mt-8">
+        <h2 className="section-title">Publicaciones</h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {zoneListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
+        </div>
+      </section>
+      <section className="mt-10">
+        <h2 className="section-title">Centros</h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {zoneCenters.map((center) => <CenterCard key={center.id} center={center} />)}
+        </div>
+      </section>
+    </div>
+  );
+}
