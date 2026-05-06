@@ -1,70 +1,32 @@
 import Link from "next/link";
-import { Bookmark, CheckCircle, Clock, MapPin, School } from "lucide-react";
-import { conditionLabel, formatPrice } from "@/lib/mock-data";
-import { Listing } from "@/lib/types";
+import { Bookmark, MessageCircle } from "lucide-react";
+import { ageLabel, categories, centers } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
+import { StatusBadge, VerifiedBadge } from "./Badge";
 
 export default function ListingCard({ listing }: { listing: Listing }) {
+  const category = categories.find((item) => item.id === listing.categoryId);
+  const center = centers.find((item) => item.id === listing.centerId);
+
   return (
-    <article className="card group flex h-full flex-col">
-      <div className="flex flex-1 flex-col p-5">
-        <div className="mb-4 flex items-start justify-between gap-2">
-          <span className="badge-category">{listing.categoryName}</span>
-          {listing.verified ? (
-            <span className="badge-verified shrink-0" title="Proveedor o publicación verificada">
-              <CheckCircle size={12} /> Verificado
-            </span>
-          ) : null}
-        </div>
-
-        <Link href={`/anuncios/${listing.id}`} className="mb-3 block">
-          <h3 className="text-lg font-semibold leading-snug text-warm-900 transition-colors group-hover:text-brand-700">
-            {listing.title}
-          </h3>
-        </Link>
-
-        <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-warm-600">{listing.description}</p>
-
-        <div className="mb-5 mt-auto space-y-2.5 text-sm text-warm-600">
-          <div className="flex items-center gap-2">
-            <MapPin size={16} className="shrink-0 text-warm-400" />
-            <span className="truncate">{listing.municipality}{listing.area ? ` · ${listing.area}` : ""}</span>
-          </div>
-          {listing.centerName ? (
-            <div className="flex items-center gap-2">
-              <School size={16} className="shrink-0 text-warm-400" />
-              <span className="truncate">{listing.centerName}</span>
-            </div>
-          ) : null}
-          {(listing.recommendedAgeMin !== undefined || listing.recommendedAgeMax !== undefined) ? (
-            <div className="flex items-center gap-2">
-              <Clock size={16} className="shrink-0 text-warm-400" />
-              <span>
-                {listing.recommendedAgeMin !== undefined && listing.recommendedAgeMax !== undefined
-                  ? `${listing.recommendedAgeMin}-${listing.recommendedAgeMax} años`
-                  : listing.recommendedAgeMin !== undefined
-                    ? `Desde ${listing.recommendedAgeMin} años`
-                    : `Hasta ${listing.recommendedAgeMax} años`}
-              </span>
-            </div>
-          ) : null}
-        </div>
-
-        <div className="flex items-center justify-between border-t border-warm-100 pt-4">
-          <div>
-            <div className="text-lg font-bold text-warm-900">{formatPrice(listing.price, listing.priceType)}</div>
-            {conditionLabel(listing.condition) ? (
-              <div className="mt-1 text-xs font-medium text-warm-500">{conditionLabel(listing.condition)}</div>
-            ) : null}
-          </div>
-          <div className="flex gap-2">
-            <Link href={`/anuncios/${listing.id}`} className="btn-secondary px-3 py-2">
-              Ver detalle
-            </Link>
-            <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-warm-200 text-warm-600 hover:bg-warm-100" aria-label="Guardar favorito">
-              <Bookmark size={17} />
-            </button>
-          </div>
-        </div>
+    <article className="card flex h-full flex-col p-5">
+      <div className="mb-4 flex flex-wrap gap-2">
+        <span className="chip">{category?.name}</span>
+        <VerifiedBadge verified={listing.verified} />
+        {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
+      </div>
+      <h3 className="text-lg font-semibold leading-7 text-ink">{listing.title}</h3>
+      <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
+      <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
+        <div className="flex justify-between gap-3"><dt>Zona</dt><dd className="font-medium text-ink">{listing.municipality}</dd></div>
+        {center ? <div className="flex justify-between gap-3"><dt>Centro</dt><dd className="text-right font-medium text-ink">{center.name}</dd></div> : null}
+        <div className="flex justify-between gap-3"><dt>Edad</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
+        <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
+      </dl>
+      <div className="mt-auto flex flex-wrap gap-2 pt-5">
+        <Link href={`/anuncios/${listing.slug}`} className="btn-primary flex-1 text-center">Ver detalle</Link>
+        <button className="icon-button" aria-label="Contactar"><MessageCircle size={18} /></button>
+        <button className="icon-button" aria-label="Guardar"><Bookmark size={18} /></button>
       </div>
     </article>
   );
