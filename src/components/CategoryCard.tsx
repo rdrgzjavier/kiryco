@@ -1,35 +1,18 @@
 import Link from "next/link";
-import { BookOpen, CalendarDays, GraduationCap, School, Shirt, UserCheck } from "lucide-react";
-import { Category } from "@/lib/types";
-
-const icons = {
-  Shirt,
-  BookOpen,
-  GraduationCap,
-  UserCheck,
-  CalendarDays,
-  School,
-};
+import { ArrowRight } from "lucide-react";
+import type { Category } from "@/lib/types";
 
 export default function CategoryCard({ category }: { category: Category }) {
-  const Icon = icons[category.icon as keyof typeof icons] ?? BookOpen;
-
   return (
-    <Link href={`/categoria/${category.slug}`} className="group block">
-      <div
-        className="h-full rounded-lg border border-warm-200 p-6 transition-all duration-200 hover:border-brand-300 hover:shadow-sm"
-        style={{ backgroundColor: category.color }}
-      >
-        <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-lg border border-white/70 bg-white/80 text-brand-800">
-          <Icon size={24} aria-hidden="true" />
+    <Link href={`/categoria/${category.slug}`} className="card group block p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-xl font-semibold text-ink">{category.name}</h3>
+          <p className="mt-2 text-sm leading-6 text-muted">{category.description}</p>
         </div>
-        <h3 className="mb-2 text-lg font-bold text-warm-900">{category.name}</h3>
-        <p className="mb-5 text-sm leading-relaxed text-warm-700">{category.description}</p>
-        {category.listingsCount !== undefined ? (
-          <span className="inline-flex rounded-full bg-white/70 px-3 py-1 text-xs font-semibold text-warm-700">
-            {category.listingsCount} publicaciones
-          </span>
-        ) : null}
+        <span className="icon-button shrink-0 group-hover:border-ink">
+          <ArrowRight size={18} aria-hidden />
+        </span>
       </div>
     </Link>
   );
