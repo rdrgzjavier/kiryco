@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kiryco.es"),
-  title: { default: "Proyecto Familias | Todo alrededor del colegio cerca de ti", template: "%s | Proyecto Familias" },
+  title: { default: "Kiryco | Todo alrededor del colegio cerca de ti", template: "%s | Kiryco" },
   description: "Encuentra uniformes, libros, clases particulares, canguros, extraescolares y centros educativos filtrados por zona y centro.",
 };
 
