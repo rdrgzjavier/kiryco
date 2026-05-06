@@ -24,6 +24,10 @@ npm run dev
 
 Después abre `http://localhost:3000`.
 
+## Despliegue recomendado
+
+Para el producto final se recomienda desplegar en Vercel con el repositorio de GitHub conectado. GitHub Pages puede servir una demo estática, pero Kiryco está planteado como web app con rutas, filtros, formularios, roles, moderación y futuro backend.
+
 ## Scripts
 
 ```bash
