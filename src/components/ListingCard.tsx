@@ -1,12 +1,21 @@
 import Link from "next/link";
 import { Bookmark, MessageCircle } from "lucide-react";
+import Avatar, { roleFromPublicationType } from "@/components/Avatar";
 import { ageLabel, categories, centers } from "@/lib/mock-data";
 import type { Listing } from "@/lib/types";
 import { StatusBadge, VerifiedBadge } from "./Badge";
 
+const authorNames = {
+  familia: "Familia verificada",
+  proveedor: "Servicio local",
+  centro: "Centro educativo",
+  comunidad: "Tablón moderado"
+};
+
 export default function ListingCard({ listing }: { listing: Listing }) {
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
+  const role = roleFromPublicationType(listing.publicationType);
 
   return (
     <article className="card flex h-full flex-col p-5">
@@ -14,6 +23,9 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         <span className="chip">{category?.name}</span>
         <VerifiedBadge verified={listing.verified} />
         {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
+      </div>
+      <div className="mb-4 rounded-xl bg-soft p-3">
+        <Avatar name={authorNames[listing.publicationType]} role={role} />
       </div>
       <h3 className="text-lg font-semibold leading-7 text-ink">{listing.title}</h3>
       <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
