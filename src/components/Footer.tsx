@@ -1,56 +1,65 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
+const zones = [
+  ["Las Rozas", "/zona/las-rozas"],
+  ["Majadahonda", "/zona/majadahonda"],
+  ["Pozuelo de Alarcón", "/zona/pozuelo"],
+  ["Boadilla del Monte", "/zona/boadilla"]
+];
+
+const categories = [
+  ["Uniformes", "/categoria/uniformes"],
+  ["Libros y material", "/categoria/libros-material"],
+  ["Clases particulares", "/categoria/clases-particulares"],
+  ["Canguros", "/categoria/canguros"],
+  ["Extraescolares", "/categoria/extraescolares"]
+];
+
+const legal = [
+  ["Normas de comunidad", "/normas-comunidad"],
+  ["Aviso legal", "/aviso-legal"],
+  ["Privacidad", "/privacidad"],
+  ["Cookies", "/cookies"],
+  ["Contacto", "/contacto"]
+];
+
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-warm-200 bg-white py-12">
-      <div className="page-container">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
-          <div>
-            <Link href="/" className="mb-4 inline-flex text-lg font-bold text-warm-900">
-              Kiryco
-            </Link>
-            <p className="mb-5 text-sm leading-relaxed text-warm-600">
-              Todo lo que necesitas alrededor del colegio, filtrado por tu zona y tu centro.
-            </p>
-            <div className="flex items-center gap-2 text-sm font-semibold text-brand-700">
-              <ShieldCheck size={18} />
-              Plataforma dirigida a adultos y moderada
-            </div>
-          </div>
-          <div>
-            <h4 className="mb-4 font-semibold text-warm-900">Zonas</h4>
-            <ul className="space-y-3 text-sm text-warm-600">
-              <li><Link href="/zona/las-rozas" className="hover:text-brand-700">Las Rozas</Link></li>
-              <li><Link href="/zona/majadahonda" className="hover:text-brand-700">Majadahonda</Link></li>
-              <li><Link href="/zona/pozuelo" className="hover:text-brand-700">Pozuelo de Alarcón</Link></li>
-              <li><Link href="/zona/boadilla" className="hover:text-brand-700">Boadilla del Monte</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="mb-4 font-semibold text-warm-900">Categorías</h4>
-            <ul className="space-y-3 text-sm text-warm-600">
-              <li><Link href="/categoria/uniformes" className="hover:text-brand-700">Uniformes</Link></li>
-              <li><Link href="/categoria/libros-material" className="hover:text-brand-700">Libros y material</Link></li>
-              <li><Link href="/categoria/clases-particulares" className="hover:text-brand-700">Clases particulares</Link></li>
-              <li><Link href="/categoria/canguros" className="hover:text-brand-700">Canguros</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="mb-4 font-semibold text-warm-900">Legal</h4>
-            <ul className="space-y-3 text-sm text-warm-600">
-              <li><Link href="/normas-comunidad" className="hover:text-brand-700">Normas de comunidad</Link></li>
-              <li><Link href="/aviso-legal" className="hover:text-brand-700">Aviso legal</Link></li>
-              <li><Link href="/privacidad" className="hover:text-brand-700">Privacidad</Link></li>
-              <li><Link href="/cookies" className="hover:text-brand-700">Cookies</Link></li>
-              <li><Link href="/contacto" className="hover:text-brand-700">Contacto</Link></li>
-            </ul>
+    <footer className="border-t border-line bg-panel">
+      <div className="page grid gap-10 py-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div>
+          <p className="text-lg font-bold text-ink">Kiryco</p>
+          <p className="mt-3 max-w-md text-sm leading-6 text-muted">
+            Recursos útiles alrededor del colegio, organizados por zona, centro y categoría para familias adultas.
+          </p>
+          <div className="mt-5 flex items-start gap-2 text-sm font-semibold leading-6 text-petrol">
+            <ShieldCheck size={18} className="mt-0.5 shrink-0" aria-hidden />
+            <span>Plataforma dirigida a adultos, con publicaciones revisadas y normas de privacidad claras.</span>
           </div>
         </div>
-        <div className="mt-10 border-t border-warm-200 pt-6 text-sm text-warm-500">
-          © {new Date().getFullYear()} Kiryco. MVP preparado para conectar con Supabase o Firebase.
-        </div>
+        <FooterLinks title="Zonas" links={zones} />
+        <FooterLinks title="Categorías" links={categories} />
+        <FooterLinks title="Legal" links={legal} />
+      </div>
+      <div className="border-t border-line">
+        <div className="page py-5 text-sm text-muted">© {new Date().getFullYear()} Kiryco. Plataforma para familias, centros y profesionales locales.</div>
       </div>
     </footer>
+  );
+}
+
+function FooterLinks({ title, links }: { title: string; links: string[][] }) {
+  return (
+    <div>
+      <h2 className="text-sm font-bold text-ink">{title}</h2>
+      <ul className="mt-4 grid gap-3 text-sm text-slatecopy">
+        {links.map(([label, href]) => (
+          <li key={href}>
+            <Link href={href} className="hover:text-ink">{label}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
