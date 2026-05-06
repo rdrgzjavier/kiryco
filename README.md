@@ -1,8 +1,8 @@
 # Kiryco
 
-MVP web de **Proyecto Familias**, una plataforma para adultos en España centrada inicialmente en Madrid noroeste: Las Rozas, Majadahonda, Pozuelo de Alarcón, Boadilla del Monte y alrededores.
+Web app de **Kiryco**, una plataforma para adultos orientada a encontrar recursos alrededor del colegio por zona, centro y categoría.
 
-Claim provisional:
+Claim:
 
 > Todo lo que necesitas alrededor del colegio, filtrado por tu zona y tu centro.
 
@@ -15,6 +15,14 @@ Claim provisional:
 - Datos mockeados en `src/lib/mock-data.ts`
 - Esquema preparado para Supabase en `docs/supabase-schema.sql`
 
+## Perfil y privacidad
+
+- Registro para familias, profesionales locales, centros educativos y equipo interno.
+- Imagen de perfil opcional desde el dispositivo.
+- Avatar automático con color e inicial cuando no hay imagen.
+- Rol visible en publicaciones y tablón para diferenciar familias, servicios profesionales y centros.
+- Sin perfiles, fotos, nombres, clase u horarios personales de menores.
+
 ## Ejecutar en local
 
 ```bash
@@ -26,7 +34,7 @@ Después abre `http://localhost:3000`.
 
 ## Despliegue recomendado
 
-Para el producto final se recomienda desplegar en Vercel con el repositorio de GitHub conectado. GitHub Pages puede servir una demo estática, pero Kiryco está planteado como web app con rutas, filtros, formularios, roles, moderación y futuro backend.
+Kiryco está planteado como web app con rutas, filtros, formularios, roles, moderación y futuro backend. El despliegue recomendado es Vercel con el repositorio de GitHub conectado.
 
 ## Scripts
 
@@ -49,11 +57,6 @@ npm run build
 - `/categoria/clases-particulares`
 - `/categoria/canguros`
 - `/categoria/extraescolares`
-- `/uniformes`
-- `/libros-material`
-- `/clases-particulares`
-- `/canguros`
-- `/extraescolares`
 - `/centros`
 - `/centros/[slug-centro]`
 - `/proveedores`
@@ -66,15 +69,6 @@ npm run build
 - `/normas-comunidad`
 - `/contacto`
 
-## Principios de seguridad
-
-- Plataforma dirigida exclusivamente a adultos.
-- Sin perfiles de alumnos.
-- Sin fotos de menores.
-- Sin nombres completos, clase visible ni horarios personales de menores.
-- Publicaciones, reseñas y tablón preparados para moderación.
-- Reseñas de centros estructuradas, respetuosas y sin acusaciones personales.
-
 ## Próximos pasos para Supabase
 
 1. Crear proyecto Supabase.
@@ -82,4 +76,4 @@ npm run build
 3. Añadir variables `.env.local` con URL y anon key.
 4. Sustituir `src/lib/mock-data.ts` por un cliente de datos con funciones equivalentes.
 5. Conectar Supabase Auth con email/password y magic link.
-6. Activar reglas RLS por rol: familia, proveedor, centro y admin.
+6. Activar reglas RLS por rol: familia, profesional local, centro y admin.
