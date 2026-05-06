@@ -11,7 +11,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const municipality = municipalities.find((item) => item.slug === params.slug);
   return {
-    title: `Servicios para familias en ${municipality?.name ?? "Madrid noroeste"} | Proyecto Familias`,
+    title: `Servicios para familias en ${municipality?.name ?? "tu zona"} | Kiryco`,
     description: municipality?.description
   };
 }
