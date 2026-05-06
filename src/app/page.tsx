@@ -8,7 +8,7 @@ import type { LucideIcon } from "lucide-react";
 
 const audienceCards: { title: string; text: string; Icon: LucideIcon }[] = [
   { title: "Para familias", text: "Busca, guarda favoritos, publica anuncios y contacta con seguridad.", Icon: Search },
-  { title: "Para proveedores", text: "Crea un perfil básico, solicita verificación y aparece por zona.", Icon: ClipboardCheck },
+  { title: "Para profesionales locales", text: "Crea una ficha, solicita verificación y ofrece servicios por zona.", Icon: ClipboardCheck },
   { title: "Para centros", text: "Valida tu ficha y facilita recursos útiles a las familias.", Icon: Building2 }
 ];
 
@@ -47,7 +47,7 @@ export default function Home() {
             <ShieldCheck className="text-sage" size={36} aria-hidden />
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {["Sin perfiles de menores", "Sin fotos de menores", "Publicaciones moderadas", "Reseñas auditadas", "Proveedores verificables"].map((item) => (
+            {["Sin perfiles de menores", "Sin fotos de menores", "Publicaciones moderadas", "Reseñas auditadas", "Profesionales verificables"].map((item) => (
               <div key={item} className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold text-slatecopy">{item}</div>
             ))}
           </div>
