@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import Script from "next/script";
+import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import InstallPrompt from "@/components/InstallPrompt";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kiryco.es"),
-  title: { default: "Kiryco | Todo alrededor del colegio cerca de ti", template: "%s | Kiryco" },
+  title: "Kiryco | Todo alrededor del colegio cerca de ti",
   description: "Encuentra uniformes, libros, clases particulares, canguros, extraescolares y centros educativos filtrados por zona y centro.",
+  metadataBase: new URL("https://kiryco.vercel.app"),
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -19,10 +24,25 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kiryco | Todo alrededor del colegio cerca de ti",
     description: "Recursos útiles alrededor del colegio, filtrados por zona, centro y categoría.",
-    images: [{ url: "/icon-512.png", width: 512, height: 512, alt: "Kiryco" }]
+    images: [{ url: "/brand/kiryco-isotipo-1024.png", width: 1024, height: 1024, alt: "Kiryco" }]
   }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="es"><body className="min-h-screen flex flex-col"><Header /><main className="flex-1">{children}</main><Footer /></body></html>;
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="es">
+      <head>
+        <Script id="gtm-head" strategy="beforeInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NCVMLXWZ');`}
+        </Script>
+      </head>
+      <body className={inter.className}>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCVMLXWZ" height="0" width="0" style={{ display: "none", visibility: "hidden" }} /></noscript>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <InstallPrompt />
+      </body>
+    </html>
+  );
 }
