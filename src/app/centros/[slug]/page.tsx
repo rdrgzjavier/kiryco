@@ -10,7 +10,11 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const center = findCenter(params.slug);
-  return { title: `${center?.name ?? "Centro educativo"} | Proyecto Familias`, description: center?.description };
+  if (!center) return { title: "Centro educativo | Kiryco" };
+  return {
+    title: `${center.name} en ${center.municipality} | Kiryco`,
+    description: `${center.name}: ${center.type}, etapas ${center.stages.join(", ")}, servicios ${center.services.slice(0, 3).join(", ")}. Ficha pública para familias.`
+  };
 }
 
 export default function CenterDetailPage({ params }: { params: { slug: string } }) {
@@ -22,10 +26,14 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
     <div className="page py-10">
       <div className="flex flex-wrap items-center gap-2">
         <span className="chip capitalize">{center.type}</span>
+        {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
         <VerifiedBadge verified={center.verified} />
       </div>
       <h1 className="mt-4 text-4xl font-bold text-ink">{center.name}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-8 text-slatecopy">{center.description}</p>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {center.tags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
+      </div>
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
         <section className="card p-6">
           <h2 className="text-2xl font-semibold text-ink">Datos públicos</h2>
@@ -42,10 +50,14 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
             ].map(([label, value]) => (
               <div key={label} className="rounded-xl border border-line bg-soft p-4">
                 <dt className="label">{label}</dt>
-                <dd className="mt-2 text-sm font-semibold text-ink">{value}</dd>
+                <dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd>
               </div>
             ))}
           </dl>
+          <p className="mt-5 rounded-xl border border-line bg-white p-4 text-sm leading-6 text-slatecopy">
+            Datos públicos orientativos. Confirma admisión, horarios, precios y servicios en la web oficial del centro antes de tomar una decisión.
+          </p>
+          {center.sourceUrl ? <a href={center.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold text-ink underline">Fuente: {center.source}</a> : null}
         </section>
         <aside className="card h-fit p-6">
           <h2 className="text-xl font-semibold text-ink">Solicitar revisión de ficha</h2>
@@ -54,12 +66,12 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         </aside>
       </div>
       <section className="mt-8 card p-6">
-        <h2 className="text-2xl font-semibold text-ink">Reseñas estructuradas</h2>
+        <h2 className="text-2xl font-semibold text-ink">Valoraciones estructuradas</h2>
         <p className="mt-2 rounded-xl border border-line bg-soft p-4 text-sm leading-6 text-slatecopy">
           Las valoraciones están moderadas y buscan ayudar a las familias con información útil y respetuosa.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {centerReviews.map((review) => (
+          {centerReviews.length > 0 ? centerReviews.map((review) => (
             <article key={review.id} className="rounded-xl border border-line p-4">
               <p className="text-sm leading-6 text-slatecopy">{review.comment}</p>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold text-muted">
@@ -71,7 +83,7 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
                 <span>Atención {review.ratingAttention}/5</span>
               </div>
             </article>
-          ))}
+          )) : <p className="rounded-xl border border-line p-4 text-sm leading-6 text-muted">Aún no hay valoraciones familiares moderadas publicadas para este centro.</p>}
         </div>
       </section>
     </div>
