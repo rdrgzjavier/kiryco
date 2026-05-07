@@ -7,10 +7,14 @@ export default function CenterCard({ center }: { center: Center }) {
     <article className="card p-5">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <span className="chip capitalize">{center.type}</span>
+        {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
         <VerifiedBadge verified={center.verified} />
       </div>
       <h3 className="text-xl font-semibold text-ink">{center.name}</h3>
       <p className="mt-2 text-sm leading-6 text-muted">{center.description}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {center.tags.slice(0, 6).map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
+      </div>
       <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
         <div className="flex justify-between gap-3"><dt>Municipio</dt><dd className="font-medium text-ink">{center.municipality}</dd></div>
         <div className="flex justify-between gap-3"><dt>Etapas</dt><dd className="text-right font-medium text-ink">{center.stages.join(", ")}</dd></div>
