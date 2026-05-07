@@ -34,6 +34,9 @@ export type Center = {
   services: string[];
   description: string;
   source: string;
+  sourceUrl?: string;
+  religiousCharacter?: "catolico" | "laico" | "no indicado";
+  tags: string[];
   verified: boolean;
 };
 
@@ -74,6 +77,7 @@ export type Provider = {
   email: string;
   verified: boolean;
   plan: ProviderPlan;
+  tags: string[];
 };
 
 export type Review = {
