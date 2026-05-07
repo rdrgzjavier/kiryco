@@ -7,7 +7,7 @@ import { StatusBadge, VerifiedBadge } from "./Badge";
 
 const authorNames = {
   familia: "Familia verificada",
-  proveedor: "Servicio local",
+  proveedor: "Actividad o servicio local",
   centro: "Centro educativo",
   comunidad: "Tablón moderado"
 };
@@ -29,6 +29,9 @@ export default function ListingCard({ listing }: { listing: Listing }) {
       </div>
       <h3 className="text-lg font-semibold leading-7 text-ink">{listing.title}</h3>
       <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {listing.tags.slice(0, 5).map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
+      </div>
       <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
         <div className="flex justify-between gap-3"><dt>Zona</dt><dd className="font-medium text-ink">{listing.municipality}</dd></div>
         {center ? <div className="flex justify-between gap-3"><dt>Centro</dt><dd className="text-right font-medium text-ink">{center.name}</dd></div> : null}
