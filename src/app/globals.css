@@ -18,7 +18,11 @@ body {
 
 @layer components {
   .page {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .section-shell {
+    @apply page py-10 sm:py-12 lg:py-14;
   }
 
   .card {
@@ -49,11 +53,25 @@ body {
     @apply mt-2 min-h-11 w-full rounded-lg border border-line bg-panel px-3 text-sm text-ink outline-none focus:border-ink focus:ring-2 focus:ring-ink/10;
   }
 
+  select.field {
+    @apply appearance-none bg-no-repeat pr-11;
+    background-image: url("data:image/svg+xml,%3csvg width='16' height='16' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23475569' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+  }
+
   .field-label {
     @apply text-sm font-semibold text-slatecopy;
   }
 
   .section-title {
     @apply text-2xl font-bold leading-tight text-ink sm:text-3xl;
+  }
+
+  .page-title {
+    @apply mt-2 text-3xl font-bold leading-tight text-ink sm:text-4xl;
+  }
+
+  .lead {
+    @apply mt-3 max-w-3xl text-base leading-7 text-slatecopy;
   }
 }
