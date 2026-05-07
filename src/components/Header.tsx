@@ -7,10 +7,10 @@ import Logo from "@/components/Logo";
 
 const nav = [
   ["Buscar", "/buscar"],
-  ["Categorías", "/categoria/uniformes"],
+  ["Categorías", "/categoria"],
   ["Centros", "/centros"],
   ["Comunidad", "/comunidad"],
-  ["Servicios", "/proveedores"]
+  ["Servicios", "/servicios"]
 ];
 
 export default function Header() {
@@ -36,7 +36,7 @@ export default function Header() {
         </button>
       </div>
       {open && (
-        <div className="border-t border-line bg-panel px-4 py-4 md:hidden">
+        <div className="border-t border-line bg-panel px-5 py-4 md:hidden">
           <div className="mb-3 flex items-center gap-2 rounded-lg border border-line bg-soft px-3 py-2 text-sm text-muted">
             <Search size={16} aria-hidden /> Busca por zona, centro o categoría
           </div>
