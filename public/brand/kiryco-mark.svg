@@ -1,9 +1,9 @@
-<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="96" height="96" rx="24" fill="#F9F4F6"/>
-  <circle cx="48" cy="48" r="38" stroke="#0B132B" stroke-width="10"/>
-  <rect x="36.69" y="36.69" width="22.63" height="22.63" transform="rotate(45 36.69 36.69)" stroke="#0B132B" stroke-width="9"/>
-  <rect x="21" y="36" width="27" height="9" transform="rotate(-45 21 36)" fill="#0B132B"/>
-  <rect x="55.9" y="17" width="27" height="9" transform="rotate(45 55.9 17)" fill="#0B132B"/>
-  <rect x="30" y="75" width="27" height="9" transform="rotate(-135 30 75)" fill="#0B132B"/>
-  <rect x="75" y="60" width="27" height="9" transform="rotate(135 75 60)" fill="#0B132B"/>
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kiryco">
+  <rect width="96" height="96" rx="10" fill="#0B132B"/>
+  <path d="M10 9H88C89.7 9 91 10.3 91 12V28.2C91 29.2 90.5 30.2 89.7 30.7L34.7 63.2C34.2 63.5 33.7 63.6 33.1 63.6H11.2C10.5 63.6 10 63.1 10 62.4V10.2C10 9.5 10.5 9 10 9Z" fill="white"/>
+  <path d="M10 69.8C10 69.1 10.5 68.6 11.2 68.6H33.1C33.7 68.6 34.2 68.8 34.7 69.1L89.7 101.5C90.5 102 91 102.9 91 103.9V86.5C91 87.2 90.5 87.8 89.8 87.8H11.2C10.5 87.8 10 87.3 10 86.6V69.8Z" fill="white"/>
+  <path d="M10 47.4H33.2C33.7 47.4 34.2 47.3 34.7 47L91 13.7V28.2C91 29.2 90.5 30.2 89.7 30.7L34.7 63.2C34.2 63.5 33.7 63.6 33.1 63.6H10V47.4Z" fill="#0B132B"/>
+  <path d="M10 63.6H33.1C33.7 63.6 34.2 63.8 34.7 64.1L89.7 96.6C90.5 97.1 91 98 91 99V84.5L34.7 51.2C34.2 50.9 33.7 50.8 33.2 50.8H10V63.6Z" fill="#0B132B"/>
+  <path d="M10 9H88C89.7 9 91 10.3 91 12V28.2C91 29.2 90.5 30.2 89.7 30.7L34.7 63.2C34.2 63.5 33.7 63.6 33.1 63.6H11.2C10.5 63.6 10 63.1 10 62.4V10.2C10 9.5 10.5 9 10 9Z" stroke="#050816" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M10 69.8C10 69.1 10.5 68.6 11.2 68.6H33.1C33.7 68.6 34.2 68.8 34.7 69.1L91 102.3V86.6C91 87.3 90.5 87.8 89.8 87.8H11.2C10.5 87.8 10 87.3 10 86.6V69.8Z" stroke="#050816" stroke-width="1.5" stroke-linejoin="round"/>
 </svg>
