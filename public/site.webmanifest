@@ -1,11 +1,11 @@
 {
-  "name": "Kiryco",
-  "short_name": "Kiryco",
+  "name": "Tenlo",
+  "short_name": "Tenlo",
   "description": "Recursos útiles alrededor del colegio, organizados por zona, centro y categoría para familias adultas.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#12203D",
-  "theme_color": "#12203D",
+  "background_color": "#5045C8",
+  "theme_color": "#5045C8",
   "icons": [
     {
       "src": "/icon-192.png",
