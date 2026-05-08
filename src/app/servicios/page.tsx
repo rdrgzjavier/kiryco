@@ -1,3 +1,4 @@
+// Force update: 2026-05-08T12:48
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ExternalLink, Search } from "lucide-react";
