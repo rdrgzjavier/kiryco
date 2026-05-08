@@ -1,39 +1,48 @@
 // Force update: 2026-05-08T12:48
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search } from "lucide-react";
-import { communityInitiatives, communityPosts } from "@/lib/mock-data";
+import { ChevronDown, Search } from "lucide-react";
+import { communityInitiatives, communityPosts, municipalities } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/Badge";
 
 export const metadata: Metadata = {
-  title: "Tablón moderado e iniciativas para familias | Tenlo",
-  description: "Preguntas, avisos, recomendaciones e iniciativas útiles revisadas antes de aparecer. No es una red social juvenil."
+  title: "Comunidad y participación | Tenlo",
+  description: "Un espacio seguro para familias con iniciativas locales, foro moderado y recursos compartidos."
 };
 
 export default function CommunityPage() {
   return (
     <div className="section-shell">
-      <p className="label">Comunidad controlada</p>
-      <h1 className="page-title">Tablón moderado</h1>
+      <p className="label">Participación ciudadana</p>
+      <h1 className="page-title">Comunidad Tenlo</h1>
       <p className="lead">Un espacio para preguntas útiles, avisos, recomendaciones e iniciativas revisadas. No permite grupos de clase, mensajería abierta sin control, críticas personales ni datos de menores.</p>
 
       {/* Filters Section */}
-      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-soft p-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
-        <div className="flex items-center gap-2 rounded-lg bg-panel px-3 py-2 ring-1 ring-line">
+      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-panel p-3 shadow-soft sm:grid-cols-[1fr_1fr_1fr_auto]">
+        <div className="flex items-center gap-2 rounded-lg bg-soft px-3 ring-1 ring-line/50 focus-within:ring-ink">
           <Search size={18} className="text-muted" />
-          <input placeholder="Busca por palabra o tag..." className="w-full bg-transparent text-sm outline-none" />
+          <input placeholder="Busca por palabra o tag..." className="min-h-[48px] w-full bg-transparent text-sm outline-none" />
         </div>
-        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
-          <option>Todas las zonas</option>
-          <option>Las Rozas</option>
-          <option>Majadahonda</option>
-        </select>
-        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
-          <option>Tipo de contenido</option>
-          <option>Iniciativas y causas</option>
-          <option>Foro y Tablón</option>
-        </select>
-        <button className="btn-primary py-2 px-6">Filtrar</button>
+        <div className="relative">
+          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+            <option value="">Todas las zonas</option>
+            {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <ChevronDown size={18} className="text-muted" />
+          </div>
+        </div>
+        <div className="relative">
+          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+            <option>Tipo de contenido</option>
+            <option>Iniciativas y causas</option>
+            <option>Foro y Tablón</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <ChevronDown size={18} className="text-muted" />
+          </div>
+        </div>
+        <button className="btn-primary px-8">Filtrar</button>
       </div>
 
       <section className="mt-8">
