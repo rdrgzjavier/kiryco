@@ -24,7 +24,7 @@ export function roleFromPublicationType(type: "familia" | "proveedor" | "centro"
 }
 
 export default function Avatar({ name, role, image }: { name: string; role: Role; image?: string }) {
-  const initial = (name || "K").trim().charAt(0).toUpperCase();
+  const initial = (name || "T").trim().charAt(0).toUpperCase();
   return (
     <div className="flex items-center gap-2">
       {image ? (
