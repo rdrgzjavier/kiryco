@@ -3,7 +3,7 @@ import type { Role } from "@/lib/types";
 const palette = ["bg-petrol", "bg-sage", "bg-coral", "bg-ink", "bg-slate-600"];
 
 export function colorForName(name: string) {
-  const total = Array.from(name || "Kiryco").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  const total = Array.from(name || "Tenlo").reduce((sum, char) => sum + char.charCodeAt(0), 0);
   return palette[total % palette.length];
 }
 
@@ -12,7 +12,7 @@ export function roleLabel(role: Role | "family" | "provider" | "center" | "admin
     family: "Familia",
     provider: "Servicio profesional",
     center: "Centro educativo",
-    admin: "Equipo Kiryco"
+    admin: "Equipo Tenlo"
   };
   return labels[role];
 }
