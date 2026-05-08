@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InstallPrompt from "@/components/InstallPrompt";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["600"], variable: "--font-poppins" });
 
 export const metadata: Metadata = {
-  title: "Kiryco | Todo alrededor del colegio cerca de ti",
+  title: "Tenlo | Todo alrededor del colegio cerca de ti",
   description: "Encuentra uniformes, libros, clases particulares, canguros, extraescolares y centros educativos filtrados por zona y centro.",
-  metadataBase: new URL("https://kiryco.vercel.app"),
+  metadataBase: new URL("https://tenlo.es"),
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -22,9 +23,9 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Kiryco | Todo alrededor del colegio cerca de ti",
+    title: "Tenlo | Todo alrededor del colegio cerca de ti",
     description: "Recursos útiles alrededor del colegio, filtrados por zona, centro y categoría.",
-    images: [{ url: "/brand/kiryco-isotipo-1024.png", width: 1024, height: 1024, alt: "Kiryco" }]
+    images: [{ url: "/brand/tenlo-isotipo-1024.png", width: 1024, height: 1024, alt: "Tenlo" }]
   }
 };
 
@@ -36,7 +37,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NCVMLXWZ');`}
         </Script>
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCVMLXWZ" height="0" width="0" style={{ display: "none", visibility: "hidden" }} /></noscript>
         <Header />
         <main>{children}</main>
