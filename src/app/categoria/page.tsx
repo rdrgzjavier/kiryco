@@ -1,3 +1,4 @@
+// Force update: 2026-05-08T12:48
 import type { Metadata } from "next";
 import CategoryCard from "@/components/CategoryCard";
 import { categories } from "@/lib/mock-data";
