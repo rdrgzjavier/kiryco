@@ -15,11 +15,15 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://tenlo.es"),
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" }
+      { url: "/brand/tenlo-isotipo-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/brand/tenlo-isotipo-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/brand/tenlo-isotipo-512.png", sizes: "512x512", type: "image/png" }
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
+    shortcut: [{ url: "/brand/tenlo-isotipo-32.png", sizes: "32x32", type: "image/png" }],
+    apple: [{ url: "/brand/tenlo-isotipo-180.png", sizes: "180x180", type: "image/png" }],
+    other: [
+      { rel: "mask-icon", url: "/brand/tenlo-mark.svg", color: "#0F172A" }
+    ]
   },
   manifest: "/site.webmanifest",
   openGraph: {
