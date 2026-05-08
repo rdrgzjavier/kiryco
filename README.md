@@ -1,6 +1,6 @@
-# Kiryco
+# Tenlo
 
-Web app de **Kiryco**, una plataforma para adultos orientada a encontrar recursos alrededor del colegio por zona, centro y categoría.
+Web app de **Tenlo**, una plataforma para adultos orientada a encontrar recursos alrededor del colegio por zona, centro y categoría.
 
 Claim:
 
@@ -34,7 +34,7 @@ Después abre `http://localhost:3000`.
 
 ## Despliegue recomendado
 
-Kiryco está planteado como web app con rutas, filtros, formularios, roles, moderación y futuro backend. El despliegue recomendado es Vercel con el repositorio de GitHub conectado.
+Tenlo está planteado como web app con rutas, filtros, formularios, roles, moderación y futuro backend. El despliegue recomendado es Vercel con el repositorio de GitHub conectado.
 
 ## Scripts
 
