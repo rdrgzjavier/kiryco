@@ -28,8 +28,8 @@ export default function SearchHero() {
           </div>
         </div>
       </div>
-      <aside className="rounded-2xl border border-line bg-panel p-4 md:mt-2">
-        <div className="flex gap-3 rounded-xl bg-soft p-4">
+      <aside className="rounded-2xl border border-lavender bg-lavender/30 p-4 md:mt-2 shadow-sm">
+        <div className="flex gap-3 rounded-xl bg-panel/50 p-4 backdrop-blur-sm">
           <ShieldCheck className="mt-0.5 shrink-0 text-petrol" size={24} aria-hidden />
           <div>
             <h2 className="text-base font-semibold text-ink">Privacidad desde el inicio</h2>
