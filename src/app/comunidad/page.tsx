@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { communityInitiatives, communityPosts } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/Badge";
 
 export const metadata: Metadata = {
-  title: "Tablón moderado e iniciativas para familias | Kiryco",
+  title: "Tablón moderado e iniciativas para familias | Tenlo",
   description: "Preguntas, avisos, recomendaciones e iniciativas útiles revisadas antes de aparecer. No es una red social juvenil."
 };
 
@@ -14,6 +15,25 @@ export default function CommunityPage() {
       <p className="label">Comunidad controlada</p>
       <h1 className="page-title">Tablón moderado</h1>
       <p className="lead">Un espacio para preguntas útiles, avisos, recomendaciones e iniciativas revisadas. No permite grupos de clase, mensajería abierta sin control, críticas personales ni datos de menores.</p>
+
+      {/* Filters Section */}
+      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-soft p-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
+        <div className="flex items-center gap-2 rounded-lg bg-panel px-3 py-2 ring-1 ring-line">
+          <Search size={18} className="text-muted" />
+          <input placeholder="Busca por palabra o tag..." className="w-full bg-transparent text-sm outline-none" />
+        </div>
+        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
+          <option>Todas las zonas</option>
+          <option>Las Rozas</option>
+          <option>Majadahonda</option>
+        </select>
+        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
+          <option>Tipo de contenido</option>
+          <option>Iniciativas y causas</option>
+          <option>Foro y Tablón</option>
+        </select>
+        <button className="btn-primary py-2 px-6">Filtrar</button>
+      </div>
 
       <section className="mt-8">
         <div className="mb-4 flex items-end justify-between gap-4">
