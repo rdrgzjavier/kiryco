@@ -13,7 +13,7 @@ export default function InstallPrompt() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
-    const dismissed = window.localStorage.getItem("kiryco-install-dismissed");
+    const dismissed = window.localStorage.getItem("tenlo-install-dismissed");
     const isStandalone = window.matchMedia("(display-mode: standalone)").matches || ("standalone" in window.navigator && Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone));
     const isMobileLike = window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches;
 
@@ -32,7 +32,7 @@ export default function InstallPrompt() {
   if (!visible) return null;
 
   const dismiss = () => {
-    window.localStorage.setItem("kiryco-install-dismissed", "1");
+    window.localStorage.setItem("tenlo-install-dismissed", "1");
     setVisible(false);
   };
 
@@ -47,10 +47,10 @@ export default function InstallPrompt() {
   };
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-2xl border border-line bg-white/95 p-3 shadow-soft backdrop-blur md:hidden" role="region" aria-label="Crear acceso directo a Kiryco">
+    <div className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-2xl border border-line bg-white/95 p-3 shadow-soft backdrop-blur md:hidden" role="region" aria-label="Crear acceso directo a Tenlo">
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-ink">Añade Kiryco a tu pantalla de inicio</p>
+          <p className="text-sm font-semibold text-ink">Añade Tenlo a tu pantalla de inicio</p>
           <p className="mt-1 text-xs leading-5 text-muted">Ábrelo como una app, sin buscar la web cada vez.</p>
           <button className="btn-primary mt-3 w-full" type="button" onClick={install}><Download size={16} />Instalar</button>
         </div>
