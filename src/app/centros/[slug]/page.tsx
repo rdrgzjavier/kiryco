@@ -10,9 +10,9 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const center = findCenter(params.slug);
-  if (!center) return { title: "Centro educativo | Kiryco" };
+  if (!center) return { title: "Centro educativo | Tenlo" };
   return {
-    title: `${center.name} en ${center.municipality} | Kiryco`,
+    title: `${center.name} en ${center.municipality} | Tenlo`,
     description: `${center.name}: ${center.type}, etapas ${center.stages.join(", ")}, servicios ${center.services.slice(0, 3).join(", ")}. Ficha pública para familias.`
   };
 }
