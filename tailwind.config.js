@@ -16,7 +16,8 @@ module.exports = {
         sage: "#5f7c6a"
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        poppins: ["var(--font-poppins)", "sans-serif"]
       },
       boxShadow: {
         soft: "0 4px 12px rgba(15, 23, 42, 0.05)"
