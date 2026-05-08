@@ -12,10 +12,18 @@ export default function AnimatedLogo() {
     const interval = setInterval(() => {
       setFade(false);
       setTimeout(() => {
-        setIndex((prev) => (prev + 1) % words.length);
-        setFade(true);
-      }, 500); // Wait for fade out
-    }, 3000); // Change word every 3 seconds
+        setIndex((prev) => {
+          if (prev >= words.length - 1) {
+            clearInterval(interval);
+            setFade(true);
+            return prev;
+          }
+          const next = prev + 1;
+          setFade(true);
+          return next;
+        });
+      }, 500);
+    }, 4000); // 4 seconds interval for a slower feel
 
     return () => clearInterval(interval);
   }, []);
