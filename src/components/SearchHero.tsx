@@ -20,7 +20,7 @@ export default function SearchHero() {
           <button className="btn-primary min-h-12" type="submit">Buscar cerca de mí</button>
         </form>
         <div className="mt-6">
-          <h2 className="text-base font-bold text-ink">¿Quieres ser parte de Kiryco?</h2>
+          <h2 className="text-base font-bold text-ink">¿Quieres ser parte de Tenlo?</h2>
           <div className="mt-3 flex flex-wrap gap-3">
             <Link href="/publicar" className="btn-secondary"><Megaphone size={16} aria-hidden /> Publicar anuncio</Link>
             <Link href="/proveedores" className="btn-secondary"><Store size={16} aria-hidden /> Ofrezco servicios</Link>
