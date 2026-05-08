@@ -1,11 +1,49 @@
-import ContactForm from "@/components/ContactForm";
-import LegalPage from "@/components/LegalPage";
+import type { Metadata } from "next";
+import { Mail, MessageSquare, ShieldCheck } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contacto | Tenlo",
+  description: "Contacta con el equipo de Tenlo para consultas, soporte o propuestas de colaboración."
+};
 
 export default function ContactPage() {
   return (
-    <LegalPage title="Contacto">
-      <p>Cuéntanos qué necesitas y te responderemos desde el equipo de Tenlo. Este formulario está dirigido exclusivamente a personas adultas.</p>
-      <ContactForm />
-    </LegalPage>
+    <div className="section-shell max-w-4xl">
+      <p className="label">Contacto</p>
+      <h1 className="page-title">Estamos aquí para ayudarte</h1>
+      <p className="lead">Para cualquier duda, sugerencia o incidencia, puedes escribirnos directamente a nuestra dirección de correo electrónico oficial.</p>
+
+      <div className="mt-12 grid gap-8 md:grid-cols-2">
+        <div className="card p-8">
+          <Mail className="text-ink" size={32} />
+          <h2 className="mt-4 text-xl font-bold text-ink">Correo electrónico</h2>
+          <p className="mt-2 text-sm text-muted">Nuestro equipo revisa todos los mensajes y responde en un plazo de 24-48 horas laborables.</p>
+          <a href="mailto:hola@tenlo.es" className="mt-6 inline-block text-xl font-bold text-ink hover:text-lavender transition-colors">
+            hola@tenlo.es
+          </a>
+        </div>
+
+        <div className="space-y-6">
+          <div className="flex gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-soft ring-1 ring-line">
+              <ShieldCheck className="text-petrol" size={20} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-ink">Seguridad y Privacidad</h3>
+              <p className="mt-1 text-sm text-muted text-slatecopy">Tratamos tus datos con total confidencialidad según nuestra política de privacidad.</p>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-soft ring-1 ring-line">
+              <MessageSquare className="text-petrol" size={20} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-ink">Sugerencias</h3>
+              <p className="mt-1 text-sm text-muted text-slatecopy">Tenlo es una plataforma en constante evolución. Tu feedback es vital para nosotros.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
