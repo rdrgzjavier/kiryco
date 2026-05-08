@@ -54,6 +54,43 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="bg-ink py-16 text-white">
+        <div className="page grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
+          <div><p className="text-4xl font-bold">40+</p><p className="mt-1 text-lavender/70">Centros educativos</p></div>
+          <div><p className="text-4xl font-bold">120+</p><p className="mt-1 text-lavender/70">Recursos locales</p></div>
+          <div><p className="text-4xl font-bold">2.4k</p><p className="mt-1 text-lavender/70">Familias activas</p></div>
+          <div><p className="text-4xl font-bold">100%</p><p className="mt-1 text-lavender/70">Moderado y seguro</p></div>
+        </div>
+      </section>
+
+      <section className="page py-14">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="label">Comunidad Tenlo</p>
+            <h2 className="section-title mt-2">Últimos temas del tablón</h2>
+          </div>
+          <Link href="/comunidad" className="btn-secondary">Ir a la comunidad</Link>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <Link href="/comunidad" className="card flex items-center justify-between p-6">
+            <div>
+              <span className="chip mb-2">Boadilla</span>
+              <h3 className="text-lg font-semibold text-ink">Mejores parques para ir con niños</h3>
+              <p className="mt-1 text-sm text-muted">12 recomendaciones revisadas...</p>
+            </div>
+            <Search className="text-line" size={24} />
+          </Link>
+          <Link href="/comunidad" className="card flex items-center justify-between p-6">
+            <div>
+              <span className="chip mb-2">Las Rozas</span>
+              <h3 className="text-lg font-semibold text-ink">Extraescolares de robótica por zonas</h3>
+              <p className="mt-1 text-sm text-muted">Listado moderado de academias...</p>
+            </div>
+            <Search className="text-line" size={24} />
+          </Link>
+        </div>
+      </section>
+
       <section className="page py-14">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="section-title">Publicaciones recientes</h2>
