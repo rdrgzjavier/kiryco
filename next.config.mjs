@@ -2,6 +2,9 @@
 const nextConfig = {
   experimental: {
     cpus: 1
+  },
+  images: {
+    domains: ["images.unsplash.com"]
   }
 };
 
