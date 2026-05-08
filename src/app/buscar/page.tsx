@@ -3,16 +3,28 @@ import Filters from "@/components/Filters";
 import ListingCard from "@/components/ListingCard";
 import { listings } from "@/lib/mock-data";
 
-export const metadata: Metadata = {
-  title: "Buscar recursos para familias | Kiryco",
-  description: "Filtra recursos por categoría, municipio, centro educativo, edad recomendada, precio, tipo, verificación y disponibilidad."
-};
-
 type SearchParams = Record<string, string | string[] | undefined>;
 
 function value(params: SearchParams, key: string) {
   const raw = params[key];
   return Array.isArray(raw) ? raw[0] : raw;
+}
+
+export function generateMetadata({ searchParams }: { searchParams: SearchParams }): Metadata {
+  const cat = value(searchParams, "categoria");
+  const mun = value(searchParams, "municipio");
+  const tag = value(searchParams, "tag");
+  
+  let title = "Buscar recursos para familias | Tenlo";
+  if (cat && mun) title = `${cat} en ${mun} | Tenlo`;
+  else if (cat) title = `${cat} para familias | Tenlo`;
+  else if (mun) title = `Recursos para familias en ${mun} | Tenlo`;
+  else if (tag) title = `${tag} cerca del colegio | Tenlo`;
+
+  return {
+    title,
+    description: "Filtra recursos por categoría, municipio, centro educativo, edad recomendada, precio y verificación."
+  };
 }
 
 export default function SearchPage({ searchParams }: { searchParams: SearchParams }) {
