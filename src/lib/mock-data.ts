@@ -1,14 +1,14 @@
 import type { Category, Center, CommunityInitiative, CommunityPost, Listing, Municipality, Provider, Review } from "./types";
 
 const images = {
-  center: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80",
-  nursery: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
-  sport: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?auto=format&fit=crop&w=1200&q=80",
-  activity: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1200&q=80",
-  books: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1200&q=80",
-  uniform: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1200&q=80",
-  service: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80",
-  community: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=80"
+  center: "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&w=1200&q=80",
+  nursery: "https://images.unsplash.com/photo-1594608661623-aa0bd3a67d28?auto=format&fit=crop&w=1200&q=80",
+  sport: "https://images.unsplash.com/photo-1540320626555-d3639e13fbbb?auto=format&fit=crop&w=1200&q=80",
+  activity: "https://images.unsplash.com/photo-1521791136064-7986c29596ba?auto=format&fit=crop&w=1200&q=80",
+  books: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+  uniform: "https://images.unsplash.com/photo-1523381235211-75d0030f14f7?auto=format&fit=crop&w=1200&q=80",
+  service: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+  community: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80"
 };
 
 export const municipalities: Municipality[] = [
@@ -27,7 +27,7 @@ export const categories: Category[] = [
   { id: "centros", name: "Centros educativos", slug: "centros", description: "Fichas estructuradas de colegios, escuelas infantiles e institutos con información pública.", seoTitle: "Colegios y centros educativos en Las Rozas | Tenlo", seoDescription: "Consulta colegios y centros educativos con información pública, etapas, servicios, etiquetas y reseñas moderadas." }
 ];
 
-const baseTags = ["Las Rozas de Madrid", "Familias", "Madrid noroeste"];
+const baseTags = ["Las Rozas de Madrid", "Madrid noroeste"];
 
 type CenterSeed = [string, string, string, Center["type"], NonNullable<Center["religiousCharacter"]>, string[], string, string[]];
 const centerSeeds: CenterSeed[] = [
@@ -94,7 +94,7 @@ export const listings: Listing[] = [
   makeListing("padel-las-rozas-kids", "extraescolares", "Clases de pádel", "padel-rozas", 7, 16, "Desde 45 €/mes"), makeListing("natacion-infantil-las-rozas", "extraescolares", "Natación infantil por niveles", "natacion-rozas", 3, 14), makeListing("robotica-noroeste", "extraescolares", "Robótica y programación", "robotica-rozas", 7, 16), makeListing("papeleria-escolar-las-rozas", "libros-material", "Material escolar y papelería", "papeleria-rozas", 3, 18), makeListing("uniformes-noroeste", "uniformes", "Uniformes y arreglos escolares", "uniformes-rozas", 3, 18), makeListing("canguro-ana-m", "canguros", "Canguro con experiencia en tardes", "canguro-ana", 3, 12, "12-15 €/hora")
 ];
 
-export const communityInitiatives: CommunityInitiative[] = [{ id: "bpan-matters", name: "BPAN Matters", url: "https://bpanmatters.org/", municipality: "Iniciativa internacional con interés para familias de la zona", summary: "Iniciativa de sensibilización sobre BPAN, una enfermedad rara vinculada al gen WDR45 y al grupo de neurodegeneración con acumulación cerebral de hierro. Tenlo la incorpora como recurso comunitario para dar visibilidad a causas familiares, investigación y apoyo entre familias.", tags: ["BPAN", "Enfermedades raras", "WDR45", "Neurodegeneración", "Familias", "Investigación", "Sensibilización"], image: images.community, ctaLabel: "Saber más" }];
+export const communityInitiatives: CommunityInitiative[] = [{ id: "bpan-matters", name: "BPAN Matters", url: "https://bpanmatters.org/", municipality: "Iniciativa internacional con interés para familias de la zona", summary: "Iniciativa de sensibilización sobre BPAN. Tenlo la incorpora como recurso comunitario para dar visibilidad a causas familiares, investigación y apoyo entre familias.", tags: ["BPAN", "Investigación", "Sensibilización"], image: images.community, ctaLabel: "Saber más" }];
 export const searchTags = Array.from(new Set([...centers.flatMap((center) => center.tags), ...listings.flatMap((item) => item.tags), ...providers.flatMap((item) => item.tags), ...communityInitiatives.flatMap((item) => item.tags)])).sort((a, b) => a.localeCompare(b, "es"));
 export const reviews: Review[] = [{ id: "r-el-cantizal", centerId: "el-cantizal", ratingCommunication: 4, ratingFacilities: 4, ratingEnvironment: 4, ratingActivities: 4, ratingLanguages: 4, ratingAttention: 4, comment: "Resumen editorial moderado: ficha pública útil para comparar etapas, servicios y contacto oficial.", status: "published" }];
 export const communityPosts: CommunityPost[] = [{ id: "c1", title: "Dónde encontrar uniformes y arreglos en Las Rozas", category: "Uniformes", municipality: "Las Rozas de Madrid", summary: "Pregunta revisada sobre alternativas de compra y arreglos sin datos de menores.", status: "published" }, { id: "c2", title: "Extraescolares de robótica, música y deporte por zonas", category: "Extraescolares", municipality: "Las Rozas de Madrid", summary: "Hilo moderado con opciones por edad recomendada y zona.", status: "published" }];
