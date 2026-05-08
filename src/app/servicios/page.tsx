@@ -1,8 +1,8 @@
 // Force update: 2026-05-08T12:48
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ExternalLink, Search } from "lucide-react";
-import { providers } from "@/lib/mock-data";
+import { ChevronDown, ExternalLink, Search } from "lucide-react";
+import { categories, municipalities, providers } from "@/lib/mock-data";
 import { VerifiedBadge } from "@/components/Badge";
 
 export const metadata: Metadata = {
@@ -17,6 +17,8 @@ const plans = [
 ];
 
 export default function ServicesPage() {
+  const serviceCategories = categories.filter(c => c.id !== "centros");
+
   return (
     <div className="section-shell">
       <p className="label">Profesionales y negocios locales</p>
@@ -24,24 +26,30 @@ export default function ServicesPage() {
       <p className="lead">Profesores, academias, clubes, tiendas, librerías, canguros profesionales, campamentos, idiomas y apoyo especializado para familias.</p>
 
       {/* Filters Section */}
-      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-soft p-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
-        <div className="flex items-center gap-2 rounded-lg bg-panel px-3 py-2 ring-1 ring-line">
+      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-panel p-3 shadow-soft sm:grid-cols-[1fr_1fr_1fr_auto]">
+        <div className="flex items-center gap-2 rounded-lg bg-soft px-3 ring-1 ring-line/50 focus-within:ring-ink">
           <Search size={18} className="text-muted" />
-          <input placeholder="Palabra clave..." className="w-full bg-transparent text-sm outline-none" />
+          <input placeholder="Palabra clave..." className="min-h-[48px] w-full bg-transparent text-sm outline-none" />
         </div>
-        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
-          <option>Todas las zonas</option>
-          <option>Las Rozas</option>
-          <option>Majadahonda</option>
-          <option>Pozuelo</option>
-        </select>
-        <select className="rounded-lg bg-panel px-3 py-2 text-sm ring-1 ring-line outline-none">
-          <option>Todas las tipologías</option>
-          <option>Guardería</option>
-          <option>Extraescolares</option>
-          <option>Libros y material</option>
-        </select>
-        <button className="btn-primary py-2 px-6">Filtrar</button>
+        <div className="relative">
+          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+            <option value="">Todas las zonas</option>
+            {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <ChevronDown size={18} className="text-muted" />
+          </div>
+        </div>
+        <div className="relative">
+          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+            <option value="">Todas las tipologías</option>
+            {serviceCategories.map(c => <option key={c.id} value={c.slug}>{c.name}</option>)}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <ChevronDown size={18} className="text-muted" />
+          </div>
+        </div>
+        <button className="btn-primary px-8">Filtrar</button>
       </div>
 
       <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
