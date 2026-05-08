@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#0f172a",
+        ink: "#5045C8",
+        lavender: "#E2E2F8",
         slatecopy: "#334155",
         paper: "#fcf8fa",
         line: "#e2e8f0",
