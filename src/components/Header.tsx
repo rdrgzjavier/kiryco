@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Search, X } from "lucide-react";
+import { LogIn, Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
@@ -46,7 +46,10 @@ export default function Header() {
                 {label}
               </Link>
             ))}
-            <Link href="/publicar" className="btn-primary mt-2 text-center" onClick={() => setOpen(false)}>Publicar anuncio</Link>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <Link href="/login" className="btn-secondary text-center" onClick={() => setOpen(false)}><LogIn size={16} />Entrar</Link>
+              <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Publicar</Link>
+            </div>
           </nav>
         </div>
       )}
