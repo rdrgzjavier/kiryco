@@ -21,7 +21,7 @@ export function tenloEmailShell(title: string, body: string) {
     <div style="max-width:620px;margin:0 auto;background:#fff;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden">
       <div style="padding:24px;border-bottom:1px solid #E2E8F0">
         <div style="display:flex;align-items:center;gap:12px">
-          <img src="${BRAND.siteUrl}/brand/kiryco-isotipo.svg" alt="Tenlo" width="36" height="36" style="display:block;border-radius:8px" />
+          <img src="${BRAND.siteUrl}/brand/tenlo-isotipo-180.png" alt="Tenlo" width="36" height="36" style="display:block;border-radius:8px" />
           <div style="font-size:24px;font-weight:800;color:${BRAND.ink}">${BRAND.name}</div>
         </div>
         <div style="margin-top:8px;color:#475569;font-size:14px;line-height:1.5">${BRAND.claim}</div>
