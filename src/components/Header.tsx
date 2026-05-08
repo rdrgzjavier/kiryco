@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
-import Logo from "@/components/Logo";
+import AnimatedLogo from "@/components/AnimatedLogo";
 
 const nav = [
   ["Buscar", "/buscar"],
@@ -19,7 +19,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-panel/95 backdrop-blur">
       <div className="page flex items-center justify-between py-3">
-        <Link href="/" aria-label="Kiryco"><Logo /></Link>
+        <Link href="/" aria-label="Tenlo"><AnimatedLogo /></Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
           {nav.map(([label, href]) => (
             <Link key={href} href={href} className="rounded-lg px-3 py-2 text-sm font-medium text-slatecopy hover:bg-soft hover:text-ink">
