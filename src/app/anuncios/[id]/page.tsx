@@ -7,7 +7,7 @@ import { StatusBadge, VerifiedBadge } from "@/components/Badge";
 export function generateStaticParams() { return listings.map((listing) => ({ id: listing.slug })); }
 export function generateMetadata({ params }: { params: { id: string } }): Metadata {
   const listing = findListing(params.id);
-  return { title: `${listing?.title ?? "Anuncio"} | Kiryco`, description: listing?.description };
+  return { title: `${listing?.title ?? "Anuncio"} | Tenlo`, description: listing?.description };
 }
 
 function fallbackImage(categoryId: string) {
