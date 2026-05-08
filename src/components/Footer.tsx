@@ -29,7 +29,7 @@ export default function Footer() {
     <footer className="border-t border-line bg-panel">
       <div className="page grid gap-10 py-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <p className="text-lg font-bold text-ink">Kiryco</p>
+          <p className="text-lg font-bold text-ink">Tenlo</p>
           <p className="mt-3 max-w-md text-sm leading-6 text-muted">
             Recursos útiles alrededor del colegio, organizados por zona, centro y categoría para familias adultas.
           </p>
@@ -43,7 +43,7 @@ export default function Footer() {
         <FooterLinks title="Legal" links={legal} />
       </div>
       <div className="border-t border-line">
-        <div className="page py-5 text-sm text-muted">© {new Date().getFullYear()} Kiryco. Plataforma para familias, centros y profesionales locales.</div>
+        <div className="page py-5 text-sm text-muted">© {new Date().getFullYear()} Tenlo. Plataforma para familias, centros y profesionales locales.</div>
       </div>
     </footer>
   );
