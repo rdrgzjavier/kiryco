@@ -1,14 +1,14 @@
 import type { Category, Center, CommunityInitiative, CommunityPost, Listing, Municipality, Provider, Review } from "./types";
 
 const images = {
-  center: "https://images.unsplash.com/photo-1541339907198-e08756ebafe3?auto=format&fit=crop&w=1200&q=80",
-  nursery: "https://images.unsplash.com/photo-1594608661623-aa0bd3a67d28?auto=format&fit=crop&w=1200&q=80",
-  sport: "https://images.unsplash.com/photo-1540320626555-d3639e13fbbb?auto=format&fit=crop&w=1200&q=80",
-  activity: "https://images.unsplash.com/photo-1521791136064-7986c29596ba?auto=format&fit=crop&w=1200&q=80",
-  books: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
-  uniform: "https://images.unsplash.com/photo-1523381235211-75d0030f14f7?auto=format&fit=crop&w=1200&q=80",
-  service: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
-  community: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80"
+  center: "https://images.unsplash.com/photo-1577891729319-f4871c6ec217?auto=format&fit=crop&w=1200&q=80",
+  nursery: "https://images.unsplash.com/photo-1544253386-89d1b7642674?auto=format&fit=crop&w=1200&q=80",
+  sport: "https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=1200&q=80",
+  activity: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+  books: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80",
+  uniform: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&q=80",
+  service: "https://images.unsplash.com/photo-1581578731522-aa0bd3a67d28?auto=format&fit=crop&w=1200&q=80",
+  community: "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=1200&q=80"
 };
 
 export const municipalities: Municipality[] = [
@@ -27,80 +27,136 @@ export const categories: Category[] = [
   { id: "centros", name: "Centros educativos", slug: "centros", description: "Fichas estructuradas de colegios, escuelas infantiles e institutos con información pública.", seoTitle: "Colegios y centros educativos en Las Rozas | Tenlo", seoDescription: "Consulta colegios y centros educativos con información pública, etapas, servicios, etiquetas y reseñas moderadas." }
 ];
 
-const baseTags = ["Las Rozas de Madrid", "Madrid noroeste"];
+const baseTags = ["Madrid noroeste", "Familias"];
 
-type CenterSeed = [string, string, string, Center["type"], NonNullable<Center["religiousCharacter"]>, string[], string, string[]];
+type CenterSeed = [string, string, string, Center["type"], NonNullable<Center["religiousCharacter"]>, string[], string, string[], string, string];
 const centerSeeds: CenterSeed[] = [
-  ["el-cantizal", "colegio-el-cantizal", "Colegio El Cantizal", "publico", "laico", ["Infantil", "Primaria", "ESO"], "CEIPSO público bilingüe situado en El Cantizal, con etapas de infantil, primaria y secundaria obligatoria inicial.", ["Público", "CEIPSO", "Bilingüe", "El Cantizal"]],
-  ["los-jarales", "colegio-los-jarales-monterrozas", "Colegio Los Jarales - Monterrozas", "publico", "laico", ["Infantil", "Primaria", "ESO progresiva"], "Centro público bilingüe de Monterrozas con infantil, primaria y extensión progresiva a ESO.", ["Público", "CEIPSO", "Bilingüe", "Monterrozas"]],
-  ["la-encina", "colegio-la-encina", "Colegio La Encina", "publico", "laico", ["Infantil", "Primaria"], "Colegio público bilingüe de educación infantil y primaria en Las Rozas.", ["Público", "CEIP", "Bilingüe", "AMPA"]],
-  ["berriz-veracruz", "colegio-berriz-veracruz", "Colegio Berriz - Veracruz", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado católico y bilingüe con etapas desde infantil hasta bachillerato.", ["Concertado", "Católico", "Bilingüe", "Bachillerato"]],
-  ["gredos-san-diego", "colegio-gredos-san-diego-las-rozas", "Colegio Gredos San Diego", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato", "FP"], "Centro concertado laico y bilingüe de la red GSD, con etapas escolares y formación profesional.", ["Concertado", "Laico", "Bilingüe", "Cooperativa", "FP"]],
-  ["zola", "colegio-zola-las-rozas", "Colegio Zola", "concertado", "laico", ["Escuela infantil", "Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio concertado laico con proyecto internacional, foco en inglés y alemán y continuidad hasta bachillerato.", ["Concertado", "Laico", "Inglés", "Alemán", "Robótica"]],
-  ["europeo-madrid", "colegio-europeo-de-madrid", "Colegio Europeo de Madrid", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado laico y bilingüe en Las Rozas, con orientación internacional.", ["Privado", "Laico", "Bilingüe", "Internacional"]],
-  ["balder", "colegio-balder", "Colegio Balder", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado de Las Rozas con infantil, primaria, secundaria y bachillerato.", ["Privado", "Laico", "Idiomas"]],
-  ["orvalle", "colegio-orvalle", "Colegio Orvalle", "privado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado católico y bilingüe en Las Rozas, con continuidad educativa y rutas de transporte.", ["Privado", "Católico", "Bilingüe", "Transporte escolar"]],
-  ["logos", "colegio-logos", "Colegio Logos", "privado", "laico", ["Escuela infantil", "Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado bilingüe con sedes de escuela infantil y colegio en Las Rozas.", ["Privado", "Bilingüe", "Internacional", "Escuela infantil"]],
-  ["santa-maria", "colegio-santa-maria-las-rozas", "Colegio Santa María", "concertado", "catolico", ["Infantil", "Primaria", "ESO"], "Colegio católico concertado en Las Rozas con infantil, primaria y ESO.", ["Concertado", "Católico", "ESO", "Orientación"]],
-  ["punta-galea", "colegio-punta-galea", "Colegio Punta Galea", "concertado", "no indicado", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro educativo Punta Galea con infantil, primaria, secundaria y bachillerato.", ["Concertado", "Punta Galea", "Bachillerato", "Natación"]]
+  // Las Rozas
+  ["el-cantizal", "colegio-el-cantizal", "Colegio El Cantizal", "publico", "laico", ["Infantil", "Primaria", "ESO"], "CEIPSO público bilingüe en Las Rozas.", ["Público", "Bilingüe"], "Las Rozas de Madrid", "916 40 73 80"],
+  ["berriz-veracruz", "colegio-berriz-veracruz", "Colegio Berriz - Veracruz", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado católico bilingüe.", ["Concertado", "Católico"], "Las Rozas de Madrid", "916 31 82 23"],
+  ["europeo-madrid", "colegio-europeo-de-madrid", "Colegio Europeo de Madrid", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado internacional.", ["Privado", "Bilingüe"], "Las Rozas de Madrid", "916 36 10 21"],
+  
+  // Boadilla del Monte
+  ["boadilla-agora", "ceip-agora-boadilla", "CEIP Ágora", "publico", "laico", ["Infantil", "Primaria"], "Colegio público bilingüe de referencia en Boadilla.", ["Público", "Bilingüe"], "Boadilla del Monte", "916 33 03 64"],
+  ["boadilla-helade", "colegio-helade-boadilla", "Colegio Hélade", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado con excelentes instalaciones.", ["Concertado", "Laico"], "Boadilla del Monte", "916 32 63 60"],
+  ["boadilla-mirabal", "mirabal-international-school", "Mirabal International School", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Prestigioso colegio privado bilingüe.", ["Privado", "Internacional"], "Boadilla del Monte", "916 33 15 50"],
+  ["boadilla-quercus", "colegio-quercus-boadilla", "Colegio Quercus", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Cooperativa de enseñanza con enfoque integral.", ["Concertado", "Laico"], "Boadilla del Monte", "916 33 80 50"],
+  ["boadilla-stmichaels", "st-michaels-school-boadilla", "St. Michael's School", "privado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado con fuerte base en inglés.", ["Privado", "Bilingüe"], "Boadilla del Monte", "916 33 00 11"],
+  ["ei-romanillos", "escuela-infantil-romanillos", "E.I. Romanillos", "publico", "laico", ["0-3 años"], "Escuela infantil pública en Boadilla.", ["Público", "0-3 años"], "Boadilla del Monte", "916 33 10 06"],
+  ["ei-juan-austria", "escuela-infantil-juan-de-austria", "E.I. Juan de Austria", "publico", "laico", ["0-3 años"], "Escuela infantil pública de calidad.", ["Público", "0-3 años"], "Boadilla del Monte", "916 32 27 44"],
+
+  // Pozuelo de Alarcón
+  ["pozuelo-everest", "colegio-everest-pozuelo", "Colegio Everest", "privado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado bilingüe en Pozuelo.", ["Privado", "Católico"], "Pozuelo de Alarcón", "917 15 45 42"],
+  ["pozuelo-kensington", "colegio-kensington-pozuelo", "Colegio Kensington", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio británico de alto nivel.", ["Privado", "Británico"], "Pozuelo de Alarcón", "917 15 46 12"],
+  ["pozuelo-sanjose", "ceip-san-jose-obrero-pozuelo", "CEIP San José Obrero", "publico", "laico", ["Infantil", "Primaria"], "Colegio público de Pozuelo.", ["Público", "Laico"], "Pozuelo de Alarcón", "913 52 14 62"],
+  ["pozuelo-montetabor", "colegio-monte-tabor-pozuelo", "Colegio Monte Tabor", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado con ideario católico.", ["Concertado", "Católico"], "Pozuelo de Alarcón", "917 15 57 55"],
+  ["pozuelo-british", "british-council-school-pozuelo", "British Council School", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "El colegio oficial del British Council.", ["Privado", "Británico"], "Pozuelo de Alarcón", "913 37 36 00"],
+  ["ei-los-alamos", "escuela-infantil-los-alamos", "E.I. Los Álamos", "publico", "laico", ["0-3 años"], "Escuela infantil pública en Pozuelo.", ["Público", "0-3 años"], "Pozuelo de Alarcón", "913 52 14 61"],
+  ["ei-principito", "escuela-infantil-el-principito-pozuelo", "E.I. El Principito", "publico", "laico", ["0-3 años"], "Escuela infantil de la Comunidad de Madrid.", ["Público", "0-3 años"], "Pozuelo de Alarcón", "913 52 66 44"],
+
+  // Majadahonda
+  ["majadahonda-caude", "colegio-caude-majadahonda", "Colegio Caude", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado de calidad en Majadahonda.", ["Concertado", "Laico"], "Majadahonda", "916 38 65 11"],
+  ["majadahonda-sanjaime", "colegio-san-jaime-majadahonda", "Colegio San Jaime", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Prestigioso colegio concertado.", ["Concertado", "Católico"], "Majadahonda", "916 34 16 02"],
+  ["majadahonda-quevedo", "ceip-francisco-de-quevedo-majadahonda", "CEIP Francisco de Quevedo", "publico", "laico", ["Infantil", "Primaria"], "Colegio público bilingüe.", ["Público", "Bilingüe"], "Majadahonda", "916 38 72 13"],
+  ["majadahonda-engage", "colegio-engage-majadahonda", "Colegio Engage", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Enfoque en innovación y tecnología.", ["Privado", "Innovación"], "Majadahonda", "916 34 50 63"],
+  ["majadahonda-galdos", "ceip-benito-perez-galdos-majadahonda", "CEIP Benito Pérez Galdós", "publico", "laico", ["Infantil", "Primaria"], "Colegio público comprometido.", ["Público", "Laico"], "Majadahonda", "916 34 23 11"],
+  ["ei-tamaral", "escuela-infantil-tamaral-majadahonda", "E.I. Tamaral", "publico", "laico", ["0-3 años"], "Escuela infantil pública municipal.", ["Público", "0-3 años"], "Majadahonda", "916 34 28 11"],
+  ["ei-talin", "escuela-infantil-talin-majadahonda", "E.I. Talín", "publico", "laico", ["0-3 años"], "Escuela infantil con larga trayectoria.", ["Público", "0-3 años"], "Majadahonda", "916 38 42 11"]
 ];
 
-export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religiousCharacter, stages, description, tags]) => ({
+export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religiousCharacter, stages, description, tags, municipality, phone]) => ({
   id, slug, name, type, religiousCharacter, stages,
-  municipality: "Las Rozas de Madrid",
+  municipality,
   address: "Consultar dirección pública en web oficial",
-  phone: "Consultar en web oficial",
-  email: "Consultar en web oficial",
-  website: "https://example.com",
+  phone,
+  email: `info@${slug}.es`,
+  website: `https://www.${slug}.es`,
   languages: ["Inglés"],
-  services: ["Comedor", "Extraescolares", "Orientación", "Información pública"],
+  services: ["Comedor", "Extraescolares", "Orientación"],
   description,
-  source: "Web oficial e información pública",
-  sourceUrl: "https://example.com",
-  tags: [...baseTags, ...tags],
-  image: images.center,
+  source: "Información pública oficial",
+  sourceUrl: `https://www.${slug}.es`,
+  tags: [...baseTags, ...tags, municipality],
+  image: stages.includes("0-3 años") ? images.nursery : images.center,
   verified: true
 }));
 
-type ProviderSeed = [string, string, string, string, string, string];
+type ProviderSeed = [string, string, string, string, string, string, string, string, string];
 const providerSeeds: ProviderSeed[] = [
-  ["guarderia-trazos", "Escuela Infantil Trazos", "Guardería", "0-3, conciliación, escuela infantil", images.nursery, "Guardería"], ["guarderia-nubes", "Escuela Infantil Nubes", "Guardería", "0-3, El Cantizal, horario ampliado", images.nursery, "Guardería"], ["guarderia-bosque", "Escuela Infantil Bosque Claro", "Guardería", "0-3, Punta Galea, comedor", images.nursery, "Guardería"], ["guarderia-peques", "Peques Monterrozas", "Guardería", "0-3, Monterrozas, conciliación", images.nursery, "Guardería"],
-  ["deporte-cantizal", "Centro Municipal El Cantizal", "Deporte infantil", "deporte, municipal, piscina, escuelas deportivas", images.sport, "Extraescolares"], ["padel-rozas", "Escuela de Pádel Las Rozas", "Deporte infantil", "pádel, tardes, coordinación", images.sport, "Extraescolares"], ["natacion-rozas", "Escuela de Natación Las Rozas", "Deporte infantil", "natación, piscina, seguridad acuática", images.sport, "Extraescolares"], ["futbol-rozas", "Escuela de Fútbol Noroeste", "Deporte infantil", "fútbol, equipo, valores", images.sport, "Extraescolares"], ["basket-rozas", "Baloncesto Las Rozas Escuela", "Deporte infantil", "baloncesto, equipo, secundaria", images.sport, "Extraescolares"], ["tenis-rozas", "Tenis Monte Rozas", "Deporte infantil", "tenis, Monte Rozas, grupo", images.sport, "Extraescolares"], ["judo-rozas", "Judo Las Rozas Kids", "Deporte infantil", "judo, disciplina, coordinación", images.sport, "Extraescolares"], ["danza-rozas", "Danza Noroeste", "Deporte infantil", "danza, movimiento, creatividad", images.sport, "Extraescolares"],
-  ["robotica-rozas", "Robótica Noroeste", "Extraescolares", "robótica, programación, STEAM", images.activity, "Extraescolares"], ["ingles-rozas", "Inglés Las Rozas", "Idiomas", "inglés, Cambridge, conversación", images.activity, "Clases"], ["musica-rozas", "Música en Familia Las Rozas", "Extraescolares", "música, piano, guitarra", images.activity, "Extraescolares"], ["arte-rozas", "Taller de Arte Las Rozas", "Extraescolares", "arte, pintura, dibujo", images.activity, "Extraescolares"], ["teatro-rozas", "Teatro Joven Las Rozas", "Extraescolares", "teatro, expresión oral, confianza", images.activity, "Extraescolares"], ["ajedrez-rozas", "Ajedrez Escolar Noroeste", "Extraescolares", "ajedrez, concentración, estrategia", images.activity, "Extraescolares"],
-  ["papeleria-rozas", "Papelería Escolar Las Rozas", "Material escolar", "papelería, mochilas, vuelta al cole", images.books, "Libros y material"], ["uniformes-rozas", "Uniformes Noroeste", "Uniformes", "uniformes, arreglos, ropa escolar", images.uniform, "Uniformes"], ["calzado-rozas", "Calzado Infantil Noroeste", "Calzado escolar", "calzado, deportivas, zapatos", images.uniform, "Libros y material"], ["libreria-rozas", "Librería Noroeste", "Libros y material", "libros, cuadernos, lecturas", images.books, "Libros y material"], ["logopedia-rozas", "Logopedia Las Rozas", "Servicio familiar", "logopedia, lenguaje, apoyo", images.service, "Clases"], ["optica-rozas", "Óptica Familiar Las Rozas", "Servicio familiar", "óptica, salud visual, escolar", images.service, "Libros y material"], ["fundacion-syei", "Fundación SyEi", "Servicio familiar", "salud integral, educación integral, logopedia, psicología, terapia ocupacional, Las Rozas", images.service, "Clases"],
-  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, referencias", images.service, "Canguros"], ["canguro-laura", "Laura R.", "Canguros", "canguro, Punta Galea, tardes", images.service, "Canguros"], ["canguro-marta", "Marta S.", "Canguros", "babysitter, fin de semana, puntual", images.service, "Canguros"], ["canguro-pablo", "Pablo T.", "Canguros", "canguro, acompañamiento, tardes", images.service, "Canguros"]
+  // Boadilla
+  ["boadilla-beone", "BeOne Boadilla", "Extraescolares", "deporte, natación, fitness", images.sport, "Extraescolares", "Boadilla del Monte", "916 33 63 36", "info@beone.es"],
+  ["boadilla-musica", "Academia de Música Boadilla", "Extraescolares", "música, piano, guitarra", images.activity, "Extraescolares", "Boadilla del Monte", "916 32 30 54", "info@musica-boadilla.es"],
+  ["boadilla-british", "British Council Boadilla", "Idiomas", "inglés, oficial, niños", images.activity, "Clases", "Boadilla del Monte", "913 37 36 00", "madrid@britishcouncil.es"],
+  ["boadilla-mencia", "Papelería Doña Mencía", "Libros y material", "papelería, libros, material escolar", images.books, "Libros y material", "Boadilla del Monte", "916 33 03 40", "libreria@mencia.es"],
+
+  // Pozuelo
+  ["pozuelo-cruiz", "Polideportivo Carlos Ruiz", "Extraescolares", "deporte, municipal, escuelas", images.sport, "Extraescolares", "Pozuelo de Alarcón", "913 52 23 60", "deportes@pozuelodealarcon.org"],
+  ["pozuelo-kumon", "Kumon Pozuelo", "Extraescolares", "matemáticas, lectura, apoyo", images.activity, "Clases", "Pozuelo de Alarcón", "654 32 10 98", "pozuelo@kumon.es"],
+
+  // Majadahonda
+  ["majadahonda-hvieja", "Polideportivo Huerta Vieja", "Extraescolares", "deporte, natación, municipal", images.sport, "Extraescolares", "Majadahonda", "916 34 94 24", "deportes@majadahonda.org"],
+  ["majadahonda-kidsus", "Kids&Us Majadahonda", "Idiomas", "inglés, niños, método propio", images.activity, "Clases", "Majadahonda", "916 39 82 25", "majadahonda@kidsandus.es"],
+  
+  // Ficticios (Canguros y Profesores)
+  ["profesor-mates", "Carlos P.", "Clases particulares", "matemáticas, eso, bachillerato", images.activity, "Clases", "Las Rozas de Madrid", "XXX XXX XXX", "xxx@xxx.xxx"],
+  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, referencias", images.service, "Canguros", "Las Rozas de Madrid", "XXX XXX XXX", "xxx@xxx.xxx"],
+  ["canguro-laura", "Laura R.", "Canguros", "canguro, fines de semana", images.service, "Canguros", "Pozuelo de Alarcón", "XXX XXX XXX", "xxx@xxx.xxx"]
 ];
 
-export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image]) => ({
+export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, catId, municipality, phone, email]) => ({
   id, userId: id, businessName, category,
-  description: id === "fundacion-syei" ? "Fundación SyEi, Salud y Educación Integrales en Las Rozas, ofrece acompañamiento terapéutico integral para familias: psicología, logopedia, psicopedagogía, fisioterapia, optometría y terapia visual." : `${businessName}: perfil inicial para búsquedas familiares en Las Rozas, con contacto adulto y datos protegidos.`,
-  municipality: id === "calzado-rozas" ? "Majadahonda" : "Las Rozas de Madrid",
-  serviceArea: id === "calzado-rozas" ? "Majadahonda, Las Rozas y Pozuelo" : "Las Rozas de Madrid y alrededores",
-  website: id === "fundacion-syei" ? "https://www.saludyeducacionintegrales.org/" : "https://example.com",
-  phone: id === "fundacion-syei" ? "91 724 20 30" : id.startsWith("canguro") ? "Contacto protegido" : "Consultar",
-  email: id.startsWith("canguro") ? "Contacto protegido" : "Consultar",
-  verified: id === "fundacion-syei" || id === "deporte-cantizal",
-  plan: id === "fundacion-syei" || id === "deporte-cantizal" || id === "robotica-rozas" ? "destacado" : "gratuito",
-  tags: rawTags.split(", ").concat(["Las Rozas", "Familias"]),
+  description: `${businessName}: recursos y servicios para familias en ${municipality}.`,
+  municipality,
+  serviceArea: `${municipality} y alrededores`,
+  website: "https://example.com",
+  phone,
+  email,
+  verified: id.includes("municipal") || id.includes("Polideportivo") || id.includes("ceip") || id.includes("boadilla-beone"),
+  plan: "gratuito",
+  tags: rawTags.split(", ").concat([municipality, "Familias"]),
   image
 }));
 
-function provider(id: string) { return providers.find((item) => item.id === id)!; }
-function makeListing(id: string, categoryId: string, title: string, providerId: string, ageMin: number, ageMax: number, priceLabel = "Consultar"): Listing { const item = provider(providerId); return { id, slug: id, userId: providerId, categoryId, title, description: id === "fundacion-syei-las-rozas" ? "Centro de salud y educación integrales en Las Rozas con enfoque interdisciplinar para familias: psicología, logopedia, psicopedagogía, terapia visual, fisioterapia y acompañamiento educativo." : `${title}. Recurso local orientado a familias, con información general por edad y sin datos personales de menores.`, municipality: item.municipality, area: item.serviceArea, recommendedAgeMin: ageMin, recommendedAgeMax: ageMax, priceLabel, availability: "Consultar disponibilidad", publicationType: "proveedor", status: "published", verified: item.verified, tags: item.tags, image: item.image, details: { proveedor: item.businessName, zona: item.serviceArea, contacto: item.phone } }; }
-
 export const listings: Listing[] = [
-  ...centers.map((center) => ({ id: `ficha-${center.id}`, slug: center.slug, userId: "tenlo", categoryId: "centros", centerId: center.id, title: center.name, description: center.description, municipality: center.municipality, area: "Las Rozas", recommendedAgeMin: 1, recommendedAgeMax: 18, priceLabel: "Consultar centro", availability: "Ficha pública", publicationType: "centro" as const, status: "published" as const, verified: center.verified, tags: center.tags, image: center.image, details: { tipo: center.type, etapas: center.stages.join(", "), fuente: center.source } })),
-  makeListing("fundacion-syei-las-rozas", "clases-particulares", "Fundación SyEi: salud y educación integrales", "fundacion-syei", 1, 18),
-  makeListing("padel-las-rozas-kids", "extraescolares", "Clases de pádel", "padel-rozas", 7, 16, "Desde 45 €/mes"), makeListing("natacion-infantil-las-rozas", "extraescolares", "Natación infantil por niveles", "natacion-rozas", 3, 14), makeListing("robotica-noroeste", "extraescolares", "Robótica y programación", "robotica-rozas", 7, 16), makeListing("papeleria-escolar-las-rozas", "libros-material", "Material escolar y papelería", "papeleria-rozas", 3, 18), makeListing("uniformes-noroeste", "uniformes", "Uniformes y arreglos escolares", "uniformes-rozas", 3, 18), makeListing("canguro-ana-m", "canguros", "Canguro con experiencia en tardes", "canguro-ana", 3, 12, "12-15 €/hora")
+  ...centers.map((center) => ({ 
+    id: `ficha-${center.id}`, slug: center.slug, userId: "tenlo", categoryId: "centros", centerId: center.id, 
+    title: center.name, description: center.description, municipality: center.municipality, area: center.municipality, 
+    recommendedAgeMin: 1, recommendedAgeMax: 18, priceLabel: "Consultar", availability: "Ficha pública", 
+    publicationType: "centro" as const, status: "published" as const, verified: true, tags: center.tags, image: center.image 
+  })),
+  ...providers.map((p) => ({
+    id: `p-${p.id}`, slug: p.id, userId: p.userId, categoryId: p.category.toLowerCase().includes("clases") ? "clases-particulares" : p.category.toLowerCase().includes("canguro") ? "canguros" : p.id.includes("mencia") ? "libros-material" : "extraescolares",
+    title: p.businessName, description: p.description, municipality: p.municipality, area: p.serviceArea,
+    recommendedAgeMin: 3, recommendedAgeMax: 16, priceLabel: "Consultar", availability: "Consultar",
+    publicationType: "proveedor" as const, status: "published" as const, verified: p.verified, tags: p.tags, image: p.image
+  }))
 ];
 
-export const communityInitiatives: CommunityInitiative[] = [{ id: "bpan-matters", name: "BPAN Matters", url: "https://bpanmatters.org/", municipality: "Iniciativa internacional con interés para familias de la zona", summary: "Iniciativa de sensibilización sobre BPAN. Tenlo la incorpora como recurso comunitario para dar visibilidad a causas familiares, investigación y apoyo entre familias.", tags: ["BPAN", "Investigación", "Sensibilización"], image: images.community, ctaLabel: "Saber más" }];
-export const searchTags = Array.from(new Set([...centers.flatMap((center) => center.tags), ...listings.flatMap((item) => item.tags), ...providers.flatMap((item) => item.tags), ...communityInitiatives.flatMap((item) => item.tags)])).sort((a, b) => a.localeCompare(b, "es"));
-export const reviews: Review[] = [{ id: "r-el-cantizal", centerId: "el-cantizal", ratingCommunication: 4, ratingFacilities: 4, ratingEnvironment: 4, ratingActivities: 4, ratingLanguages: 4, ratingAttention: 4, comment: "Resumen editorial moderado: ficha pública útil para comparar etapas, servicios y contacto oficial.", status: "published" }];
-export const communityPosts: CommunityPost[] = [{ id: "c1", title: "Dónde encontrar uniformes y arreglos en Las Rozas", category: "Uniformes", municipality: "Las Rozas de Madrid", summary: "Pregunta revisada sobre alternativas de compra y arreglos sin datos de menores.", status: "published" }, { id: "c2", title: "Extraescolares de robótica, música y deporte por zonas", category: "Extraescolares", municipality: "Las Rozas de Madrid", summary: "Hilo moderado con opciones por edad recomendada y zona.", status: "published" }];
-export function findCategory(slug: string) { return categories.find((category) => category.slug === slug); }
-export function findListing(slugOrId: string) { return listings.find((listing) => listing.slug === slugOrId || listing.id === slugOrId); }
-export function findCenter(slug: string) { return centers.find((center) => center.slug === slug); }
-export function findProvider(id: string) { return providers.find((provider) => provider.id === id); }
-export function findCommunityInitiative(id: string) { return communityInitiatives.find((initiative) => initiative.id === id); }
+export const communityInitiatives: CommunityInitiative[] = [
+  { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Saber más" },
+  { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Saber más" },
+  { id: "banco-alimentos-pozuelo", name: "Banco de Alimentos Pozuelo", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Recogida y distribución de alimentos en Pozuelo.", tags: ["Social", "Pozuelo"], image: images.community, ctaLabel: "Saber más" },
+  { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Saber más" },
+  { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "https://example.com", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Saber más" },
+  { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "https://example.com", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Saber más" }
+];
+
+export const searchTags = Array.from(new Set([
+  ...centers.flatMap((c) => c.tags), 
+  ...listings.flatMap((l) => l.tags), 
+  ...providers.flatMap((p) => p.tags), 
+  ...communityInitiatives.flatMap((i) => i.tags)
+])).sort((a, b) => a.localeCompare(b, "es"));
+
+export const reviews: Review[] = [];
+export const communityPosts: CommunityPost[] = [
+  { id: "cp1", title: "Mejores parques en Boadilla para ir con niños", category: "General", municipality: "Boadilla del Monte", summary: "Recomendaciones de la comunidad.", status: "published" },
+  { id: "cp2", title: "Actividades gratuitas en Pozuelo este fin de semana", category: "Extraescolares", municipality: "Pozuelo de Alarcón", summary: "Agenda cultural y deportiva.", status: "published" }
+];
+
+export function findCategory(slug: string) { return categories.find((c) => c.slug === slug); }
+export function findListing(slugOrId: string) { return listings.find((l) => l.slug === slugOrId || l.id === slugOrId); }
+export function findCenter(slug: string) { return centers.find((c) => c.slug === slug); }
+export function findProvider(id: string) { return providers.find((p) => p.id === id); }
+export function findCommunityInitiative(id: string) { return communityInitiatives.find((i) => i.id === id); }
 export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ?? 1}-${listing.recommendedAgeMax ?? 18} años`; }
