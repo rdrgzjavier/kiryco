@@ -10,8 +10,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { id: string } }): Metadata {
   const provider = findProvider(params.id);
-  if (!provider) return { title: "Servicio no encontrado | Kiryco" };
-  return { title: `${provider.businessName} | Servicios para familias | Kiryco`, description: provider.description };
+  if (!provider) return { title: "Servicio no encontrado | Tenlo" };
+  return { title: `${provider.businessName} | Servicios para familias | Tenlo`, description: provider.description };
 }
 
 export default function ServiceDetailPage({ params }: { params: { id: string } }) {
@@ -39,7 +39,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         <aside className="card h-fit p-6">
           <ShieldCheck className="text-petrol" size={28} aria-hidden />
           <h2 className="mt-4 text-xl font-semibold text-ink">Contacto protegido</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">Kiryco no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable.</p>
+          <p className="mt-2 text-sm leading-6 text-muted">Tenlo no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable.</p>
           {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full">Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full">Contactar</a>}
         </aside>
       </div>
