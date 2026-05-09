@@ -55,10 +55,12 @@ export default function CommunityPage() {
         <div className="grid gap-4 md:grid-cols-2">
           {communityInitiatives.map((initiative) => (
             <article key={initiative.id} className="card overflow-hidden">
-              <img src={initiative.image} alt={`Imagen de ${initiative.name}`} className="h-44 w-full object-cover" loading="lazy" />
+              <Link href={`/comunidad/${initiative.id}`} aria-label={`Ver iniciativa ${initiative.name}`}>
+                <img src={initiative.image} alt={`Imagen de ${initiative.name}`} className="h-44 w-full object-cover" loading="lazy" />
+              </Link>
               <div className="p-5">
                 <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 5).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
-                <h3 className="mt-4 text-xl font-semibold text-ink">{initiative.name}</h3>
+                <h3 className="mt-4 text-xl font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
                 <p className="mt-2 text-sm leading-6 text-muted">{initiative.summary}</p>
                 <p className="mt-3 text-xs font-semibold text-slatecopy">{initiative.municipality}</p>
                 <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-5 w-full justify-center">Saber más</Link>
