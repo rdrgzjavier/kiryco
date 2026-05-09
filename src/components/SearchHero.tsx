@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
 import { Building2, MapPin, Megaphone, Search, ShieldCheck, Store } from "lucide-react";
 
 export default function SearchHero() {
@@ -14,7 +15,7 @@ export default function SearchHero() {
         <form action="/buscar" className="mt-7 grid gap-3 rounded-2xl border border-line bg-panel p-3 shadow-soft sm:grid-cols-[1fr_auto]">
           <label className="sr-only" htmlFor="q">Busca por zona, centro o categoría</label>
           <div className="flex items-center gap-2 rounded-lg bg-soft px-3">
-            <Search size={20} className="text-muted" aria-hidden />
+            <Search size={20} className="text-ink" aria-hidden />
             <input id="q" name="q" placeholder="Busca por zona, centro o categoría" className="min-h-12 w-full bg-transparent text-base outline-none" />
           </div>
           <button className="btn-primary min-h-12" type="submit">Buscar cerca de mí</button>
@@ -28,19 +29,11 @@ export default function SearchHero() {
           </div>
         </div>
       </div>
-      <aside className="rounded-2xl border border-lavender bg-lavender/30 p-4 md:mt-2 shadow-sm">
-        <div className="flex gap-3 rounded-xl bg-panel/50 p-4 backdrop-blur-sm">
-          <ShieldCheck className="mt-0.5 shrink-0 text-petrol" size={24} aria-hidden />
-          <div>
-            <h2 className="text-base font-semibold text-ink">Privacidad desde el inicio</h2>
-            <p className="mt-2 text-sm leading-6 text-slatecopy">
-              Sin perfiles ni fotos de menores. Las publicaciones y reseñas se revisan para mantener una comunidad útil y respetuosa.
-            </p>
-          </div>
-        </div>
-        <div className="mt-4 grid gap-2 text-sm text-muted">
-          <div className="flex items-center gap-2"><MapPin size={16} aria-hidden /> Filtra por zona, centro y categoría.</div>
-          <div className="flex items-center gap-2"><ShieldCheck size={16} aria-hidden /> Contacto pensado para adultos.</div>
+      <aside className="md:mt-2">
+        <SafeEnvironmentCard compact title="Privacidad desde el inicio" body="Sin perfiles ni fotos de menores. Las publicaciones y reseñas se revisan para mantener una comunidad útil y respetuosa." />
+        <div className="mt-4 grid gap-2 rounded-2xl border border-line bg-panel p-4 text-sm text-muted">
+          <div className="flex items-center gap-2"><MapPin className="text-ink" size={16} aria-hidden /> Filtra por zona, centro y categoría.</div>
+          <div className="flex items-center gap-2"><ShieldCheck className="text-sage" size={16} aria-hidden /> Contacto pensado para adultos.</div>
         </div>
       </aside>
     </section>
