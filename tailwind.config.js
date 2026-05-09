@@ -4,24 +4,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#5325E0",
-        lavender: "#E2E2F8",
-        slatecopy: "#334155",
-        paper: "#fcf8fa",
-        line: "#e2e8f0",
+        ink: "#5B4DFF",
+        lavender: "#ECE9FF",
+        slatecopy: "#171717",
+        paper: "#F7F5F2",
+        line: "#E8E5E1",
         panel: "#ffffff",
-        soft: "#f8f9fa",
-        muted: "#64748b",
-        petrol: "#1f4e5f",
-        coral: "#b85b4f",
-        sage: "#5f7c6a"
+        soft: "#F3F1ED",
+        muted: "#5F6368",
+        petrol: "#356D8A",
+        coral: "#FF7A59",
+        sage: "#8ED8C6"
       },
       fontFamily: {
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
         poppins: ["var(--font-poppins)", "sans-serif"]
       },
       boxShadow: {
-        soft: "0 4px 12px rgba(15, 23, 42, 0.05)"
+        soft: "0 16px 40px rgba(23, 23, 23, 0.08)",
+        lift: "0 24px 70px rgba(91, 77, 255, 0.16)"
       }
     },
   },
