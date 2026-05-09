@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Heart, X } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 type FavoriteButtonProps = {
   className?: string;
@@ -16,6 +17,7 @@ function hasLocalSession() {
 
 export default function FavoriteButton({ className = "icon-button", label = "Favoritos" }: FavoriteButtonProps) {
   const [open, setOpen] = useState(false);
+  const canUsePortal = typeof document !== "undefined";
 
   function handleClick() {
     if (hasLocalSession()) {
@@ -31,7 +33,7 @@ export default function FavoriteButton({ className = "icon-button", label = "Fav
       <button type="button" className={className} aria-label={label} onClick={handleClick}>
         <Heart size={19} aria-hidden />
       </button>
-      {open ? (
+      {open && canUsePortal ? createPortal(
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="favorite-dialog-title">
           <div className="w-full max-w-sm rounded-[24px] border border-line bg-panel p-6 shadow-lift">
             <div className="flex items-start justify-between gap-4">
@@ -51,7 +53,8 @@ export default function FavoriteButton({ className = "icon-button", label = "Fav
               <Link href="/login" className="btn-secondary">Entrar</Link>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       ) : null}
     </>
   );
