@@ -4,11 +4,23 @@ import Link from "next/link";
 import { ChevronDown, ExternalLink, Search } from "lucide-react";
 import { categories, municipalities, providers } from "@/lib/mock-data";
 import { VerifiedBadge } from "@/components/Badge";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export const metadata: Metadata = {
   title: "Servicios para familias | Tenlo",
   description: "Profesores, academias, clubes, tiendas, librerías, canguros profesionales y servicios familiares por zona."
 };
+
+const serviceFallbacks = [
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+];
+
+function providerFallback(id: string) {
+  const index = Array.from(id).reduce((total, char) => total + char.charCodeAt(0), 0) % serviceFallbacks.length;
+  return serviceFallbacks[index];
+}
 
 const plans = [
   ["Gratuito", "Perfil básico, aparición en búsqueda, datos de contacto, categoría y zona."],
@@ -60,10 +72,12 @@ export default function ServicesPage() {
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((provider) => (
           <article key={provider.id} className="card flex h-full flex-col overflow-hidden">
-            <img src={provider.image} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" loading="lazy" />
+            <Link href={`/servicios/${provider.id}`} aria-label={`Ver ficha de ${provider.businessName}`}>
+              <ImageWithFallback src={provider.image} fallbackSrc={providerFallback(provider.id)} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" />
+            </Link>
             <div className="flex flex-1 flex-col p-5">
               <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><VerifiedBadge verified={provider.verified} /></div>
-              <h3 className="text-lg font-semibold text-ink">{provider.businessName}</h3>
+              <h3 className="text-lg font-semibold text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
               <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
               <div className="mt-auto flex gap-2 pt-5">
@@ -86,7 +100,7 @@ export default function ServicesPage() {
             <article key={name} className="flex flex-col rounded-2xl bg-panel p-6 shadow-sm ring-1 ring-lavender">
               <h3 className="text-xl font-bold text-ink">Plan {name}</h3>
               <p className="mt-3 flex-1 text-sm leading-6 text-muted">{text}</p>
-              <button className="btn-secondary mt-6 w-full">Ver detalles</button>
+              <Link href="/contacto" className="btn-secondary mt-6 w-full">Consultar plan</Link>
             </article>
           ))}
         </div>
