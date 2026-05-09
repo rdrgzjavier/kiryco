@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
+import { ExternalLink } from "lucide-react";
 import { communityInitiatives, findCommunityInitiative } from "@/lib/mock-data";
 
 export function generateStaticParams() {
@@ -32,9 +33,7 @@ export default function CommunityInitiativePage({ params }: { params: { id: stri
           </section>
         </article>
         <aside className="card h-fit p-6">
-          <ShieldCheck className="text-petrol" size={28} aria-hidden />
-          <h2 className="mt-4 text-xl font-semibold text-ink">Información revisada</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">Contenido orientativo para familias, con salida a la fuente oficial de la iniciativa.</p>
+          <SafeEnvironmentCard compact title="Información revisada" body="Contenido orientativo para familias adultas, con salida a la fuente oficial de la iniciativa." />
           <a href={initiative.url} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full">Web oficial<ExternalLink size={16} /></a>
         </aside>
       </div>
