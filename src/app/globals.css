@@ -27,7 +27,7 @@ body {
   }
 
   .card {
-    @apply rounded-2xl border border-line bg-panel shadow-none transition-all duration-300 hover:translate-y-[-2px] hover:shadow-soft;
+    @apply rounded-2xl border border-line bg-panel shadow-none;
   }
 
   .btn-primary {
