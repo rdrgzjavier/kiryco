@@ -16,9 +16,9 @@ export default function CategoryPageView({ category }: { category: Category }) {
         <Link className="btn-primary" href="/publicar">Publicar en esta categoría</Link>
         <Link className="btn-secondary" href="/proveedores">Alta de proveedor</Link>
       </div>
-      <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
-        <Filters />
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-[280px_1fr]">
+        <Filters selected={{ categoria: category.id }} />
+        <div className="grid content-start items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {categoryListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
         </div>
       </div>
