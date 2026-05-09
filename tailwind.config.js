@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx"],
   theme: {
     extend: {
       colors: {
-        ink: "#5045C8",
+        ink: "#5325E0",
         lavender: "#E2E2F8",
         slatecopy: "#334155",
         paper: "#fcf8fa",
