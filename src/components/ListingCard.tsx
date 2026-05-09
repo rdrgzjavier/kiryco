@@ -59,20 +59,23 @@ export default function ListingCard({ listing }: { listing: Listing }) {
   const provider = providers.find((item) => item.userId === listing.userId);
   const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ?? category?.name ?? "Recurso local";
   const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ?? listing.area;
+  const detailHref = `/anuncios/${listing.slug}`;
   const visibleTags = listing.tags
     .filter((tag) => ![category?.name, category?.id, listing.municipality, "Familias", "Madrid noroeste"].some((item) => item?.toLowerCase() === tag.toLowerCase()))
     .slice(0, 4);
 
   return (
     <article className="card flex flex-col overflow-hidden">
-      <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId, listing.slug)} alt={`Imagen de ${listing.title}`} className="h-40 w-full object-cover" />
+      <Link href={detailHref} aria-label={`Ver detalle de ${listing.title}`}>
+        <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId, listing.slug)} alt={`Imagen de ${listing.title}`} className="h-40 w-full object-cover" />
+      </Link>
       <div className="flex flex-col p-5">
         <div className="flex flex-wrap gap-2">
           <span className="chip">{category?.name}</span>
           <VerifiedBadge verified={listing.verified} />
           {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
         </div>
-        <h3 className="mt-4 text-lg font-semibold leading-7 text-ink">{listing.title}</h3>
+        <h3 className="mt-4 text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{listing.title}</Link></h3>
         <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
         <div className="mt-4 rounded-xl bg-soft px-3 py-3 text-sm">
           <p className="font-semibold text-ink">{typeLabel}</p>
@@ -89,7 +92,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
         <div className="mt-5 flex flex-wrap gap-2">
-          <Link href={`/anuncios/${listing.slug}`} className="btn-primary flex-1 text-center">Ver detalle</Link>
+          <Link href={detailHref} className="btn-primary flex-1 text-center">Ver detalle</Link>
           <button className="icon-button" aria-label="Contactar"><MessageCircle size={18} /></button>
           <button className="icon-button" aria-label="Guardar"><Bookmark size={18} /></button>
         </div>
