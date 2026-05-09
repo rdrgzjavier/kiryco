@@ -29,7 +29,7 @@ export default function AnimatedLogo() {
   }, []);
 
   return (
-    <div className="flex items-center gap-1 text-2xl font-extrabold leading-none tracking-tight">
+    <div className="flex items-center gap-1 text-xl font-extrabold leading-none tracking-tight sm:text-[23px]">
       <span className="text-ink">Tenlo</span>
       <div className="relative inline-block">
         <span className="invisible select-none whitespace-nowrap" aria-hidden="true">que necesitas</span>
