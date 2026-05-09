@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ExternalLink, ShieldCheck } from "lucide-react";
-import { findProvider, providers } from "@/lib/mock-data";
+import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
+import { ExternalLink } from "lucide-react";
 import { VerifiedBadge } from "@/components/Badge";
+import { findProvider, providers } from "@/lib/mock-data";
 
 export function generateStaticParams() {
   return providers.map((provider) => ({ id: provider.id }));
@@ -37,9 +38,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
           </section>
         </article>
         <aside className="card h-fit p-6">
-          <ShieldCheck className="text-petrol" size={28} aria-hidden />
-          <h2 className="mt-4 text-xl font-semibold text-ink">Contacto protegido</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">Tenlo no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable.</p>
+          <SafeEnvironmentCard compact title="Contacto protegido" body="Tenlo no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable." />
           {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full">Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full">Contactar</a>}
         </aside>
       </div>
