@@ -5,6 +5,7 @@ const images = {
   nursery: "https://images.unsplash.com/photo-1544253386-89d1b7642674?auto=format&fit=crop&w=1200&q=80",
   sport: "https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=1200&q=80",
   activity: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+  birthday: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1200&q=80",
   books: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80",
   uniform: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&q=80",
   service: "https://images.unsplash.com/photo-1581578731522-aa0bd3a67d28?auto=format&fit=crop&w=1200&q=80",
@@ -23,7 +24,7 @@ export const categories: Category[] = [
   { id: "libros-material", name: "Libros y material", slug: "libros-material", description: "Libros, material escolar, calzado y lotes por etapa educativa sin identificar a menores.", seoTitle: "Libros y material escolar cerca de ti | Tenlo", seoDescription: "Localiza libros, material escolar, calzado y lotes por municipio, edad recomendada y centro orientativo." },
   { id: "clases-particulares", name: "Clases particulares", slug: "clases-particulares", description: "Profesores, academias e idiomas para apoyo escolar, ciencias, arte y exámenes.", seoTitle: "Clases particulares en Las Rozas | Tenlo", seoDescription: "Encuentra clases particulares por materia, modalidad, municipio y nivel educativo recomendado." },
   { id: "canguros", name: "Canguros", slug: "canguros", description: "Canguros y babysitters con experiencia, disponibilidad general y referencias verificables.", seoTitle: "Canguros y babysitters en Las Rozas | Tenlo", seoDescription: "Busca canguros por zona, edad recomendada, disponibilidad general y verificación." },
-  { id: "extraescolares", name: "Extraescolares", slug: "extraescolares", description: "Actividades, deporte, clubes, creatividad, música, tecnología e idiomas para distintas edades.", seoTitle: "Extraescolares y deporte cerca del colegio | Tenlo", seoDescription: "Descubre actividades extraescolares por zona, edad recomendada, precio y disponibilidad." },
+  { id: "extraescolares", name: "Extraescolares", slug: "extraescolares", description: "Actividades, deporte, clubes, creatividad, música, tecnología, cumpleaños y ocio familiar para distintas edades.", seoTitle: "Extraescolares, cumpleaños y deporte cerca del colegio | Tenlo", seoDescription: "Descubre actividades extraescolares, salas de cumpleaños y ocio familiar por zona, edad recomendada, precio y disponibilidad." },
   { id: "centros", name: "Centros educativos", slug: "centros", description: "Fichas estructuradas de colegios, escuelas infantiles e institutos con información pública.", seoTitle: "Colegios y centros educativos en Las Rozas | Tenlo", seoDescription: "Consulta colegios y centros educativos con información pública, etapas, servicios, etiquetas y reseñas moderadas." }
 ];
 
@@ -31,12 +32,9 @@ const baseTags = ["Madrid noroeste", "Familias"];
 
 type CenterSeed = [string, string, string, Center["type"], NonNullable<Center["religiousCharacter"]>, string[], string, string[], string, string];
 const centerSeeds: CenterSeed[] = [
-  // Las Rozas
   ["el-cantizal", "colegio-el-cantizal", "Colegio El Cantizal", "publico", "laico", ["Infantil", "Primaria", "ESO"], "CEIPSO público bilingüe en Las Rozas.", ["Público", "Bilingüe"], "Las Rozas de Madrid", "916 40 73 80"],
   ["berriz-veracruz", "colegio-berriz-veracruz", "Colegio Berriz - Veracruz", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado católico bilingüe.", ["Concertado", "Católico"], "Las Rozas de Madrid", "916 31 82 23"],
   ["europeo-madrid", "colegio-europeo-de-madrid", "Colegio Europeo de Madrid", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado internacional.", ["Privado", "Bilingüe"], "Las Rozas de Madrid", "916 36 10 21"],
-  
-  // Boadilla del Monte
   ["boadilla-agora", "ceip-agora-boadilla", "CEIP Ágora", "publico", "laico", ["Infantil", "Primaria"], "Colegio público bilingüe de referencia en Boadilla.", ["Público", "Bilingüe"], "Boadilla del Monte", "916 33 03 64"],
   ["boadilla-helade", "colegio-helade-boadilla", "Colegio Hélade", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado con excelentes instalaciones.", ["Concertado", "Laico"], "Boadilla del Monte", "916 32 63 60"],
   ["boadilla-mirabal", "mirabal-international-school", "Mirabal International School", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Prestigioso colegio privado bilingüe.", ["Privado", "Internacional"], "Boadilla del Monte", "916 33 15 50"],
@@ -44,8 +42,6 @@ const centerSeeds: CenterSeed[] = [
   ["boadilla-stmichaels", "st-michaels-school-boadilla", "St. Michael's School", "privado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado con fuerte base en inglés.", ["Privado", "Bilingüe"], "Boadilla del Monte", "916 33 00 11"],
   ["ei-romanillos", "escuela-infantil-romanillos", "E.I. Romanillos", "publico", "laico", ["0-3 años"], "Escuela infantil pública en Boadilla.", ["Público", "0-3 años"], "Boadilla del Monte", "916 33 10 06"],
   ["ei-juan-austria", "escuela-infantil-juan-de-austria", "E.I. Juan de Austria", "publico", "laico", ["0-3 años"], "Escuela infantil pública de calidad.", ["Público", "0-3 años"], "Boadilla del Monte", "916 32 27 44"],
-
-  // Pozuelo de Alarcón
   ["pozuelo-everest", "colegio-everest-pozuelo", "Colegio Everest", "privado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio privado bilingüe en Pozuelo.", ["Privado", "Católico"], "Pozuelo de Alarcón", "917 15 45 42"],
   ["pozuelo-kensington", "colegio-kensington-pozuelo", "Colegio Kensington", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Colegio británico de alto nivel.", ["Privado", "Británico"], "Pozuelo de Alarcón", "917 15 46 12"],
   ["pozuelo-sanjose", "ceip-san-jose-obrero-pozuelo", "CEIP San José Obrero", "publico", "laico", ["Infantil", "Primaria"], "Colegio público de Pozuelo.", ["Público", "Laico"], "Pozuelo de Alarcón", "913 52 14 62"],
@@ -53,8 +49,6 @@ const centerSeeds: CenterSeed[] = [
   ["pozuelo-british", "british-council-school-pozuelo", "British Council School", "privado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "El colegio oficial del British Council.", ["Privado", "Británico"], "Pozuelo de Alarcón", "913 37 36 00"],
   ["ei-los-alamos", "escuela-infantil-los-alamos", "E.I. Los Álamos", "publico", "laico", ["0-3 años"], "Escuela infantil pública en Pozuelo.", ["Público", "0-3 años"], "Pozuelo de Alarcón", "913 52 14 61"],
   ["ei-principito", "escuela-infantil-el-principito-pozuelo", "E.I. El Principito", "publico", "laico", ["0-3 años"], "Escuela infantil de la Comunidad de Madrid.", ["Público", "0-3 años"], "Pozuelo de Alarcón", "913 52 66 44"],
-
-  // Majadahonda
   ["majadahonda-caude", "colegio-caude-majadahonda", "Colegio Caude", "concertado", "laico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Centro concertado de calidad en Majadahonda.", ["Concertado", "Laico"], "Majadahonda", "916 38 65 11"],
   ["majadahonda-sanjaime", "colegio-san-jaime-majadahonda", "Colegio San Jaime", "concertado", "catolico", ["Infantil", "Primaria", "ESO", "Bachillerato"], "Prestigioso colegio concertado.", ["Concertado", "Católico"], "Majadahonda", "916 34 16 02"],
   ["majadahonda-quevedo", "ceip-francisco-de-quevedo-majadahonda", "CEIP Francisco de Quevedo", "publico", "laico", ["Infantil", "Primaria"], "Colegio público bilingüe.", ["Público", "Bilingüe"], "Majadahonda", "916 38 72 13"],
@@ -65,7 +59,12 @@ const centerSeeds: CenterSeed[] = [
 ];
 
 export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religiousCharacter, stages, description, tags, municipality, phone]) => ({
-  id, slug, name, type, religiousCharacter, stages,
+  id,
+  slug,
+  name,
+  type,
+  religiousCharacter,
+  stages,
   municipality,
   address: "Consultar dirección pública en web oficial",
   phone,
@@ -81,55 +80,129 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   verified: true
 }));
 
-type ProviderSeed = [string, string, string, string, string, string, string, string, string];
-const providerSeeds: ProviderSeed[] = [
-  // Boadilla
-  ["boadilla-beone", "BeOne Boadilla", "Extraescolares", "deporte, natación, fitness", images.sport, "Extraescolares", "Boadilla del Monte", "916 33 63 36", "info@beone.es"],
-  ["boadilla-musica", "Academia de Música Boadilla", "Extraescolares", "música, piano, guitarra", images.activity, "Extraescolares", "Boadilla del Monte", "916 32 30 54", "info@musica-boadilla.es"],
-  ["boadilla-british", "British Council Boadilla", "Idiomas", "inglés, oficial, niños", images.activity, "Clases", "Boadilla del Monte", "913 37 36 00", "madrid@britishcouncil.es"],
-  ["boadilla-mencia", "Papelería Doña Mencía", "Libros y material", "papelería, libros, material escolar", images.books, "Libros y material", "Boadilla del Monte", "916 33 03 40", "libreria@mencia.es"],
-
-  // Pozuelo
-  ["pozuelo-cruiz", "Polideportivo Carlos Ruiz", "Extraescolares", "deporte, municipal, escuelas", images.sport, "Extraescolares", "Pozuelo de Alarcón", "913 52 23 60", "deportes@pozuelodealarcon.org"],
-  ["pozuelo-kumon", "Kumon Pozuelo", "Extraescolares", "matemáticas, lectura, apoyo", images.activity, "Clases", "Pozuelo de Alarcón", "654 32 10 98", "pozuelo@kumon.es"],
-
-  // Majadahonda
-  ["majadahonda-hvieja", "Polideportivo Huerta Vieja", "Extraescolares", "deporte, natación, municipal", images.sport, "Extraescolares", "Majadahonda", "916 34 94 24", "deportes@majadahonda.org"],
-  ["majadahonda-kidsus", "Kids&Us Majadahonda", "Idiomas", "inglés, niños, método propio", images.activity, "Clases", "Majadahonda", "916 39 82 25", "majadahonda@kidsandus.es"],
-  
-  // Ficticios (Canguros y Profesores)
-  ["profesor-mates", "Carlos P.", "Clases particulares", "matemáticas, eso, bachillerato", images.activity, "Clases", "Las Rozas de Madrid", "XXX XXX XXX", "xxx@xxx.xxx"],
-  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, referencias", images.service, "Canguros", "Las Rozas de Madrid", "XXX XXX XXX", "xxx@xxx.xxx"],
-  ["canguro-laura", "Laura R.", "Canguros", "canguro, fines de semana", images.service, "Canguros", "Pozuelo de Alarcón", "XXX XXX XXX", "xxx@xxx.xxx"]
+type ProviderSeed = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string?,
+  string?,
+  string?
 ];
 
-export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, catId, municipality, phone, email]) => ({
-  id, userId: id, businessName, category,
-  description: `${businessName}: recursos y servicios para familias en ${municipality}.`,
+const providerSeeds: ProviderSeed[] = [
+  ["boadilla-beone", "BeOne Boadilla", "Extraescolares", "deporte, natación, fitness", images.sport, "extraescolares", "Boadilla del Monte", "916 33 63 36", "info@beone.es"],
+  ["boadilla-musica", "Academia de Música Boadilla", "Extraescolares", "música, piano, guitarra", images.activity, "extraescolares", "Boadilla del Monte", "916 32 30 54", "info@musica-boadilla.es"],
+  ["boadilla-british", "British Council Boadilla", "Idiomas", "inglés, oficial, niños", images.activity, "clases-particulares", "Boadilla del Monte", "913 37 36 00", "madrid@britishcouncil.es"],
+  ["boadilla-mencia", "Papelería Doña Mencía", "Libros y material", "papelería, libros, material escolar", images.books, "libros-material", "Boadilla del Monte", "916 33 03 40", "libreria@mencia.es"],
+  ["pozuelo-cruiz", "Polideportivo Carlos Ruiz", "Extraescolares", "deporte, municipal, escuelas", images.sport, "extraescolares", "Pozuelo de Alarcón", "913 52 23 60", "deportes@pozuelodealarcon.org"],
+  ["pozuelo-kumon", "Kumon Pozuelo", "Extraescolares", "matemáticas, lectura, apoyo", images.activity, "clases-particulares", "Pozuelo de Alarcón", "654 32 10 98", "pozuelo@kumon.es"],
+  ["majadahonda-hvieja", "Polideportivo Huerta Vieja", "Extraescolares", "deporte, natación, municipal", images.sport, "extraescolares", "Majadahonda", "916 34 94 24", "deportes@majadahonda.org"],
+  ["majadahonda-kidsus", "Kids&Us Majadahonda", "Idiomas", "inglés, niños, método propio", images.activity, "clases-particulares", "Majadahonda", "916 39 82 25", "majadahonda@kidsandus.es"],
+  ["profesor-mates", "Carlos P.", "Clases particulares", "matemáticas, eso, bachillerato", images.activity, "clases-particulares", "Las Rozas de Madrid", "Contacto protegido", "contacto@tenlo.es"],
+  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, referencias", images.service, "canguros", "Las Rozas de Madrid", "Contacto protegido", "contacto@tenlo.es"],
+  ["canguro-laura", "Laura R.", "Canguros", "canguro, fines de semana", images.service, "canguros", "Pozuelo de Alarcón", "Contacto protegido", "contacto@tenlo.es"],
+  ["hanky-planet-las-rozas-sala-1", "Hanky Planet Las Rozas - Sala 1", "Cumpleaños y salas multiusos", "cumpleaños, sala infantil, parque de bolas, sala privada, Las Rozas", images.birthday, "extraescolares", "Las Rozas de Madrid", "666 222 269", "lasrozas@hankyplanet.com", "https://www.hankyplanet.com/celebracion-de-cumpleanos-en-las-rozas/", "Sala privada equipada para cumpleaños, comuniones y fiestas familiares, con parque de bolas, cama elástica y servicios opcionales de monitores, decoración y catering.", "Turnos publicados: mañana 10:00-14:30, comida 12:00-18:00, tarde 16:30-21:00, cena 20:00-01:00 y noche 22:00-02:00."],
+  ["hanky-planet-las-rozas-sala-2", "Hanky Planet Las Rozas - Sala 2", "Cumpleaños y salas multiusos", "cumpleaños, karaoke, proyector, sala privada, Las Rozas", images.birthday, "extraescolares", "Las Rozas de Madrid", "666 222 269", "lasrozas@hankyplanet.com", "https://fiestalasrozas.com/", "Sala para fiestas privadas con karaoke, proyector, futbolín, equipo de música y configuración útil para cumpleaños de niños mayores o celebraciones familiares.", "Turnos publicados: mañana 10:00-14:30, comida 12:00-18:00, tarde 16:30-21:00, cena 19:30-01:00 y noche 22:00-00:00."],
+  ["hanky-planet-las-rozas-sala-3", "Hanky Planet Las Rozas - Sala 3", "Cumpleaños y salas multiusos", "cumpleaños, sala infantil, cama elástica, parque de bolas, Las Rozas", images.birthday, "extraescolares", "Las Rozas de Madrid", "666 222 269", "lasrozas@hankyplanet.com", "https://www.salasdeocio.com/salas/1244-hanky-planet-las-rozas-i", "Sala infantil de uso exclusivo con parque de bolas, cama elástica, futbolín, cocina de apoyo, música y climatización para cumpleaños familiares.", "Turnos publicados: mañana 10:00-15:00, tarde 16:00-21:00 y noche 22:00-02:00."],
+  ["ilusiona-equinoccio-majadahonda", "Ilusiona Equinoccio", "Cumpleaños y ocio familiar", "cumpleaños, bolera, parque infantil, arcade, Majadahonda", images.birthday, "extraescolares", "Majadahonda", "916 39 73 62", "info@ilusiona.com", "https://ilusiona.com/equinoccio/", "Centro de ocio familiar en C.C. Equinoccio con bolera, zona kids, arcade y reserva de cumpleaños infantiles.", "Centro de ocio: lun-jue 16:00-00:00, vie 16:00-01:00, sáb 11:00-01:00, dom 11:00-00:00. Kids: lun-jue 17:00-21:00, vie 17:00-22:00, sáb 11:00-22:00, dom 11:00-21:00."],
+  ["piccoli-majadahonda", "Piccoli Majadahonda", "Cumpleaños y talleres infantiles", "cumpleaños, talleres, campamentos, cumpleaños a medida, Majadahonda", images.birthday, "extraescolares", "Majadahonda", "693 74 15 10", "Consultar en web", "https://www.piccoli.es/", "Centro infantil que ofrece cumpleaños a medida con temática y taller, además de campamentos y días sin cole.", "Horario no publicado de forma estable en la web; conviene confirmar disponibilidad al reservar."],
+  ["centro-juvenil-principe-asturias", "Centro Juvenil Príncipe de Asturias", "Sala multiusos municipal", "sala multiusos, cesión de espacios, juventud, Majadahonda", images.birthday, "extraescolares", "Majadahonda", "916 34 91 20", "centrojuvenil@majadahonda.org", "https://juventud.majadahonda.org/información-general-horario-y-localización", "Recurso municipal con cesión de espacios, salas multiusos y actividades culturales, útil para familias que buscan espacios comunitarios sujetos a normativa municipal.", "Lun-vie 8:15-21:15, sáb 9:45-14:15 y 16:45-21:15, dom 9:45-14:15."],
+  ["magic-forest-pozuelo", "The Magic Forest", "Cumpleaños y restaurante familiar", "cumpleaños, restaurante familiar, parque infantil, Ciudad de la Imagen, Pozuelo", images.birthday, "extraescolares", "Pozuelo de Alarcón", "915 12 70 70", "Consultar en web", "https://madridalacarta.com/en-madrid-restaurante/the-magic-forest/", "Restaurante familiar con parque infantil en Kinépolis Ciudad de la Imagen, orientado a comidas, meriendas y celebraciones infantiles.", "Lun-jue 17:00-20:30, vie 17:00-22:00, sáb 11:00-22:30, dom 11:00-21:00."],
+  ["espacio-cultural-mira-pozuelo", "Espacio Cultural MIRA", "Sala multiusos y cultura", "centro cultural, sala multiusos, actividades familiares, Pozuelo", images.birthday, "extraescolares", "Pozuelo de Alarcón", "917 62 83 00", "pmc@pozuelo.madrid", "https://www.pozuelodealarcon.org/node/26355", "Centro cultural municipal con instalaciones amplias y programación familiar; las cesiones o usos de sala dependen de normativa y disponibilidad municipal.", "Instalaciones: 8:00-22:00. Secretaría: lun-vie 10:00-12:00 y mar-jue 14:30-18:00."],
+  ["centro-cultural-volturno-pozuelo", "Centro Cultural Volturno", "Sala multiusos y cultura", "centro cultural, sala, talleres, Pozuelo", images.birthday, "extraescolares", "Pozuelo de Alarcón", "915 12 03 40", "Consultar en web municipal", "https://www.pozuelodealarcon.org/", "Espacio cultural en Pozuelo con aulas y servicios municipales, adecuado para familias que buscan actividades o espacios culturales con niños.", "Lun-vie 8:30-22:00, sáb 9:30-14:00, dom cerrado según directorios locales."],
+  ["hop-galaxy-boadilla", "Hop Galaxy Boadilla", "Cumpleaños y parque infantil", "cumpleaños, parque de bolas, camas elásticas, fiesta privada, Boadilla", images.birthday, "extraescolares", "Boadilla del Monte", "630 69 06 19", "info@hopgalaxy.com", "https://www.hopgalaxy.com/boadilla", "Centro de ocio infantil con atracciones, camas elásticas, toboganes, piscinas de bolas, cumpleaños y opción de fiesta privada.", "Lun-jue 17:00-21:00, vie 11:00-15:00 y 17:00-22:00, sáb 11:00-22:00, dom 11:00-21:00."],
+  ["el-miniclub-boadilla", "El Miniclub", "Cumpleaños y parque de ocio infantil", "cumpleaños, parque infantil, zona baby, cafetería, Boadilla", images.birthday, "extraescolares", "Boadilla del Monte", "916 33 68 80", "info@elminiclub.com", "https://elminiclub.com/", "Parque de ocio infantil en Boadilla con cumpleaños, monitores, zona baby, cafetería para familias y actividades para niños.", "Mié-vie 17:00-20:30; sáb-dom 11:00-14:00 y 17:00-20:30; lunes y martes cerrado salvo cumpleaños."],
+  ["club-las-encinas-boadilla", "Club Las Encinas de Boadilla", "Cumpleaños y celebraciones infantiles", "cumpleaños, club deportivo, naturaleza, celebraciones infantiles, Boadilla", images.birthday, "extraescolares", "Boadilla del Monte", "916 33 03 64", "Consultar en web", "https://www.clublasencinas.es/Pages/108-cumpleanyos_y_celebraciones_infantiles_i_club_las_encinas_de_boadilla", "Club con instalaciones sociales, infantiles y deportivas en entorno natural para cumpleaños y celebraciones infantiles.", "Horario y disponibilidad de cumpleaños sujetos a reserva y calendario del club; confirmar con el centro." ]
+];
+
+export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => ({
+  id,
+  userId: id,
+  businessName,
+  category,
+  description: description ?? `${businessName}: recursos y servicios para familias en ${municipality}.`,
   municipality,
   serviceArea: `${municipality} y alrededores`,
-  website: "https://example.com",
+  website: website ?? "https://example.com",
   phone,
   email,
-  verified: id.includes("municipal") || id.includes("Polideportivo") || id.includes("ceip") || id.includes("boadilla-beone"),
+  verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
   plan: "gratuito",
-  tags: rawTags.split(", ").concat([municipality, "Familias"]),
+  tags: rawTags.split(", ").concat([municipality, "Familias", categoryId]),
   image
 }));
 
+function providerCategoryId(provider: Provider) {
+  if (provider.category.toLowerCase().includes("clases") || provider.category.toLowerCase().includes("idiomas")) return "clases-particulares";
+  if (provider.category.toLowerCase().includes("canguro")) return "canguros";
+  if (provider.category.toLowerCase().includes("libros") || provider.category.toLowerCase().includes("papelería")) return "libros-material";
+  if (provider.category.toLowerCase().includes("uniformes")) return "uniformes";
+  return "extraescolares";
+}
+
 export const listings: Listing[] = [
-  ...centers.map((center) => ({ 
-    id: `ficha-${center.id}`, slug: center.slug, userId: "tenlo", categoryId: "centros", centerId: center.id, 
-    title: center.name, description: center.description, municipality: center.municipality, area: center.municipality, 
-    recommendedAgeMin: 1, recommendedAgeMax: 18, priceLabel: "Consultar", availability: "Ficha pública", 
-    publicationType: "centro" as const, status: "published" as const, verified: true, tags: center.tags, image: center.image 
+  ...centers.map((center) => ({
+    id: `ficha-${center.id}`,
+    slug: center.slug,
+    userId: "tenlo",
+    categoryId: "centros",
+    centerId: center.id,
+    title: center.name,
+    description: center.description,
+    municipality: center.municipality,
+    area: center.municipality,
+    recommendedAgeMin: 1,
+    recommendedAgeMax: 18,
+    priceLabel: "Consultar",
+    availability: "Ficha pública",
+    publicationType: "centro" as const,
+    status: "published" as const,
+    verified: true,
+    tags: center.tags,
+    image: center.image,
+    details: {
+      Tipo: center.type,
+      Etapas: center.stages.join(", "),
+      Teléfono: center.phone,
+      Web: center.website
+    }
   })),
-  ...providers.map((p) => ({
-    id: `p-${p.id}`, slug: p.id, userId: p.userId, categoryId: p.category.toLowerCase().includes("clases") ? "clases-particulares" : p.category.toLowerCase().includes("canguro") ? "canguros" : p.id.includes("mencia") ? "libros-material" : "extraescolares",
-    title: p.businessName, description: p.description, municipality: p.municipality, area: p.serviceArea,
-    recommendedAgeMin: 3, recommendedAgeMax: 16, priceLabel: "Consultar", availability: "Consultar",
-    publicationType: "proveedor" as const, status: "published" as const, verified: p.verified, tags: p.tags, image: p.image
-  }))
+  ...providers.map((provider) => {
+    const seed = providerSeeds.find(([id]) => id === provider.id);
+    const availability = seed?.[11] ?? "Consultar disponibilidad";
+
+    return {
+      id: `p-${provider.id}`,
+      slug: provider.id,
+      userId: provider.userId,
+      categoryId: providerCategoryId(provider),
+      title: provider.businessName,
+      description: provider.description,
+      municipality: provider.municipality,
+      area: provider.serviceArea,
+      recommendedAgeMin: provider.category.toLowerCase().includes("cumpleaños") ? 3 : 3,
+      recommendedAgeMax: provider.category.toLowerCase().includes("cumpleaños") ? 14 : 16,
+      priceLabel: "Consultar",
+      availability,
+      publicationType: "proveedor" as const,
+      status: "published" as const,
+      verified: provider.verified,
+      tags: provider.tags,
+      image: provider.image,
+      details: {
+        Contacto: provider.phone,
+        Email: provider.email,
+        Horario: availability,
+        Web: provider.website
+      }
+    };
+  })
 ];
 
 export const communityInitiatives: CommunityInitiative[] = [
@@ -142,10 +215,10 @@ export const communityInitiatives: CommunityInitiative[] = [
 ];
 
 export const searchTags = Array.from(new Set([
-  ...centers.flatMap((c) => c.tags), 
-  ...listings.flatMap((l) => l.tags), 
-  ...providers.flatMap((p) => p.tags), 
-  ...communityInitiatives.flatMap((i) => i.tags)
+  ...centers.flatMap((center) => center.tags),
+  ...listings.flatMap((listing) => listing.tags),
+  ...providers.flatMap((provider) => provider.tags),
+  ...communityInitiatives.flatMap((initiative) => initiative.tags)
 ])).sort((a, b) => a.localeCompare(b, "es"));
 
 export const reviews: Review[] = [];
@@ -154,9 +227,9 @@ export const communityPosts: CommunityPost[] = [
   { id: "cp2", title: "Actividades gratuitas en Pozuelo este fin de semana", category: "Extraescolares", municipality: "Pozuelo de Alarcón", summary: "Agenda cultural y deportiva.", status: "published" }
 ];
 
-export function findCategory(slug: string) { return categories.find((c) => c.slug === slug); }
-export function findListing(slugOrId: string) { return listings.find((l) => l.slug === slugOrId || l.id === slugOrId); }
-export function findCenter(slug: string) { return centers.find((c) => c.slug === slug); }
-export function findProvider(id: string) { return providers.find((p) => p.id === id); }
-export function findCommunityInitiative(id: string) { return communityInitiatives.find((i) => i.id === id); }
+export function findCategory(slug: string) { return categories.find((category) => category.slug === slug); }
+export function findListing(slugOrId: string) { return listings.find((listing) => listing.slug === slugOrId || listing.id === slugOrId); }
+export function findCenter(slug: string) { return centers.find((center) => center.slug === slug); }
+export function findProvider(id: string) { return providers.find((provider) => provider.id === id); }
+export function findCommunityInitiative(id: string) { return communityInitiatives.find((initiative) => initiative.id === id); }
 export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ?? 1}-${listing.recommendedAgeMax ?? 18} años`; }
