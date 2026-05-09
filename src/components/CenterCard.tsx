@@ -1,11 +1,23 @@
 import Link from "next/link";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import type { Center } from "@/lib/types";
 import { VerifiedBadge } from "./Badge";
+
+const centerFallbacks = [
+  "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80"
+];
+
+function fallbackImage(slug: string) {
+  const index = Array.from(slug).reduce((total, char) => total + char.charCodeAt(0), 0) % centerFallbacks.length;
+  return centerFallbacks[index];
+}
 
 export default function CenterCard({ center }: { center: Center }) {
   return (
     <article className="card overflow-hidden">
-      <img src={center.image ?? "/images/cards/centro-educativo.svg"} alt={`Imagen de ${center.name}`} className="h-40 w-full object-cover" loading="lazy" />
+      <ImageWithFallback src={center.image} fallbackSrc={fallbackImage(center.slug)} alt={`Imagen de ${center.name}`} className="h-40 w-full object-cover" />
       <div className="p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <span className="chip capitalize">{center.type}</span>
