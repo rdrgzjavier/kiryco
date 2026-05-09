@@ -1,50 +1,52 @@
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
+import { Facebook, Instagram, Linkedin, ShieldCheck } from "lucide-react";
 
 const columns = [
   {
-    title: "Zonas",
-    links: [
-      ["Las Rozas", "/zona/las-rozas"],
-      ["Majadahonda", "/zona/majadahonda"],
-      ["Pozuelo de Alarcón", "/zona/pozuelo"],
-      ["Boadilla del Monte", "/zona/boadilla"]
-    ]
+    title: "Para familias",
+    links: [["Guía para padres", "/buscar"], ["Consejos por edad", "/comunidad"], ["Organización familiar", "/categoria"], ["Blog", "/comunidad"]]
   },
   {
-    title: "Categorías",
-    links: [
-      ["Uniformes", "/categoria/uniformes"],
-      ["Libros y material", "/categoria/libros-material"],
-      ["Clases particulares", "/categoria/clases-particulares"],
-      ["Canguros", "/categoria/canguros"],
-      ["Extraescolares", "/categoria/extraescolares"]
-    ]
+    title: "Para profesionales",
+    links: [["Ventajas", "/proveedores"], ["Cómo funciona", "/servicios"], ["Precios", "/contacto"], ["Preguntas frecuentes", "/contacto"]]
+  },
+  {
+    title: "Recursos",
+    links: [["Artículos", "/comunidad"], ["Guías", "/comunidad"], ["Herramientas", "/buscar"]]
+  },
+  {
+    title: "Empresa",
+    links: [["Quiénes somos", "/aviso-legal"], ["Contacto", "/contacto"], ["Prensa", "/contacto"]]
   },
   {
     title: "Legal",
-    links: [["Normas de comunidad", "/normas-comunidad"], ["Aviso legal", "/aviso-legal"], ["Privacidad", "/privacidad"], ["Cookies", "/cookies"], ["Contacto", "/contacto"]]
+    links: [["Términos de uso", "/aviso-legal"], ["Privacidad", "/privacidad"], ["Aviso legal", "/aviso-legal"], ["Cookies", "/cookies"]]
   }
 ];
 
 export default function Footer() {
   return (
     <footer className="border-t border-line bg-panel">
-      <div className="page grid gap-10 py-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="page grid gap-10 py-12 lg:grid-cols-[1.4fr_repeat(5,1fr)]">
         <div>
-          <p className="text-lg font-bold text-ink">Tenlo</p>
-          <p className="mt-3 max-w-md text-sm leading-6 text-muted">
-            Recursos útiles alrededor del colegio, organizados por zona, centro y categoría para familias adultas.
+          <p className="text-3xl font-extrabold text-ink">Tenlo</p>
+          <p className="mt-4 max-w-xs text-sm leading-6 text-muted">
+            La plataforma que conecta a familias con los mejores servicios educativos y de bienestar.
           </p>
-          <div className="mt-5 flex items-start gap-2 text-sm font-semibold leading-6 text-sage">
+          <div className="mt-5 flex items-start gap-2 text-sm font-semibold leading-6 text-petrol">
             <ShieldCheck size={18} className="mt-0.5 shrink-0" aria-hidden />
-            <span>Plataforma dirigida a adultos, con publicaciones revisadas y normas de privacidad claras.</span>
+            <span>Dirigida a adultos, con publicaciones revisadas y privacidad desde el inicio.</span>
+          </div>
+          <div className="mt-6 flex gap-3">
+            <Link href="/contacto" className="icon-button" aria-label="Instagram"><Instagram size={18} /></Link>
+            <Link href="/contacto" className="icon-button" aria-label="Facebook"><Facebook size={18} /></Link>
+            <Link href="/contacto" className="icon-button" aria-label="LinkedIn"><Linkedin size={18} /></Link>
           </div>
         </div>
         {columns.map((column) => <FooterColumn key={column.title} title={column.title} links={column.links} />)}
       </div>
       <div className="border-t border-line">
-        <div className="page py-5 text-sm text-muted">© {new Date().getFullYear()} Tenlo. Plataforma para familias, centros y profesionales locales.</div>
+        <div className="page py-5 text-sm text-muted">© {new Date().getFullYear()} Tenlo. Todos los derechos reservados.</div>
       </div>
     </footer>
   );
@@ -52,15 +54,15 @@ export default function Footer() {
 
 function FooterColumn({ title, links }: { title: string; links: string[][] }) {
   return (
-    <div>
-      <h2 className="text-sm font-bold text-ink">{title}</h2>
-      <ul className="mt-4 grid gap-3 text-sm text-slatecopy">
+    <details className="group lg:block" open>
+      <summary className="cursor-pointer list-none text-sm font-bold text-slatecopy lg:cursor-default">{title}</summary>
+      <ul className="mt-4 grid gap-3 text-sm text-muted">
         {links.map(([label, href]) => (
           <li key={href}>
             <Link href={href} className="hover:text-ink">{label}</Link>
           </li>
         ))}
       </ul>
-    </div>
+    </details>
   );
 }
