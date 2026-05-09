@@ -122,8 +122,8 @@ export default function Home() {
 
   return (
     <>
-      <section className="overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgba(91,77,255,0.14),transparent_32%),linear-gradient(180deg,#ffffff_0%,#F7F5F2_100%)]">
-        <div className="page grid gap-8 py-10 lg:grid-cols-[1fr_0.9fr] lg:py-14">
+      <section className="overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#F7F5F2_100%)]">
+        <div className="page grid gap-8 py-10 lg:grid-cols-[1.22fr_0.78fr] lg:py-14">
           <div className="flex flex-col justify-center">
             <p className="chip w-fit">Todo lo que necesitas alrededor de la etapa educativa, en un solo lugar</p>
             <h1 className="page-title mt-6 max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
@@ -153,8 +153,8 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="relative hidden min-h-[400px] lg:block">
-            <div className="absolute inset-x-8 bottom-0 top-4 overflow-hidden rounded-[44px] bg-lavender shadow-lift">
+          <div className="relative hidden min-h-[370px] lg:block">
+            <div className="absolute inset-x-4 bottom-0 top-6 overflow-hidden rounded-[44px] bg-lavender shadow-lift xl:inset-x-8">
               <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Manos de una persona adulta y un menor caminando, sin rostros visibles" className="h-full w-full object-cover object-center" loading="eager" />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/12 via-transparent to-transparent" />
             </div>
@@ -164,6 +164,10 @@ export default function Home() {
       </section>
 
       <section className="page relative z-10 -mt-6">
+        <div className="mb-5 text-center">
+          <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-muted">Accesos rápidos a las categorías que más usan las familias para comparar servicios, centros y recursos locales.</p>
+        </div>
         <div className="card grid gap-4 p-5 shadow-soft sm:grid-cols-4 lg:grid-cols-[repeat(7,1fr)_0.75fr]">
           {homeCategories.map(({ name, href, Icon, color }) => (
             <Link key={name} href={href} className="flex min-h-24 flex-col items-center justify-center gap-3 rounded-2xl p-3 text-center text-sm font-bold text-slatecopy transition-colors hover:bg-soft hover:text-ink">
@@ -171,7 +175,7 @@ export default function Home() {
               <span>{name}</span>
             </Link>
           ))}
-          <Link href="/categoria" className="flex min-h-24 flex-col items-center justify-center gap-2 border-l border-line p-3 text-center text-sm font-bold text-ink">
+          <Link href="/categoria" className="flex min-h-24 flex-col items-center justify-center gap-2 p-3 text-center text-sm font-bold text-ink lg:border-l lg:border-line">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-lavender"><ArrowRight size={24} aria-hidden /></span>
             <span>Ver todos</span>
           </Link>
@@ -179,6 +183,10 @@ export default function Home() {
       </section>
 
       <section className="page py-16">
+        <div className="mx-auto mb-7 max-w-3xl text-center">
+          <h2 className="section-title">Una oferta local creada para decidir con confianza</h2>
+          <p className="mt-3 text-sm leading-6 text-muted">Datos vivos del directorio Tenlo: centros educativos, recursos disponibles y familias activas dentro del MVP.</p>
+        </div>
         <div className="grid gap-px overflow-hidden rounded-[24px] bg-line bg-gradient-to-r from-lavender via-white to-lavender p-px shadow-soft sm:grid-cols-2 lg:grid-cols-4">
           {statCards.map(({ value, label, Icon }) => (
             <div key={label} className="bg-white/80 p-8 text-center">
@@ -205,9 +213,9 @@ export default function Home() {
       </section>
 
       <section className="page pb-16">
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 className="section-title">Servicios populares en tu zona</h2>
-          <Link href="/servicios" className="font-bold text-ink">Ver todos</Link>
+        <div className="mb-6 text-center lg:flex lg:items-end lg:justify-between lg:gap-4 lg:text-left">
+          <h2 className="section-title w-full">Servicios populares en tu zona</h2>
+          <Link href="/servicios" className="hidden shrink-0 font-bold text-ink lg:inline-flex">Ver todos</Link>
         </div>
         <div className="flex gap-5 overflow-x-auto pb-3 lg:grid lg:grid-cols-4 lg:overflow-visible">
           {popularServices.map((service) => (
@@ -230,6 +238,7 @@ export default function Home() {
             </article>
           ))}
         </div>
+        <Link href="/servicios" className="mt-5 inline-flex w-full items-center justify-center gap-2 text-sm font-bold text-ink lg:hidden">Ver todos <ArrowRight size={16} /></Link>
       </section>
 
       <section className="page grid gap-8 pb-16 lg:grid-cols-[0.72fr_1fr]">
@@ -259,7 +268,7 @@ export default function Home() {
 
       <section className="page pb-16">
         <div className="grid items-center gap-6 rounded-[24px] bg-lavender p-8 shadow-soft md:grid-cols-[1fr_auto] md:p-10">
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center">
             <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white/70"><BriefcaseBusiness size={34} className="text-slatecopy" /></span>
             <div>
               <h2 className="text-2xl font-bold text-slatecopy">¿Quieres formar parte de Tenlo?</h2>
@@ -277,14 +286,13 @@ export default function Home() {
         <h2 className="section-title text-center">Cómo funciona Tenlo</h2>
         <div className="mt-10 grid overflow-hidden rounded-[28px] border border-line bg-panel shadow-soft lg:grid-cols-[0.9fr_1.4fr]">
           <div className="bg-ink p-8 text-white md:p-10">
-            <p className="text-xs font-bold uppercase tracking-[0.08em] text-white/60">Onboarding</p>
-            <h3 className="mt-4 text-3xl font-extrabold leading-tight">Empieza con una necesidad concreta</h3>
+            <h3 className="text-3xl font-extrabold leading-tight">Empieza con una necesidad concreta</h3>
             <p className="mt-4 text-sm leading-7 text-white/72">Tenlo no te pide crear perfiles de menores. Entras desde una necesidad familiar, comparas opciones locales y decides qué guardar o contactar.</p>
             <Link href="/buscar" className="mt-7 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-ink">Empezar a buscar <ArrowRight size={16} /></Link>
           </div>
-          <div className="grid gap-0 md:grid-cols-2">
+          <div className="grid gap-4 p-5 md:grid-cols-2 md:p-6">
             {steps.map(([title, text], index) => (
-              <article key={title} className="border-line p-7 md:border-l md:[&:nth-child(n+3)]:border-t">
+              <article key={title} className="rounded-[22px] bg-soft p-6">
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-lavender text-sm font-extrabold text-ink">{index + 1}</span>
                 <h3 className="mt-5 font-bold text-slatecopy">{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
@@ -295,29 +303,30 @@ export default function Home() {
       </section>
 
       <section className="page pb-16">
-        <div className="card grid gap-8 bg-[linear-gradient(90deg,#ffffff,#F3FAF7)] p-8 md:grid-cols-[0.9fr_1.4fr] md:items-center md:p-10">
-          <div className="flex gap-4">
+        <div className="card grid gap-8 bg-[linear-gradient(90deg,#ffffff,#F3FAF7)] p-6 md:grid-cols-[0.9fr_1.4fr] md:items-center md:p-10">
+          <div className="flex flex-col gap-4 md:flex-row">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-petrol shadow-sm"><ShieldCheck size={24} aria-hidden /></span>
             <div>
               <h2 className="text-2xl font-bold text-slatecopy">Privacidad desde el inicio</h2>
               <p className="mt-3 text-sm leading-7 text-muted">La privacidad y seguridad de las familias es nuestra prioridad. No publicamos fotos, perfiles, horarios personales ni datos sensibles de menores.</p>
-              <Link href="/privacidad" className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-ink">Saber más <ArrowRight size={16} /></Link>
+              <Link href="/privacidad" className="mt-4 hidden items-center gap-2 text-sm font-bold text-ink md:inline-flex">Saber más <ArrowRight size={16} /></Link>
             </div>
           </div>
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             {["Perfiles verificados y moderados", "Datos protegidos bajo estándares altos", "Entorno seguro para toda la familia"].map((item) => (
-              <div key={item} className="flex flex-col items-center justify-center gap-3 text-center text-sm font-semibold leading-6 text-muted">
+              <div key={item} className="rounded-[20px] bg-white p-5 text-sm font-semibold leading-6 text-muted shadow-sm sm:flex sm:flex-col sm:items-center sm:justify-center sm:gap-3 sm:text-center md:bg-transparent md:p-0 md:shadow-none">
                 <CheckCircle2 size={22} className="shrink-0 text-petrol" aria-hidden />
-                <span>{item}</span>
+                <span className="mt-3 block sm:mt-0">{item}</span>
               </div>
             ))}
+            <Link href="/privacidad" className="inline-flex items-center gap-2 text-sm font-bold text-ink sm:col-span-3 md:hidden">Saber más <ArrowRight size={16} /></Link>
           </div>
         </div>
       </section>
 
       <section className="page pb-16">
         <div className="grid items-center gap-6 rounded-[24px] bg-lavender p-8 shadow-soft md:grid-cols-[1fr_auto] md:p-10">
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center">
             <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white/70"><Mail size={34} className="text-slatecopy" /></span>
             <div>
               <h2 className="text-2xl font-bold text-slatecopy">¿Quieres estar al día?</h2>
