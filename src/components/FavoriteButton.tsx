@@ -32,7 +32,7 @@ export default function FavoriteButton({ className = "icon-button", label = "Fav
         <Heart size={19} aria-hidden />
       </button>
       {open ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-ink/35 px-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="favorite-dialog-title">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="favorite-dialog-title">
           <div className="w-full max-w-sm rounded-[24px] border border-line bg-panel p-6 shadow-lift">
             <div className="flex items-start justify-between gap-4">
               <div>

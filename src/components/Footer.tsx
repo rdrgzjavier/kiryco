@@ -16,7 +16,7 @@ const columns = [
   },
   {
     title: "Zonas",
-    links: [["Las Rozas", "/zona/las-rozas"], ["Majadahonda", "/zona/majadahonda"], ["Pozuelo", "/zona/pozuelo"], ["Boadilla", "/zona/boadilla"], ["Villanueva de la Cañada", "/zona/villanueva-de-la-canada"]]
+    links: [["Las Rozas", "/zona/las-rozas"], ["Majadahonda", "/zona/majadahonda"], ["Pozuelo", "/zona/pozuelo"], ["Boadilla", "/zona/boadilla"]]
   },
   {
     title: "Legal",

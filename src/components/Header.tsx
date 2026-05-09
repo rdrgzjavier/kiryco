@@ -32,7 +32,6 @@ export default function Header() {
           <Link href="/zona/las-rozas" className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-slatecopy transition-colors hover:text-ink">
             <MapPin size={16} className="text-ink" aria-hidden />
             Madrid
-            <ChevronDown size={14} aria-hidden />
           </Link>
           <FavoriteButton className="icon-button h-10 w-10 rounded-xl" />
           <Link href="/login" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">Iniciar sesión</Link>
