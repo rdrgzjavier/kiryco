@@ -2,9 +2,11 @@
 import Link from "next/link";
 import CategoryCard from "@/components/CategoryCard";
 import ListingCard from "@/components/ListingCard";
+import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
 import SearchHero from "@/components/SearchHero";
 import { categories, listings, municipalities } from "@/lib/mock-data";
-import { Building2, ClipboardCheck, Search, ShieldCheck } from "lucide-react";
+import { formatStat, getSiteStats } from "@/lib/site-stats";
+import { Building2, ClipboardCheck, Search } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const audienceCards: { title: string; text: string; Icon: LucideIcon }[] = [
@@ -15,6 +17,13 @@ const audienceCards: { title: string; text: string; Icon: LucideIcon }[] = [
 
 export default function Home() {
   const published = listings.filter((listing) => listing.status === "published").slice(0, 4);
+  const stats = getSiteStats();
+  const metricCards = [
+    { value: `+${formatStat(stats.centers)}`, label: "Centros educativos" },
+    { value: `+${formatStat(stats.localResources)}`, label: "Recursos locales" },
+    { value: `+${formatStat(stats.families)}`, label: "Familias activas" },
+    { value: "100%", label: "Moderado y seguro" }
+  ];
 
   return (
     <>
@@ -31,7 +40,7 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-3">
           {audienceCards.map(({ title, text, Icon }) => (
             <article key={title} className="card p-6">
-              <Icon className="text-petrol" size={28} aria-hidden />
+              <Icon className="text-ink" size={28} aria-hidden />
               <h3 className="mt-4 text-xl font-semibold text-ink">{title}</h3>
               <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
             </article>
@@ -40,13 +49,10 @@ export default function Home() {
       </section>
       <section className="bg-panel py-14">
         <div className="page">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="label">Moderación desde el inicio</p>
-              <h2 className="section-title mt-2">Pensado para familias. Diseñado con privacidad.</h2>
-            </div>
-            <ShieldCheck className="text-sage" size={36} aria-hidden />
-          </div>
+          <SafeEnvironmentCard
+            title="Pensado para familias. Diseñado con privacidad."
+            body="Las publicaciones se revisan para mantener una comunidad útil y respetuosa. Sin perfiles, fotos, nombres, clase, horarios personales ni datos sensibles de menores."
+          />
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {["Sin perfiles de menores", "Sin fotos de menores", "Publicaciones moderadas", "Reseñas auditadas", "Profesionales verificables"].map((item) => (
               <div key={item} className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold text-slatecopy">{item}</div>
@@ -54,12 +60,16 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-ink py-16 text-white">
-        <div className="page grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
-          <div><p className="text-4xl font-bold">40+</p><p className="mt-1 text-lavender/70">Centros educativos</p></div>
-          <div><p className="text-4xl font-bold">120+</p><p className="mt-1 text-lavender/70">Recursos locales</p></div>
-          <div><p className="text-4xl font-bold">2.4k</p><p className="mt-1 text-lavender/70">Familias activas</p></div>
-          <div><p className="text-4xl font-bold">100%</p><p className="mt-1 text-lavender/70">Moderado y seguro</p></div>
+      <section className="page py-14">
+        <div className="rounded-2xl border border-line bg-panel p-6 shadow-soft sm:p-8">
+          <div className="grid gap-5 text-center sm:grid-cols-2 lg:grid-cols-4">
+            {metricCards.map((metric) => (
+              <div key={metric.label} className="rounded-xl border border-line bg-soft p-5">
+                <p className="font-poppins text-4xl font-bold text-ink">{metric.value}</p>
+                <p className="mt-2 text-sm font-semibold text-slatecopy">{metric.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -78,7 +88,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold text-ink">Mejores parques para ir con niños</h3>
               <p className="mt-1 text-sm text-muted">12 recomendaciones revisadas...</p>
             </div>
-            <Search className="text-line" size={24} />
+            <Search className="text-ink" size={24} />
           </Link>
           <Link href="/comunidad" className="card flex items-center justify-between p-6">
             <div>
@@ -86,7 +96,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold text-ink">Extraescolares de robótica por zonas</h3>
               <p className="mt-1 text-sm text-muted">Listado moderado de academias...</p>
             </div>
-            <Search className="text-line" size={24} />
+            <Search className="text-ink" size={24} />
           </Link>
         </div>
       </section>
