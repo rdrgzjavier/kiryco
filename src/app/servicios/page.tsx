@@ -38,13 +38,13 @@ export default function ServicesPage() {
       <p className="lead">Profesores, academias, clubes, tiendas, librerías, canguros profesionales, campamentos, idiomas y apoyo especializado para familias.</p>
 
       {/* Filters Section */}
-      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-panel p-3 shadow-soft sm:grid-cols-[1fr_1fr_1fr_auto]">
-        <div className="flex items-center gap-2 rounded-lg bg-soft px-3 ring-1 ring-line/50 focus-within:ring-ink">
+      <div className="filter-shell sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+        <div className="filter-control">
           <Search size={18} className="text-muted" />
-          <input placeholder="Palabra clave..." className="min-h-[48px] w-full bg-transparent text-sm outline-none" />
+          <input placeholder="Palabra clave..." className="filter-input" />
         </div>
         <div className="relative">
-          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+          <select className="filter-select">
             <option value="">Todas las zonas</option>
             {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
           </select>
@@ -53,9 +53,21 @@ export default function ServicesPage() {
           </div>
         </div>
         <div className="relative">
-          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+          <select className="filter-select">
             <option value="">Todas las tipologías</option>
             {serviceCategories.map(c => <option key={c.id} value={c.slug}>{c.name}</option>)}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <ChevronDown size={18} className="text-muted" />
+          </div>
+        </div>
+        <div className="relative">
+          <select className="filter-select">
+            <option value="">Cualquier precio</option>
+            <option value="gratis">Gratis</option>
+            <option value="25">Hasta 25 €</option>
+            <option value="75">25-75 €</option>
+            <option value="mas-75">Más de 75 €</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
             <ChevronDown size={18} className="text-muted" />

@@ -19,13 +19,13 @@ export default function CentersPage() {
         Las valoraciones están moderadas y buscan ayudar a las familias con información útil y respetuosa.
       </div>
       {/* Filters Section */}
-      <div className="mt-8 grid gap-4 rounded-2xl border border-line bg-panel p-3 shadow-soft sm:grid-cols-[1fr_1fr_1fr_auto]">
-        <div className="flex items-center gap-2 rounded-lg bg-soft px-3 ring-1 ring-line/50 focus-within:ring-ink">
+      <div className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]">
+        <div className="filter-control">
           <Search size={18} className="text-muted" />
-          <input placeholder="Busca por nombre o zona..." className="min-h-[48px] w-full bg-transparent text-sm outline-none" />
+          <input placeholder="Busca por nombre o zona..." className="filter-input" />
         </div>
         <div className="relative">
-          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+          <select className="filter-select">
             <option value="">Todas las zonas</option>
             {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
           </select>
@@ -34,7 +34,7 @@ export default function CentersPage() {
           </div>
         </div>
         <div className="relative">
-          <select className="appearance-none min-h-[48px] w-full rounded-lg bg-soft pl-3 pr-10 text-sm ring-1 ring-line/50 outline-none focus:ring-ink">
+          <select className="filter-select">
             <option value="">Tipología de centro</option>
             <option value="publico">Público</option>
             <option value="concertado">Concertado</option>
