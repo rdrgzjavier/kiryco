@@ -158,9 +158,9 @@ export default function Home() {
               </label>
               <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios</button>
             </form>
-            <div className="mt-7 grid gap-4 sm:grid-cols-3">
+            <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
-                <div key={title} className="flex min-w-0 items-center gap-3">
+                <div key={title} className="flex min-w-0 items-center justify-center gap-3 text-center sm:justify-start sm:text-left">
                   <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={26} className={color} aria-hidden /></span>
                   <span className="min-w-0"><strong className="block text-base text-slatecopy">{title}</strong><span className="block text-sm leading-5 text-muted">{text}</span></span>
                 </div>
