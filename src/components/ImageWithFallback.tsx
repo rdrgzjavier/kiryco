@@ -11,7 +11,7 @@ type ImageWithFallbackProps = {
 };
 
 export default function ImageWithFallback({ src, fallbackSrc, alt, className, loading = "lazy" }: ImageWithFallbackProps) {
-  const [currentSrc, setCurrentSrc] = useState(src ?? fallbackSrc);
+  const [currentSrc, setCurrentSrc] = useState(src ? fallbackSrc);
 
   return (
     <img

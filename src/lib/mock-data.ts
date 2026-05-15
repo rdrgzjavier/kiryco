@@ -24,7 +24,10 @@ export const categories: Category[] = [
   { id: "libros-material", name: "Libros y material", slug: "libros-material", description: "Libros, material escolar, calzado y lotes por etapa educativa sin identificar a menores.", seoTitle: "Libros y material escolar cerca de ti | Tenlo", seoDescription: "Localiza libros, material escolar, calzado y lotes por municipio, edad recomendada y centro orientativo." },
   { id: "clases-particulares", name: "Clases particulares", slug: "clases-particulares", description: "Profesores, academias e idiomas para apoyo escolar, ciencias, arte y exámenes.", seoTitle: "Clases particulares en Las Rozas | Tenlo", seoDescription: "Encuentra clases particulares por materia, modalidad, municipio y nivel educativo recomendado." },
   { id: "canguros", name: "Canguros", slug: "canguros", description: "Canguros y babysitters con experiencia, disponibilidad general y referencias verificables.", seoTitle: "Canguros y babysitters en Las Rozas | Tenlo", seoDescription: "Busca canguros por zona, edad recomendada, disponibilidad general y verificación." },
-  { id: "extraescolares", name: "Extraescolares", slug: "extraescolares", description: "Actividades, deporte, clubes, creatividad, música, tecnología, cumpleaños y ocio familiar para distintas edades.", seoTitle: "Extraescolares, cumpleaños y deporte cerca del colegio | Tenlo", seoDescription: "Descubre actividades extraescolares, salas de cumpleaños y ocio familiar por zona, edad recomendada, precio y disponibilidad." },
+  { id: "campamentos", name: "Campamentos y días sin cole", slug: "campamentos", description: "Campamentos urbanos, días sin cole y actividades vacacionales cerca de casa.", seoTitle: "Campamentos y días sin cole en Madrid noroeste | Tenlo", seoDescription: "Compara campamentos urbanos y actividades para días sin cole por zona, edad orientativa y disponibilidad." },
+  { id: "extraescolares", name: "Extraescolares", slug: "extraescolares", description: "Actividades, deporte, clubes, creatividad, música y ocio familiar para distintas edades.", seoTitle: "Extraescolares y deporte cerca del colegio | Tenlo", seoDescription: "Descubre actividades extraescolares por zona, edad recomendada, precio y disponibilidad." },
+  { id: "centros-deportivos", name: "Centros deportivos", slug: "centros-deportivos", description: "Polideportivos, clubes y escuelas deportivas con oferta familiar local.", seoTitle: "Centros deportivos para familias | Tenlo", seoDescription: "Encuentra centros deportivos, escuelas y actividades por municipio en el noroeste de Madrid." },
+  { id: "tecnologia", name: "Talleres tecnológicos", slug: "tecnologia", description: "Robótica, programación, tecnología creativa y clases online para distintas edades.", seoTitle: "Talleres tecnológicos y programación para niños | Tenlo", seoDescription: "Busca talleres tecnológicos, robótica y programación por zona y modalidad." },
   { id: "centros", name: "Centros educativos", slug: "centros", description: "Fichas estructuradas de colegios, escuelas infantiles e institutos con información pública.", seoTitle: "Colegios y centros educativos en Las Rozas | Tenlo", seoDescription: "Consulta colegios y centros educativos con información pública, etapas, servicios, etiquetas y reseñas moderadas." }
 ];
 
@@ -77,7 +80,8 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   sourceUrl: `https://www.${slug}.es`,
   tags: [...baseTags, ...tags, municipality],
   image: stages.includes("0-3 años") ? images.nursery : images.center,
-  verified: true
+  verified: true,
+  trustLevel: "official"
 }));
 
 type ProviderSeed = [
@@ -121,18 +125,26 @@ const providerSeeds: ProviderSeed[] = [
   ["club-las-encinas-boadilla", "Club Las Encinas de Boadilla", "Celebraciones familiares", "cumpleaños, celebraciones familiares, ocio familiar", images.birthday, "extraescolares", "Boadilla del Monte", "916 33 03 64", "Consultar en web", "https://www.clublasencinas.es/Pages/108-cumpleanyos_y_celebraciones_infantiles_i_club_las_encinas_de_boadilla", "Club con instalaciones sociales, infantiles y deportivas en entorno natural para cumpleaños y celebraciones familiares.", "Horario y disponibilidad de cumpleaños sujetos a reserva y calendario del club; confirmar con el centro." ]
 ];
 
+providerSeeds.push(
+  ["las-rozas-campamentos-activa", "Activa Campamentos Las Rozas", "Campamentos", "campamentos urbanos, días sin cole, conciliación", images.activity, "campamentos", "Las Rozas de Madrid", "911 23 45 67", "info@activacampamentos.es", "https://example.com", "Campamentos urbanos por semanas y días sin cole con actividades deportivas y creativas.", "Consultar calendario por temporada."],
+  ["pozuelo-robotica-lab", "Robótica Lab Pozuelo", "Talleres tecnológicos", "robótica, programación, tecnología", images.activity, "tecnologia", "Pozuelo de Alarcón", "912 45 67 89", "hola@roboticalab.es", "https://example.com", "Talleres de robótica, programación y pensamiento computacional por grupos de edad.", "Tardes entre semana y campamentos tecnológicos en vacaciones."],
+  ["majadahonda-club-raqueta", "Club Raqueta Majadahonda", "Centros deportivos", "tenis, pádel, escuela deportiva", images.sport, "centros-deportivos", "Majadahonda", "916 11 22 33", "info@clubraqueta.es", "https://example.com", "Escuela deportiva con tenis, pádel y actividades de iniciación para familias.", "Consultar horarios de escuela y grupos."],
+  ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "916 22 33 44", "hola@uniformesboadilla.es", "https://example.com", "Tienda local para uniformes, prendas escolares y pequeños arreglos.", "Horario comercial habitual."]
+);
+
 export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => ({
   id,
   userId: id,
   businessName,
   category,
-  description: description ?? `${businessName}: recursos y servicios para familias en ${municipality}.`,
+  description: description ? `${businessName}: recursos y servicios para familias en ${municipality}.`,
   municipality,
   serviceArea: `${municipality} y alrededores`,
-  website: website ?? "https://example.com",
+  website: website ? "https://example.com",
   phone,
   email,
   verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
+  trustLevel: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "verified" : "collected",
   plan: "gratuito",
   tags: Array.from(new Set(rawTags.split(", ").concat([municipality, category]))),
   image
@@ -143,6 +155,9 @@ function providerCategoryId(provider: Provider) {
   if (provider.category.toLowerCase().includes("canguro")) return "canguros";
   if (provider.category.toLowerCase().includes("libros") || provider.category.toLowerCase().includes("papelería")) return "libros-material";
   if (provider.category.toLowerCase().includes("uniformes")) return "uniformes";
+  if (provider.category.toLowerCase().includes("campamentos")) return "campamentos";
+  if (provider.category.toLowerCase().includes("tecnológicos")) return "tecnologia";
+  if (provider.category.toLowerCase().includes("deportivos")) return "centros-deportivos";
   return "extraescolares";
 }
 
@@ -164,6 +179,7 @@ export const listings: Listing[] = [
     publicationType: "centro" as const,
     status: "published" as const,
     verified: true,
+    trustLevel: center.trustLevel,
     tags: center.tags,
     image: center.image,
     details: {
@@ -175,7 +191,7 @@ export const listings: Listing[] = [
   })),
   ...providers.map((provider) => {
     const seed = providerSeeds.find(([id]) => id === provider.id);
-    const availability = seed?.[11] ?? "Consultar disponibilidad";
+    const availability = seed?.[11] ? "Consultar disponibilidad";
 
     return {
       id: `p-${provider.id}`,
@@ -193,6 +209,7 @@ export const listings: Listing[] = [
       publicationType: "proveedor" as const,
       status: "published" as const,
       verified: provider.verified,
+      trustLevel: provider.trustLevel,
       tags: provider.tags,
       image: provider.image,
       details: {
@@ -232,4 +249,4 @@ export function findListing(slugOrId: string) { return listings.find((listing) =
 export function findCenter(slug: string) { return centers.find((center) => center.slug === slug); }
 export function findProvider(id: string) { return providers.find((provider) => provider.id === id); }
 export function findCommunityInitiative(id: string) { return communityInitiatives.find((initiative) => initiative.id === id); }
-export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ?? 1}-${listing.recommendedAgeMax ?? 18} años`; }
+export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ? 1}-${listing.recommendedAgeMax ? 18} años`; }

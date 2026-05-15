@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import type { Center } from "@/lib/types";
-import { VerifiedBadge } from "./Badge";
+import { TrustBadge } from "./Badge";
 
 const centerFallbacks = [
   "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80",
@@ -26,7 +26,7 @@ export default function CenterCard({ center }: { center: Center }) {
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <span className="chip capitalize">{center.type}</span>
           {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
-          <VerifiedBadge verified={center.verified} />
+          <TrustBadge level={center.trustLevel} />
         </div>
         <h3 className="text-xl font-semibold text-ink"><Link href={detailHref}>{center.name}</Link></h3>
         <p className="mt-2 text-sm leading-6 text-muted">{center.description}</p>

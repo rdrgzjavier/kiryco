@@ -21,7 +21,8 @@ import {
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import { listings, municipalities } from "@/lib/mock-data";
+import { trackingAttrs } from "@/lib/analytics";
+import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
 const heroImage = "https://images.pexels.com/photos/9152885/pexels-photo-9152885.jpeg?auto=compress&cs=tinysrgb&w=1200";
@@ -116,6 +117,12 @@ const privacyBullets = [
   ["Entorno seguro", "Pensado para decisiones familiares desde una cuenta adulta."]
 ];
 
+const faqs = [
+  ["¿Tenlo es una app escolar?", "No. Tenlo es un directorio local para familias adultas, no una herramienta de gestión escolar ni una red social para menores."],
+  ["¿Puedo buscar por zona y categoría?", "Sí. Puedes filtrar por municipio, categoría, centro orientativo, edad recomendada y etiquetas útiles."],
+  ["¿Qué significa perfil verificado?", "Indica que la ficha tiene señales adicionales de confianza, como datos contrastados, contacto público o revisión del equipo Tenlo."]
+];
+
 export default function Home() {
   const stats = getSiteStats();
   const totalPublished = listings.filter((listing) => listing.status === "published").length;
@@ -125,6 +132,7 @@ export default function Home() {
     { value: `+${formatStat(stats.families)}`, label: "Familias activas", Icon: UsersRound },
     { value: "100%", label: "Moderado y seguro", Icon: ShieldCheck }
   ];
+  const featuredCenters = centers.slice(0, 3);
 
   return (
     <>
@@ -148,7 +156,7 @@ export default function Home() {
                   {municipalities.map((municipality) => <option key={municipality.id} value={municipality.name}>{municipality.name}</option>)}
                 </select>
               </label>
-              <button className="btn-primary min-w-40" type="submit">Buscar servicios</button>
+              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios</button>
             </form>
             <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {benefits.map(({ title, text, Icon, color }) => (
@@ -246,6 +254,26 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="section-title">Centros educativos destacados</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">Fichas públicas organizadas para entender etapas, servicios y recursos relacionados sin perderte entre páginas sueltas.</p>
+          </div>
+          <Link href="/centros" className="text-sm font-bold text-ink">Ver centros <ArrowRight size={16} className="inline" /></Link>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {featuredCenters.map((center) => (
+            <Link key={center.id} href={`/centros/${center.slug}`} className="card p-5 hover:border-ink">
+              <span className="chip capitalize">{center.type}</span>
+              <h3 className="mt-4 text-lg font-bold text-slatecopy">{center.name}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted">{center.description}</p>
+              <p className="mt-4 text-sm font-semibold text-ink">{center.municipality}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="page py-14 lg:py-16">
         <div className="grid gap-8 rounded-[24px] bg-soft p-6 shadow-soft md:p-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
             <MapPinned size={34} className="text-petrol" aria-hidden />
@@ -271,7 +299,7 @@ export default function Home() {
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">Únete como profesional o centro y forma parte del directorio de confianza para familias.</p>
             </div>
           </div>
-          <Link href="/publicar" className="btn-primary w-full justify-center sm:w-auto">Publicar oferta</Link>
+          <Link href="/publicar" className="btn-primary w-full justify-center sm:w-auto" {...trackingAttrs("publish", { placement: "home_join" })}>Publicar oferta</Link>
         </div>
       </section>
 
@@ -312,6 +340,24 @@ export default function Home() {
                 <h3 className="mt-4 text-sm font-bold text-slatecopy">{title}</h3>
                 <p className="mt-2 text-xs leading-5 text-muted">{text}</p>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="page py-14 lg:py-16">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="label">Guía local para familias</p>
+            <h2 className="section-title">Todo lo que necesitas alrededor del cole</h2>
+            <p className="mt-4 text-sm leading-7 text-muted">Tenlo agrupa servicios educativos, logística familiar, centros, actividades y recursos próximos en Las Rozas, Majadahonda, Pozuelo y Boadilla. La arquitectura está preparada para crecer por zona, categoría y centro educativo.</p>
+          </div>
+          <div className="grid gap-3">
+            {faqs.map(([question, answer]) => (
+              <details key={question} className="card p-5">
+                <summary className="cursor-pointer text-sm font-bold text-slatecopy">{question}</summary>
+                <p className="mt-3 text-sm leading-6 text-muted">{answer}</p>
+              </details>
             ))}
           </div>
         </div>

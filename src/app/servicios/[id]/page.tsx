@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
 import { ExternalLink } from "lucide-react";
-import { VerifiedBadge } from "@/components/Badge";
+import { TrustBadge } from "@/components/Badge";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import ProfileAvatar from "@/components/ProfileAvatar";
+import { trackingAttrs } from "@/lib/analytics";
 import { findProvider, providers } from "@/lib/mock-data";
 
 export function generateStaticParams() {
@@ -21,11 +25,25 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
 
   return (
     <div className="section-shell">
+      <Breadcrumbs items={[{ label: "Servicios", href: "/servicios" }, { label: provider.businessName }]} />
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        name: provider.businessName,
+        description: provider.description,
+        areaServed: provider.serviceArea,
+        telephone: provider.phone,
+        email: provider.email,
+        url: provider.website !== "https://example.com" ? provider.website : undefined
+      }} />
       <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <article>
           <img src={provider.image} alt={`Imagen de ${provider.businessName}`} className="h-64 w-full rounded-2xl border border-line object-cover sm:h-80" />
-          <div className="mt-6 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><VerifiedBadge verified={provider.verified} />{provider.tags.slice(0, 6).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
-          <h1 className="page-title">{provider.businessName}</h1>
+          <div className="mt-6 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><TrustBadge level={provider.trustLevel} />{provider.tags.slice(0, 6).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
+          <div className="mt-6 flex items-center gap-4">
+            <ProfileAvatar name={provider.businessName} role="provider" image={provider.image} />
+            <h1 className="page-title m-0">{provider.businessName}</h1>
+          </div>
           <p className="lead">{provider.description}</p>
           <section className="mt-8 card p-6">
             <h2 className="text-xl font-semibold text-ink">Información útil</h2>
@@ -39,7 +57,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         </article>
         <aside className="card h-fit p-6">
           <SafeEnvironmentCard compact title="Contacto protegido" body="Tenlo no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable." />
-          {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full">Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full">Contactar</a>}
+          {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}>Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: provider.id, type: "provider" })}>Contactar</a>}
         </aside>
       </div>
     </div>

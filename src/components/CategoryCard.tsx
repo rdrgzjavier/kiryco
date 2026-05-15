@@ -12,7 +12,7 @@ const icons = {
 };
 
 export default function CategoryCard({ category }: { category: Category }) {
-  const Icon = icons[category.slug as keyof typeof icons] ?? HeartHandshake;
+  const Icon = icons[category.slug as keyof typeof icons] ? HeartHandshake;
   return (
     <Link href={`/categoria/${category.slug}`} className="card group block p-5">
       <div className="flex h-full items-start justify-between gap-4">

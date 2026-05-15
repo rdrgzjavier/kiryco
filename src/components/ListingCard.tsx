@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Bookmark, MapPin, MessageCircle } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { trackingAttrs } from "@/lib/analytics";
 import { ageLabel, categories, centers, providers } from "@/lib/mock-data";
 import type { Listing } from "@/lib/types";
-import { StatusBadge, VerifiedBadge } from "./Badge";
+import { StatusBadge, TrustBadge } from "./Badge";
 
 const imageBank: Record<string, string[]> = {
   centros: [
@@ -57,8 +58,8 @@ export default function ListingCard({ listing }: { listing: Listing }) {
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
   const provider = providers.find((item) => item.userId === listing.userId);
-  const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ?? category?.name ?? "Recurso local";
-  const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ?? listing.area;
+  const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ? category?.name ? "Recurso local";
+  const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ? listing.area;
   const detailHref = `/anuncios/${listing.slug}`;
   const hiddenTags = [
     category?.name,
@@ -81,7 +82,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
       <div className="flex flex-col p-5">
         <div className="flex flex-wrap gap-2">
           <span className="chip">{category?.name}</span>
-          <VerifiedBadge verified={listing.verified} />
+          <TrustBadge level={listing.trustLevel} />
           {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
         </div>
         <h3 className="mt-4 text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{listing.title}</Link></h3>
@@ -98,12 +99,12 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         ) : null}
         <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Edad</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
-          <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
+          <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
         <div className="mt-5 flex flex-wrap gap-2">
-          <Link href={detailHref} className="btn-primary flex-1 text-center">Ver detalle</Link>
-          <button className="icon-button" aria-label="Contactar"><MessageCircle size={18} /></button>
-          <button className="icon-button" aria-label="Guardar"><Bookmark size={18} /></button>
+          <Link href={detailHref} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Ver detalle</Link>
+          <button className="icon-button" aria-label="Contactar" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={18} /></button>
+          <button className="icon-button" aria-label="Guardar" {...trackingAttrs("save_favorite", { item: listing.id, category: listing.categoryId })}><Bookmark size={18} /></button>
         </div>
       </div>
     </article>

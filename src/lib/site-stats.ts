@@ -8,7 +8,7 @@ function publishedCount(categoryId?: string) {
 }
 
 export function getSiteStats() {
-  const registeredFamilies = Number(process.env.TENLO_REGISTERED_FAMILIES ?? 100);
+  const registeredFamilies = Number(process.env.TENLO_REGISTERED_FAMILIES ? 100);
   const publishedLocalResources = publishedCount();
 
   return {

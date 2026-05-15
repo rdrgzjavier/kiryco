@@ -1,10 +1,10 @@
-// Force update: 2026-05-08T12:48
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronDown, ExternalLink, Search } from "lucide-react";
 import { categories, municipalities, providers } from "@/lib/mock-data";
-import { VerifiedBadge } from "@/components/Badge";
+import { TrustBadge } from "@/components/Badge";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { trackingAttrs } from "@/lib/analytics";
 
 export const metadata: Metadata = {
   title: "Servicios para familias | Tenlo",
@@ -76,13 +76,13 @@ export default function ServicesPage() {
               <ImageWithFallback src={provider.image} fallbackSrc={providerFallback(provider.id)} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" />
             </Link>
             <div className="flex flex-1 flex-col p-5">
-              <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><VerifiedBadge verified={provider.verified} /></div>
+              <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><TrustBadge level={provider.trustLevel} /></div>
               <h3 className="text-lg font-semibold text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
               <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
               <div className="mt-auto flex gap-2 pt-5">
-                <Link href={`/servicios/${provider.id}`} className="btn-primary flex-1">Ver ficha</Link>
-                {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial"><ExternalLink size={18} /></a> : null}
+                <Link href={`/servicios/${provider.id}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Ver ficha</Link>
+                {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
               </div>
             </div>
           </article>
