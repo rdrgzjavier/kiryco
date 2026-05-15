@@ -24,7 +24,7 @@ import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
-const heroImage = "https://images.pexels.com/photos/5493791/pexels-photo-5493791.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const heroImage = "https://images.pexels.com/photos/7551667/pexels-photo-7551667.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
@@ -162,7 +162,7 @@ export default function Home() {
               {benefits.map(({ title, text, Icon, color }) => (
                 <div key={title} className="flex min-w-0 items-center gap-3">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={21} className={color} aria-hidden /></span>
-                  <span className="min-w-0"><strong className="block text-sm text-slatecopy">{title}</strong><span className="block text-xs text-muted">{text}</span></span>
+                  <span className="min-w-0"><strong className="block text-sm text-slatecopy">{title}</strong><span className="block text-sm text-muted">{text}</span></span>
                 </div>
               ))}
             </div>
@@ -188,7 +188,7 @@ export default function Home() {
             </Link>
           ))}
         </div>
-        <Link href="/categoria" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink">Ver otros <ArrowRight size={16} /></Link>
+        <Link href="/categoria" className="mt-5 inline-flex w-full items-center justify-center gap-2 text-sm font-bold text-ink">Ver otros <ArrowRight size={16} /></Link>
       </section>
 
       <section className="page py-14 lg:py-16">
@@ -222,7 +222,7 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
-        <div className="mb-6 text-left md:text-center lg:flex lg:items-end lg:justify-between lg:gap-4 lg:text-left">
+        <div className="mb-6 text-left md:text-center">
           <h2 className="section-title w-full">Servicios populares en tu zona</h2>
         </div>
         <div className="flex gap-5 overflow-x-auto pb-3 lg:grid lg:grid-cols-4 lg:overflow-visible">
@@ -266,7 +266,7 @@ export default function Home() {
             </Link>
           ))}
         </div>
-        <Link href="/centros" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink">Ver centros <ArrowRight size={16} /></Link>
+        <Link href="/centros" className="mt-5 inline-flex w-full items-center justify-center gap-2 text-sm font-bold text-ink">Ver centros <ArrowRight size={16} /></Link>
       </section>
 
       <section className="page py-14 lg:py-16">
@@ -275,7 +275,7 @@ export default function Home() {
             <MapPinned size={34} className="text-petrol" aria-hidden />
             <h2 className="mt-5 text-2xl font-bold text-slatecopy">Empezamos por el Noroeste de Madrid</h2>
             <p className="mt-4 text-sm leading-7 text-muted">Cobertura inicial en cuatro municipios para comparar oferta local cerca de casa.</p>
-            <Link href="/buscar?region=madrid" className="btn-secondary mt-6 w-fit">Ver todas las zonas</Link>
+            <Link href="/buscar?region=madrid" className="btn-primary mt-6 w-fit">Ver todas las zonas</Link>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <ZoneMapLink href="/buscar?municipio=Pozuelo%20de%20Alarc%C3%B3n" label="Pozuelo de Alarcón" />
@@ -334,7 +334,7 @@ export default function Home() {
               <article key={title} className="rounded-[20px] bg-white/80 p-5 text-center shadow-sm ring-1 ring-line">
                 <CheckCircle2 size={24} className="mx-auto text-petrol" aria-hidden />
                 <h3 className="mt-4 text-sm font-bold text-slatecopy">{title}</h3>
-                <p className="mt-2 text-xs leading-5 text-muted">{text}</p>
+                <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
               </article>
             ))}
           </div>
