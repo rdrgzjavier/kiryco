@@ -111,8 +111,7 @@ export default function LoginRegistration() {
     <div className="page py-10">
       <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1fr_380px]">
         <div className="rounded-2xl border border-line bg-panel p-5 md:p-8">
-          <p className="label">Acceso adulto</p>
-          <h1 className="mt-2 text-3xl font-bold text-ink">Entrar o registrarse</h1>
+          <h1 className="text-3xl font-bold text-ink">Entrar o registrarse</h1>
           <p className="mt-3 text-sm leading-6 text-muted">
             El perfil representa a una persona adulta, una entidad o un centro. No se solicitan fotos, horarios personales, clases ni datos identificativos de menores.
           </p>
@@ -141,6 +140,11 @@ export default function LoginRegistration() {
                 <div>
                   <h2 className="text-base font-bold text-slatecopy">{current.label}</h2>
                   <p className="mt-1 text-sm leading-6 text-muted">{current.helper}</p>
+                  {showBusinessFields && (
+                    <p className="mt-2 text-sm font-semibold leading-6 text-petrol">
+                      Revisaremos tu alta antes de activar la cuenta. Te avisaremos por email o teléfono si queda aprobada o necesitamos más información.
+                    </p>
+                  )}
                 </div>
               </div>
             </section>
@@ -207,6 +211,7 @@ export default function LoginRegistration() {
             <label className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold leading-6 text-slatecopy">
               <input required type="checkbox" className="mr-2 h-4 w-4 rounded border-line" />
               Confirmo que soy mayor de 18 años o actúo en nombre de una entidad responsable, y que la información no incluye datos personales, fotos ni horarios identificativos de menores.
+              {showBusinessFields && " Entiendo que el equipo de Tenlo revisará la solicitud y contactará conmigo por email o teléfono para activar la cuenta o pedir más datos."}
             </label>
             <button className="btn-primary w-full md:w-fit" type="submit">Crear cuenta</button>
           </form>
