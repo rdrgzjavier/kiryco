@@ -137,10 +137,10 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
   userId: id,
   businessName,
   category,
-  description: description ? `${businessName}: recursos y servicios para familias en ${municipality}.`,
+  description: description ?? `${businessName}: recursos y servicios para familias en ${municipality}.`,
   municipality,
   serviceArea: `${municipality} y alrededores`,
-  website: website ? "https://example.com",
+  website: website ?? "https://example.com",
   phone,
   email,
   verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
@@ -191,7 +191,7 @@ export const listings: Listing[] = [
   })),
   ...providers.map((provider) => {
     const seed = providerSeeds.find(([id]) => id === provider.id);
-    const availability = seed?.[11] ? "Consultar disponibilidad";
+    const availability = seed?.[11] ?? "Consultar disponibilidad";
 
     return {
       id: `p-${provider.id}`,
@@ -249,4 +249,4 @@ export function findListing(slugOrId: string) { return listings.find((listing) =
 export function findCenter(slug: string) { return centers.find((center) => center.slug === slug); }
 export function findProvider(id: string) { return providers.find((provider) => provider.id === id); }
 export function findCommunityInitiative(id: string) { return communityInitiatives.find((initiative) => initiative.id === id); }
-export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ? 1}-${listing.recommendedAgeMax ? 18} años`; }
+export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ?? 1}-${listing.recommendedAgeMax ?? 18} años`; }

@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [...staticRoutes, ...localRoutes, ...categoryRoutes, ...centerRoutes, ...serviceRoutes, ...listingRoutes].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: route === "" ? "weekly" : "monthly",
+    changeFrequency: route === "" ? "weekly" as const : "monthly" as const,
     priority: route === "" ? 1 : route.startsWith("/las-rozas") || route.startsWith("/majadahonda") || route.startsWith("/pozuelo") || route.startsWith("/boadilla") ? 0.8 : 0.6
   }));
 }

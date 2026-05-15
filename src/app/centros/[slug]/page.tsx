@@ -44,7 +44,7 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
         <TrustBadge level={center.trustLevel} />
       </div>
-      <img src={center.image ? "/images/cards/centro-educativo.svg"} alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
+      <img src={center.image ?? "/images/cards/centro-educativo.svg"} alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
       <h1 className="mt-4 text-4xl font-bold text-ink">{center.name}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-8 text-slatecopy">{center.description}</p>
       <div className="mt-5 flex flex-wrap gap-2">

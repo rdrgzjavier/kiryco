@@ -42,7 +42,7 @@ export default function SearchPage({ searchParams }: { searchParams: SearchParam
     region: value(searchParams, "region")
   };
 
-  const [ageMin, ageMax] = selected.edad?.split("-").map(Number) ? [];
+  const [ageMin, ageMax] = selected.edad?.split("-").map(Number) ?? [];
   const filtered = listings.filter((listing) => {
     if (selected.categoria && listing.categoryId !== selected.categoria) return false;
     if (selected.municipio && listing.municipality !== selected.municipio) return false;
@@ -55,11 +55,11 @@ export default function SearchPage({ searchParams }: { searchParams: SearchParam
       if (!haystack.includes(needle)) return false;
     }
     if (selected.edad && typeof ageMin === "number" && typeof ageMax === "number") {
-      const listingMin = listing.recommendedAgeMin ? 0;
-      const listingMax = listing.recommendedAgeMax ? 18;
+      const listingMin = listing.recommendedAgeMin ?? 0;
+      const listingMax = listing.recommendedAgeMax ?? 18;
       if (listingMax < ageMin || listingMin > ageMax) return false;
     }
-    if (selected.precio === "gratis" && (listing.price ? 0) !== 0 && !listing.priceLabel?.toLowerCase().includes("gratis")) return false;
+    if (selected.precio === "gratis" && (listing.price ?? 0) !== 0 && !listing.priceLabel?.toLowerCase().includes("gratis")) return false;
     if (selected.precio === "25" && listing.price && listing.price > 25) return false;
     return true;
   });

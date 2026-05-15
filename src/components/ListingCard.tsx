@@ -58,8 +58,8 @@ export default function ListingCard({ listing }: { listing: Listing }) {
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
   const provider = providers.find((item) => item.userId === listing.userId);
-  const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ? category?.name ? "Recurso local";
-  const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ? listing.area;
+  const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ?? category?.name ?? "Recurso local";
+  const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ?? listing.area;
   const detailHref = `/anuncios/${listing.slug}`;
   const hiddenTags = [
     category?.name,
@@ -99,7 +99,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         ) : null}
         <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Edad</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
-          <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
+          <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
         <div className="mt-5 flex flex-wrap gap-2">
           <Link href={detailHref} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Ver detalle</Link>
