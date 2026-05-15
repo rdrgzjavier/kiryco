@@ -33,7 +33,7 @@ export default function Header() {
           </Link>
           {isLoggedIn ? (
             <>
-              <Link href="/favoritos" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">
+              <Link href="/area-personal" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">
                 <UserRound size={16} aria-hidden />
                 Área personal
               </Link>
@@ -44,7 +44,7 @@ export default function Header() {
           )}
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <Link href={isLoggedIn ? "/favoritos" : "/login"} className="icon-button h-10 w-10 rounded-xl" aria-label={isLoggedIn ? "Favoritos" : "Iniciar sesión"}>
+          <Link href={isLoggedIn ? "/area-personal" : "/login"} className="icon-button h-10 w-10 rounded-xl" aria-label={isLoggedIn ? "Área personal" : "Iniciar sesión"}>
             <UserRound size={20} />
           </Link>
           <button className="icon-button h-10 w-10 rounded-xl" onClick={() => setOpen((value) => !value)} aria-label="Abrir menú">
@@ -65,7 +65,7 @@ export default function Header() {
             </Link>
             {isLoggedIn ? (
               <div className="mt-2 grid grid-cols-2 gap-2">
-                <Link href="/favoritos" className="btn-secondary text-center" onClick={() => setOpen(false)}><UserRound size={16} />Área personal</Link>
+                <Link href="/area-personal" className="btn-secondary text-center" onClick={() => setOpen(false)}><UserRound size={16} />Área personal</Link>
                 <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Publicar oferta</Link>
               </div>
             ) : (
