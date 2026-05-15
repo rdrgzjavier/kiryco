@@ -19,7 +19,6 @@ Claim:
 
 - Registro para familias, profesionales locales, centros educativos y equipo interno.
 - Imagen de perfil opcional desde el dispositivo.
-- Avatar automático con color e inicial cuando no hay imagen.
 - Rol visible en publicaciones y tablón para diferenciar familias, servicios profesionales y centros.
 - Sin perfiles, fotos, nombres, clase u horarios personales de menores.
 
@@ -52,11 +51,7 @@ npm run build
 - `/zona/majadahonda`
 - `/zona/pozuelo`
 - `/zona/boadilla`
-- `/categoria/uniformes`
-- `/categoria/libros-material`
-- `/categoria/clases-particulares`
-- `/categoria/canguros`
-- `/categoria/extraescolares`
+- `/categoria/[slug-categoria]`
 - `/centros`
 - `/centros/[slug-centro]`
 - `/proveedores`

@@ -19,16 +19,13 @@ export const metadata: Metadata = {
       { url: "/brand/tenlo-isotipo-512.png", sizes: "512x512", type: "image/png" }
     ],
     shortcut: [{ url: "/brand/tenlo-isotipo-32.png", sizes: "32x32", type: "image/png" }],
-    apple: [{ url: "/brand/tenlo-isotipo-180.png", sizes: "180x180", type: "image/png" }],
-    other: [
-      { rel: "mask-icon", url: "/brand/tenlo-mark.svg", color: "#0F172A" }
-    ]
+    apple: [{ url: "/brand/tenlo-isotipo-180.png", sizes: "180x180", type: "image/png" }]
   },
   manifest: "/site.webmanifest",
   openGraph: {
     title: "Tenlo | Todo alrededor del colegio cerca de ti",
     description: "Recursos útiles alrededor del colegio, filtrados por zona, centro y categoría.",
-    images: [{ url: "/brand/tenlo-isotipo-1024.png", width: 1024, height: 1024, alt: "Tenlo" }]
+    images: [{ url: "/brand/tenlo-isotipo-512.png", width: 512, height: 512, alt: "Tenlo" }]
   }
 };
 
