@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Inter, Poppins } from "next/font/google";
 import Header from "@/components/Header";
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     description: "Recursos útiles alrededor del colegio, filtrados por zona, centro y categoría.",
     images: [{ url: "/brand/tenlo-isotipo-512.png", width: 512, height: 512, alt: "Tenlo" }]
   }
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

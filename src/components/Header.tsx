@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { LogIn, MapPin, Menu, Search, X } from "lucide-react";
+import { LogIn, MapPin, Menu, X } from "lucide-react";
 import { useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import FavoriteButton from "@/components/FavoriteButton";
 
 const nav = [
   ["Centros", "/centros"],
@@ -31,12 +30,13 @@ export default function Header() {
             <MapPin size={16} className="text-ink" aria-hidden />
             Madrid
           </Link>
-          <FavoriteButton className="icon-button h-10 w-10 rounded-xl" />
           <Link href="/login" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">Iniciar sesión</Link>
           <Link href="/publicar" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-ink px-4 text-sm font-bold text-white shadow-lift transition-colors hover:bg-ink/90">Únete a Tenlo</Link>
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <FavoriteButton className="icon-button h-10 w-10 rounded-xl" />
+          <Link href="/login" className="icon-button h-10 w-10 rounded-xl" aria-label="Iniciar sesión">
+            <LogIn size={20} />
+          </Link>
           <button className="icon-button h-10 w-10 rounded-xl" onClick={() => setOpen((value) => !value)} aria-label="Abrir menú">
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -44,9 +44,6 @@ export default function Header() {
       </div>
       {open && (
         <div className="border-t border-line bg-panel px-5 py-4 md:hidden">
-          <Link href="/buscar" className="mb-3 flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-soft px-4 text-base font-semibold text-muted" onClick={() => setOpen(false)}>
-            <Search size={18} aria-hidden /> Busca por zona, centro o categoría
-          </Link>
           <nav className="grid gap-1">
             {nav.map(([label, href]) => (
               <Link key={href} href={href} className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy transition-colors hover:bg-soft" onClick={() => setOpen(false)}>

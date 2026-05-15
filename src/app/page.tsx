@@ -24,7 +24,7 @@ import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
-const heroImage = "https://images.pexels.com/photos/7880806/pexels-photo-7880806.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const heroImage = "https://images.pexels.com/photos/7880605/pexels-photo-7880605.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
@@ -161,8 +161,8 @@ export default function Home() {
             <div className="mt-7 grid gap-4 sm:grid-cols-3">
               {benefits.map(({ title, text, Icon, color }) => (
                 <div key={title} className="flex min-w-0 items-center gap-3">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={21} className={color} aria-hidden /></span>
-                  <span className="min-w-0"><strong className="block text-sm text-slatecopy">{title}</strong><span className="block text-sm text-muted">{text}</span></span>
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={26} className={color} aria-hidden /></span>
+                  <span className="min-w-0"><strong className="block text-base text-slatecopy">{title}</strong><span className="block text-sm leading-5 text-muted">{text}</span></span>
                 </div>
               ))}
             </div>
@@ -180,7 +180,7 @@ export default function Home() {
           <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
           <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-muted lg:whitespace-nowrap">Categorías útiles para comparar servicios, centros y recursos locales.</p>
         </div>
-        <div className="card grid gap-4 p-5 shadow-soft sm:grid-cols-4 lg:grid-cols-7">
+        <div className="grid gap-3 sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
             <Link key={name} href={href} className="group flex min-h-28 flex-col items-center justify-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
@@ -198,12 +198,12 @@ export default function Home() {
           <h2 className="section-title lg:whitespace-nowrap">Oferta local para decidir con confianza</h2>
           <p className="mt-3 text-sm leading-6 text-muted">Datos vivos del directorio Tenlo: centros educativos, recursos disponibles y familias activas en la zona.</p>
         </div>
-        <div className="grid overflow-hidden rounded-[24px] border border-line bg-white shadow-soft sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border border-line bg-white shadow-soft lg:grid-cols-4">
           {statCards.map(({ value, label, Icon }) => (
-            <div key={label} className="border-line bg-white p-8 text-center sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:last-child]:border-r-0">
-              <Icon size={30} className="mx-auto text-ink" aria-hidden />
-              <p className="mt-4 text-3xl font-extrabold text-slatecopy">{value}</p>
-              <p className="mt-2 text-sm text-muted">{label}</p>
+            <div key={label} className="border-line bg-white p-5 text-center odd:border-r [&:nth-child(-n+2)]:border-b lg:border-b-0 lg:p-8 lg:[&:nth-child(2n)]:border-r lg:[&:last-child]:border-r-0">
+              <Icon size={26} className="mx-auto text-ink lg:size-[30px]" aria-hidden />
+              <p className="mt-3 text-2xl font-extrabold text-slatecopy lg:mt-4 lg:text-3xl">{value}</p>
+              <p className="mt-1 text-sm leading-5 text-muted lg:mt-2">{label}</p>
             </div>
           ))}
         </div>
