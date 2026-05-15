@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogIn, MapPin, Menu, X } from "lucide-react";
+import { LogIn, MapPin, Menu, UserRound, X } from "lucide-react";
 import { useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
@@ -35,7 +35,7 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-2 md:hidden">
           <Link href="/login" className="icon-button h-10 w-10 rounded-xl" aria-label="Iniciar sesión">
-            <LogIn size={20} />
+            <UserRound size={20} />
           </Link>
           <button className="icon-button h-10 w-10 rounded-xl" onClick={() => setOpen((value) => !value)} aria-label="Abrir menú">
             {open ? <X size={20} /> : <Menu size={20} />}

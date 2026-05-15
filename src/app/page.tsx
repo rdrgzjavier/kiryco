@@ -24,7 +24,7 @@ import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
-const heroImage = "https://images.pexels.com/photos/7880605/pexels-photo-7880605.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const heroImage = "https://images.pexels.com/photos/33593549/pexels-photo-33593549.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
