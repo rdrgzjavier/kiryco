@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { categories, centers, municipalities } from "@/lib/mock-data";
 
@@ -13,17 +12,6 @@ export default function PublishPage() {
       <p className="label">Estado inicial: pendiente de revisión</p>
       <h1 className="page-title">Publicar</h1>
       <p className="lead">Toda publicación creada por familias o profesionales locales empieza como pendiente de revisión antes de aparecer públicamente.</p>
-
-      <div className="mt-8 flex flex-col gap-3 rounded-2xl border border-line bg-panel p-5 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-base font-bold text-slatecopy">¿Ya formas parte de Tenlo?</h2>
-          <p className="mt-1 text-sm text-muted">Entra para recuperar tus datos o regístrate antes de publicar.</p>
-        </div>
-        <div className="flex gap-3">
-          <Link href="/login" className="btn-secondary">Entrar</Link>
-          <Link href="/login" className="btn-primary">Registrarte</Link>
-        </div>
-      </div>
 
       {sent ? (
         <div className="mt-8 rounded-2xl border border-line bg-soft p-5 text-sm font-semibold leading-6 text-slatecopy">Publicación enviada a revisión. Estado: pending_review.</div>

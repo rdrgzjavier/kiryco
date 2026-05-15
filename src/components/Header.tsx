@@ -13,6 +13,7 @@ const nav = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const isLoggedIn = false;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-panel/90 backdrop-blur-xl">
@@ -30,11 +31,20 @@ export default function Header() {
             <MapPin size={16} className="text-ink" aria-hidden />
             Madrid
           </Link>
-          <Link href="/login" className="inline-flex min-h-10 items-center justify-center rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">Iniciar sesión</Link>
-          <Link href="/publicar" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-ink px-4 text-sm font-bold text-white shadow-lift transition-colors hover:bg-ink/90">Únete a Tenlo</Link>
+          {isLoggedIn ? (
+            <>
+              <Link href="/favoritos" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line bg-panel px-4 text-sm font-bold text-slatecopy transition-colors hover:border-ink hover:text-ink">
+                <UserRound size={16} aria-hidden />
+                Área personal
+              </Link>
+              <Link href="/publicar" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-ink px-4 text-sm font-bold text-white shadow-lift transition-colors hover:bg-ink/90">Publicar oferta</Link>
+            </>
+          ) : (
+            <Link href="/login" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-ink px-4 text-sm font-bold text-white shadow-lift transition-colors hover:bg-ink/90">Iniciar sesión</Link>
+          )}
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <Link href="/login" className="icon-button h-10 w-10 rounded-xl" aria-label="Iniciar sesión">
+          <Link href={isLoggedIn ? "/favoritos" : "/login"} className="icon-button h-10 w-10 rounded-xl" aria-label={isLoggedIn ? "Favoritos" : "Iniciar sesión"}>
             <UserRound size={20} />
           </Link>
           <button className="icon-button h-10 w-10 rounded-xl" onClick={() => setOpen((value) => !value)} aria-label="Abrir menú">
@@ -53,10 +63,14 @@ export default function Header() {
             <Link href="/buscar?region=madrid" className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy" onClick={() => setOpen(false)}>
               Madrid
             </Link>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <Link href="/login" className="btn-secondary text-center" onClick={() => setOpen(false)}><LogIn size={16} />Entrar</Link>
-              <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Unirme</Link>
-            </div>
+            {isLoggedIn ? (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <Link href="/favoritos" className="btn-secondary text-center" onClick={() => setOpen(false)}><UserRound size={16} />Área personal</Link>
+                <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Publicar oferta</Link>
+              </div>
+            ) : (
+              <Link href="/login" className="btn-primary mt-2 text-center" onClick={() => setOpen(false)}><LogIn size={16} />Iniciar sesión</Link>
+            )}
           </nav>
         </div>
       )}
