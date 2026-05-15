@@ -7,10 +7,9 @@ import AnimatedLogo from "@/components/AnimatedLogo";
 import FavoriteButton from "@/components/FavoriteButton";
 
 const nav = [
+  ["Centros", "/centros"],
   ["Servicios", "/servicios"],
-  ["Familias", "/buscar"],
-  ["Profesionales", "/proveedores"],
-  ["Recursos", "/comunidad"]
+  ["Comunidad", "/comunidad"]
 ];
 
 export default function Header() {

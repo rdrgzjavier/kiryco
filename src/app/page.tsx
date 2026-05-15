@@ -16,8 +16,7 @@ import {
   ShieldCheck,
   Sparkles,
   Star,
-  UsersRound,
-  WalletCards
+  UsersRound
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
@@ -25,12 +24,11 @@ import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
-const heroImage = "https://images.pexels.com/photos/9152885/pexels-photo-9152885.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const heroImage = "https://images.pexels.com/photos/5493791/pexels-photo-5493791.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
   { title: "Valoraciones reales", text: "De otras familias", Icon: Star, color: "text-sage" },
-  { title: "Reserva online", text: "Rápido y seguro", Icon: WalletCards, color: "text-ink" },
   { title: "Todo en un lugar", text: "Ahorra tiempo", Icon: Heart, color: "text-coral" }
 ];
 
@@ -139,8 +137,10 @@ export default function Home() {
       <section className="overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#F7F5F2_100%)]">
         <div className="page grid gap-8 py-10 lg:grid-cols-[1.22fr_0.78fr] lg:py-14">
           <div className="flex flex-col justify-center">
-            <p className="chip w-fit">Todo lo que necesitas en tu zona</p>
-            <h1 className="page-title mt-6 max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
+            <div className="mb-6 h-40 overflow-hidden rounded-[28px] bg-soft md:hidden">
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Madre caminando de la mano con su hija, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
+            </div>
+            <h1 className="page-title max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
             <p className="lead">Actividades, apoyo escolar, salud, tecnología, transporte y mucho más. Información organizada por zona, sin datos identificativos de menores.</p>
             <form action="/buscar" className="mt-8 grid gap-3 rounded-[24px] bg-panel p-3 shadow-soft sm:grid-cols-[1fr_0.72fr_auto]">
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
@@ -158,51 +158,47 @@ export default function Home() {
               </label>
               <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios</button>
             </form>
-            <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-7 grid gap-4 sm:grid-cols-3">
               {benefits.map(({ title, text, Icon, color }) => (
-                <div key={title} className="flex min-w-0 items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={18} className={color} aria-hidden /></span>
-                  <span className="min-w-0"><strong className="block whitespace-nowrap text-[11px] text-slatecopy">{title}</strong><span className="block whitespace-nowrap text-[11px] text-muted">{text}</span></span>
+                <div key={title} className="flex min-w-0 items-center gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={21} className={color} aria-hidden /></span>
+                  <span className="min-w-0"><strong className="block text-sm text-slatecopy">{title}</strong><span className="block text-xs text-muted">{text}</span></span>
                 </div>
               ))}
             </div>
           </div>
           <div className="relative hidden min-h-[370px] lg:block">
-            <div className="absolute inset-x-4 bottom-0 top-6 overflow-hidden rounded-[44px] bg-lavender shadow-lift xl:inset-x-8">
-              <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Manos de una persona adulta y un menor caminando, sin rostros visibles" className="h-full w-full object-cover object-center" loading="eager" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/12 via-transparent to-transparent" />
+            <div className="absolute inset-x-4 bottom-0 top-6 overflow-hidden rounded-[44px] bg-white xl:inset-x-8">
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Madre caminando de la mano con su hija, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
             </div>
           </div>
         </div>
       </section>
 
       <section className="page relative z-10 py-14 lg:py-16">
-        <div className="mb-5 text-center">
+        <div className="mb-5 text-left md:text-center">
           <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
           <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-muted lg:whitespace-nowrap">Categorías útiles para comparar servicios, centros y recursos locales.</p>
         </div>
-        <div className="card grid gap-4 p-5 shadow-soft sm:grid-cols-4 lg:grid-cols-[repeat(7,1fr)_0.75fr]">
+        <div className="card grid gap-4 p-5 shadow-soft sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
             <Link key={name} href={href} className="flex min-h-24 flex-col items-center justify-center gap-3 rounded-2xl p-3 text-center text-sm font-bold text-slatecopy transition-colors hover:bg-soft hover:text-ink">
               <Icon size={26} className={color} aria-hidden />
               <span>{name}</span>
             </Link>
           ))}
-          <Link href="/categoria" className="flex min-h-24 flex-col items-center justify-center gap-2 p-3 text-center text-sm font-bold text-ink lg:border-l lg:border-line">
-            <span className="grid h-12 w-12 place-items-center rounded-full bg-lavender"><ArrowRight size={24} aria-hidden /></span>
-            <span>Ver todos</span>
-          </Link>
         </div>
+        <Link href="/categoria" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink">Ver otros <ArrowRight size={16} /></Link>
       </section>
 
       <section className="page py-14 lg:py-16">
-        <div className="mx-auto mb-7 max-w-3xl text-center">
+        <div className="mx-auto mb-7 max-w-3xl text-left md:text-center">
           <h2 className="section-title lg:whitespace-nowrap">Oferta local para decidir con confianza</h2>
           <p className="mt-3 text-sm leading-6 text-muted">Datos vivos del directorio Tenlo: centros educativos, recursos disponibles y familias activas en la zona.</p>
         </div>
-        <div className="grid gap-px overflow-hidden rounded-[24px] bg-line bg-gradient-to-r from-lavender via-white to-lavender p-px shadow-soft sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid overflow-hidden rounded-[24px] border border-line bg-white shadow-soft sm:grid-cols-2 lg:grid-cols-4">
           {statCards.map(({ value, label, Icon }) => (
-            <div key={label} className="bg-white/80 p-8 text-center">
+            <div key={label} className="border-line bg-white p-8 text-center sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:last-child]:border-r-0">
               <Icon size={30} className="mx-auto text-ink" aria-hidden />
               <p className="mt-4 text-3xl font-extrabold text-slatecopy">{value}</p>
               <p className="mt-2 text-sm text-muted">{label}</p>
@@ -212,7 +208,7 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
-        <h2 className="section-title text-center">Para quién está destinado Tenlo</h2>
+        <h2 className="section-title text-left md:text-center">Para quién está destinado Tenlo</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {audienceCards.map(({ title, text, href, Icon }) => (
             <article key={title} className="card p-7">
@@ -226,7 +222,7 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
-        <div className="mb-6 text-center lg:flex lg:items-end lg:justify-between lg:gap-4 lg:text-left">
+        <div className="mb-6 text-left md:text-center lg:flex lg:items-end lg:justify-between lg:gap-4 lg:text-left">
           <h2 className="section-title w-full">Servicios populares en tu zona</h2>
         </div>
         <div className="flex gap-5 overflow-x-auto pb-3 lg:grid lg:grid-cols-4 lg:overflow-visible">
@@ -254,12 +250,11 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
-        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+        <div className="mb-7 text-left md:text-center">
           <div>
             <h2 className="section-title">Centros educativos destacados</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">Fichas públicas organizadas para entender etapas, servicios y recursos relacionados sin perderte entre páginas sueltas.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted md:mx-auto">Fichas públicas organizadas para entender etapas, servicios y recursos relacionados sin perderte entre páginas sueltas.</p>
           </div>
-          <Link href="/centros" className="text-sm font-bold text-ink">Ver centros <ArrowRight size={16} className="inline" /></Link>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {featuredCenters.map((center) => (
@@ -271,6 +266,7 @@ export default function Home() {
             </Link>
           ))}
         </div>
+        <Link href="/centros" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ink">Ver centros <ArrowRight size={16} /></Link>
       </section>
 
       <section className="page py-14 lg:py-16">
@@ -304,7 +300,7 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-3xl text-left md:text-center">
           <h2 className="section-title">Cómo funciona Tenlo</h2>
           <p className="mt-3 text-sm leading-6 text-muted">De la necesidad familiar a una decisión local clara.</p>
         </div>
@@ -371,7 +367,7 @@ export default function Home() {
               <p className="mt-2 text-sm leading-6 text-muted">Recibe novedades, recursos y recomendaciones pensadas para familias como la tuya.</p>
             </div>
           </div>
-          <form action="/contacto" className="grid min-w-[min(100%,460px)] gap-3 sm:grid-cols-[1fr_auto]">
+          <form action="/contacto" className="grid min-w-[min(100%,460px)] gap-3 xl:grid-cols-[1fr_auto]">
             <label className="sr-only" htmlFor="newsletter-email">Tu correo electrónico</label>
             <input id="newsletter-email" name="email" type="email" placeholder="Tu correo electrónico" className="field m-0 bg-white" />
             <button className="btn-primary" type="submit">Suscribirme</button>
