@@ -44,16 +44,16 @@ export default function Header() {
       </div>
       {open && (
         <div className="border-t border-line bg-panel px-5 py-4 md:hidden">
-          <div className="mb-3 flex items-center gap-2 rounded-2xl border border-line bg-soft px-4 py-3 text-sm text-muted">
-            <Search size={16} aria-hidden /> Busca por zona, centro o categoría
-          </div>
+          <Link href="/buscar" className="mb-3 flex min-h-14 items-center gap-3 rounded-2xl border border-line bg-soft px-4 text-base font-semibold text-muted" onClick={() => setOpen(false)}>
+            <Search size={18} aria-hidden /> Busca por zona, centro o categoría
+          </Link>
           <nav className="grid gap-1">
             {nav.map(([label, href]) => (
-              <Link key={href} href={href} className="rounded-2xl px-3 py-3 font-semibold text-slatecopy transition-colors hover:bg-soft" onClick={() => setOpen(false)}>
+              <Link key={href} href={href} className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy transition-colors hover:bg-soft" onClick={() => setOpen(false)}>
                 {label}
               </Link>
             ))}
-            <Link href="/buscar?region=madrid" className="rounded-2xl px-3 py-3 font-semibold text-slatecopy" onClick={() => setOpen(false)}>
+            <Link href="/buscar?region=madrid" className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy" onClick={() => setOpen(false)}>
               Madrid
             </Link>
             <div className="mt-2 grid grid-cols-2 gap-2">

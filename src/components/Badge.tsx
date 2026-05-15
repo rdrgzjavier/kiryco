@@ -4,7 +4,7 @@ import type { ModerationStatus, TrustLevel } from "@/lib/types";
 export function VerifiedBadge({ verified }: { verified?: boolean }) {
   if (!verified) return null;
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-sage/10 px-3 py-1 text-xs font-semibold text-sage">
+    <span className="inline-flex items-center gap-1 rounded-full bg-sage/10 px-3 py-1 text-sm font-semibold text-sage">
       <CheckCircle2 className="text-sage" size={14} aria-hidden /> Verificado
     </span>
   );
@@ -19,7 +19,7 @@ export function TrustBadge({ level }: { level: TrustLevel }) {
   const { label, Icon, className } = config[level];
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${className}`}>
       <Icon size={14} aria-hidden /> {label}
     </span>
   );
@@ -35,7 +35,7 @@ export function StatusBadge({ status }: { status: ModerationStatus }) {
   };
 
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy ring-1 ring-line">
+    <span className="inline-flex items-center gap-1 rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy ring-1 ring-line">
       <Clock3 className="text-ink" size={14} aria-hidden /> {labels[status]}
     </span>
   );

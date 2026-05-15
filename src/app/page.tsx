@@ -24,7 +24,7 @@ import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 
-const heroImage = "https://images.pexels.com/photos/7551667/pexels-photo-7551667.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const heroImage = "https://images.pexels.com/photos/7880806/pexels-photo-7880806.jpeg?auto=compress&cs=tinysrgb&w=1200";
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
@@ -138,7 +138,7 @@ export default function Home() {
         <div className="page grid gap-8 py-10 lg:grid-cols-[1.22fr_0.78fr] lg:py-14">
           <div className="flex flex-col justify-center">
             <div className="mb-6 h-40 overflow-hidden rounded-[28px] bg-soft md:hidden">
-              <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Madre caminando de la mano con su hija, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
             </div>
             <h1 className="page-title max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
             <p className="lead">Actividades, apoyo escolar, salud, tecnología, transporte y mucho más. Información organizada por zona, sin datos identificativos de menores.</p>
@@ -146,12 +146,12 @@ export default function Home() {
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <Search size={20} className="text-muted" aria-hidden />
                 <span className="sr-only">Servicio</span>
-                <input name="tag" placeholder="¿Qué servicio buscas?" className="w-full bg-transparent text-sm outline-none" />
+                <input name="tag" placeholder="¿Qué servicio buscas?" className="w-full bg-transparent text-base outline-none" />
               </label>
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <MapPin size={20} className="text-muted" aria-hidden />
                 <span className="sr-only">Zona</span>
-                <select name="municipio" className="w-full bg-transparent text-sm text-muted outline-none">
+                <select name="municipio" className="w-full bg-transparent text-base text-muted outline-none">
                   <option value="">¿Dónde?</option>
                   {municipalities.map((municipality) => <option key={municipality.id} value={municipality.name}>{municipality.name}</option>)}
                 </select>
@@ -169,7 +169,7 @@ export default function Home() {
           </div>
           <div className="relative hidden min-h-[370px] lg:block">
             <div className="absolute inset-x-4 bottom-0 top-6 overflow-hidden rounded-[44px] bg-white xl:inset-x-8">
-              <ImageWithFallback src={heroImage} fallbackSrc="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=85" alt="Madre caminando de la mano con su hija, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
             </div>
           </div>
         </div>
@@ -182,8 +182,10 @@ export default function Home() {
         </div>
         <div className="card grid gap-4 p-5 shadow-soft sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
-            <Link key={name} href={href} className="flex min-h-24 flex-col items-center justify-center gap-3 rounded-2xl p-3 text-center text-sm font-bold text-slatecopy transition-colors hover:bg-soft hover:text-ink">
-              <Icon size={26} className={color} aria-hidden />
+            <Link key={name} href={href} className="group flex min-h-28 flex-col items-center justify-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
+                <Icon size={26} className={color} aria-hidden />
+              </span>
               <span>{name}</span>
             </Link>
           ))}
