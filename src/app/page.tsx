@@ -160,7 +160,7 @@ export default function Home() {
             </form>
             <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
-                <div key={title} className="flex min-w-0 items-center justify-center gap-3 text-center sm:justify-start sm:text-left">
+                <div key={title} className="grid w-full max-w-[270px] grid-cols-[56px_1fr] items-center gap-4 text-left sm:max-w-none">
                   <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm"><Icon size={26} className={color} aria-hidden /></span>
                   <span className="min-w-0"><strong className="block text-base text-slatecopy">{title}</strong><span className="block text-sm leading-5 text-muted">{text}</span></span>
                 </div>
