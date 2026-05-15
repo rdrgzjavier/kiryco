@@ -98,6 +98,9 @@ export default function LoginRegistration() {
   const showAgeAndAvailability = needsAgeAndAvailability(userType);
   const showCredentials = needsCredentials(userType);
   const showMinorSafety = needsMinorSafetyNotice(userType, subtype);
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const passwordMismatch = passwordConfirm.length > 0 && password !== passwordConfirm;
 
   const subtypeOptions = useMemo(() => current.subtypes ?? [], [current]);
 
@@ -156,6 +159,12 @@ export default function LoginRegistration() {
               </label>
               <label className="field-label">Email de contacto<input required type="email" className="field" /></label>
               <label className="field-label">Teléfono de contacto<input type="tel" className="field" /></label>
+              <label className="field-label">Contraseña<input required type="password" minLength={8} className="field" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
+              <label className="field-label">
+                Confirmar contraseña
+                <input required type="password" minLength={8} className="field" value={passwordConfirm} onChange={(event) => setPasswordConfirm(event.target.value)} aria-invalid={passwordMismatch} />
+                {passwordMismatch && <span className="mt-2 block text-sm font-semibold text-coral">Las contraseñas no coinciden.</span>}
+              </label>
               <label className="field-label">
                 Municipio principal
                 <select required className="field" defaultValue="">
@@ -211,9 +220,8 @@ export default function LoginRegistration() {
             <label className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold leading-6 text-slatecopy">
               <input required type="checkbox" className="mr-2 h-4 w-4 rounded border-line" />
               Confirmo que soy mayor de 18 años o actúo en nombre de una entidad responsable, y que la información no incluye datos personales, fotos ni horarios identificativos de menores.
-              {showBusinessFields && " Entiendo que el equipo de Tenlo revisará la solicitud y contactará conmigo por email o teléfono para activar la cuenta o pedir más datos."}
             </label>
-            <button className="btn-primary w-full md:w-fit" type="submit">Crear cuenta</button>
+            <button className="btn-primary w-full md:w-fit" type="submit" disabled={passwordMismatch}>Crear cuenta</button>
           </form>
         </div>
 

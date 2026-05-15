@@ -3,18 +3,52 @@ import { categories, centers, listings, municipalities, providers } from "@/lib/
 
 const baseUrl = "https://tenlo.es";
 
+function hasPublishedListings(categoryId: string, municipalityName?: string) {
+  return listings.some((listing) => (
+    listing.status === "published" &&
+    listing.categoryId === categoryId &&
+    (!municipalityName || listing.municipality === municipalityName)
+  ));
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/buscar", "/categoria", "/centros", "/servicios", "/comunidad", "/publicar", "/contacto"];
-  const localRoutes = municipalities.flatMap((municipality) => categories.map((category) => `/${municipality.slug}/${category.slug}`));
-  const categoryRoutes = categories.map((category) => `/categoria/${category.slug}`);
+  const staticRoutes = ["", "/buscar", "/categoria", "/centros", "/servicios", "/comunidad"];
+  const trustRoutes = ["/privacidad", "/aviso-legal", "/cookies", "/normas-comunidad", "/contacto"];
+  const zoneRoutes = municipalities.map((municipality) => `/zona/${municipality.slug}`);
+  const localRoutes = municipalities.flatMap((municipality) => (
+    categories
+      .filter((category) => hasPublishedListings(category.id, municipality.name))
+      .map((category) => `/${municipality.slug}/${category.slug}`)
+  ));
+  const categoryRoutes = categories
+    .filter((category) => hasPublishedListings(category.id))
+    .map((category) => `/categoria/${category.slug}`);
   const centerRoutes = centers.map((center) => `/centros/${center.slug}`);
   const serviceRoutes = providers.map((provider) => `/servicios/${provider.id}`);
-  const listingRoutes = listings.map((listing) => `/anuncios/${listing.slug}`);
+  const listingRoutes = listings
+    .filter((listing) => listing.status === "published")
+    .map((listing) => `/anuncios/${listing.slug}`);
+  const routes = Array.from(new Set([
+    ...staticRoutes,
+    ...trustRoutes,
+    ...zoneRoutes,
+    ...localRoutes,
+    ...categoryRoutes,
+    ...centerRoutes,
+    ...serviceRoutes,
+    ...listingRoutes
+  ]));
 
-  return [...staticRoutes, ...localRoutes, ...categoryRoutes, ...centerRoutes, ...serviceRoutes, ...listingRoutes].map((route) => ({
+  return routes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: route === "" ? "weekly" as const : "monthly" as const,
-    priority: route === "" ? 1 : route.startsWith("/las-rozas") || route.startsWith("/majadahonda") || route.startsWith("/pozuelo") || route.startsWith("/boadilla") ? 0.8 : 0.6
+    priority: route === ""
+      ? 1
+      : route.startsWith("/las-rozas") || route.startsWith("/majadahonda") || route.startsWith("/pozuelo") || route.startsWith("/boadilla") || route.startsWith("/zona/")
+        ? 0.8
+        : route.startsWith("/centros/") || route.startsWith("/servicios/") || route.startsWith("/anuncios/")
+          ? 0.7
+          : 0.6
   }));
 }
