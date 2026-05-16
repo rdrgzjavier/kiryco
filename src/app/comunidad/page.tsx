@@ -39,10 +39,10 @@ export default function CommunityPage() {
           <ValidatedSearchForm className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]" message="Completa al menos una palabra, zona o tipo de contenido para filtrar.">
             <div className="filter-control">
               <Search size={18} className="text-muted" />
-              <input name="tag" placeholder="Busca por palabra o tag..." className="filter-input" />
+              <input name="tag" aria-label="Buscar contenido de comunidad por palabra o etiqueta" placeholder="Busca por palabra o tag..." className="filter-input" />
             </div>
             <div className="relative">
-              <select name="municipio" className="filter-select">
+              <select name="municipio" aria-label="Filtrar comunidad por zona" className="filter-select">
                 <option value="">Todas las zonas</option>
                 {municipalities.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
               </select>
@@ -51,7 +51,7 @@ export default function CommunityPage() {
               </div>
             </div>
             <div className="relative">
-              <select name="tipo" className="filter-select">
+              <select name="tipo" aria-label="Filtrar comunidad por tipo de contenido" className="filter-select">
                 <option value="">Tipo de contenido</option>
                 <option>Iniciativas y causas</option>
                 <option>Eventos familiares</option>

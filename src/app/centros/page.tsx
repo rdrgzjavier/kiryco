@@ -43,10 +43,10 @@ export default function CentersPage() {
       <ValidatedSearchForm className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]" message="Completa al menos nombre, zona o tipología para filtrar centros.">
         <div className="filter-control">
           <Search size={18} className="text-muted" />
-          <input name="tag" placeholder="Busca por nombre o zona..." className="filter-input" />
+          <input name="tag" aria-label="Buscar centros por nombre o zona" placeholder="Busca por nombre o zona..." className="filter-input" />
         </div>
         <div className="relative">
-          <select name="municipio" className="filter-select">
+          <select name="municipio" aria-label="Filtrar centros por zona" className="filter-select">
             <option value="">Todas las zonas</option>
             {municipalities.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
           </select>
@@ -55,7 +55,7 @@ export default function CentersPage() {
           </div>
         </div>
         <div className="relative">
-          <select name="tipo" className="filter-select">
+          <select name="tipo" aria-label="Filtrar centros por tipología" className="filter-select">
             <option value="">Tipología de centro</option>
             <option value="publico">Público</option>
             <option value="concertado">Concertado</option>

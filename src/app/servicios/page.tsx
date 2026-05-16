@@ -79,10 +79,10 @@ export default function ServicesPage() {
       <ValidatedSearchForm className="filter-shell sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]" message="Completa al menos una palabra clave, zona, tipología o precio para filtrar.">
         <div className="filter-control">
           <Search size={18} className="text-muted" />
-          <input name="tag" placeholder="Palabra clave..." className="filter-input" />
+          <input name="tag" aria-label="Buscar servicios por palabra clave" placeholder="Palabra clave..." className="filter-input" />
         </div>
         <div className="relative">
-          <select name="municipio" className="filter-select">
+          <select name="municipio" aria-label="Filtrar servicios por zona" className="filter-select">
             <option value="">Todas las zonas</option>
             {municipalities.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
           </select>
@@ -91,7 +91,7 @@ export default function ServicesPage() {
           </div>
         </div>
         <div className="relative">
-          <select name="categoria" className="filter-select">
+          <select name="categoria" aria-label="Filtrar servicios por tipología" className="filter-select">
             <option value="">Todas las tipologías</option>
             {serviceCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
@@ -100,7 +100,7 @@ export default function ServicesPage() {
           </div>
         </div>
         <div className="relative">
-          <select name="precio" className="filter-select">
+          <select name="precio" aria-label="Filtrar servicios por precio" className="filter-select">
             <option value="">Cualquier precio</option>
             <option value="gratis">Gratis</option>
             <option value="25">Hasta 25 €</option>
