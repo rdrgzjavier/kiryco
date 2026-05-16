@@ -195,11 +195,11 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
-            <Link key={name} href={href} className="group grid aspect-square w-full grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32">
+            <Link key={name} href={href} className="group flex aspect-square w-full flex-col items-center justify-center gap-4 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
                 <Icon size={26} className={color} aria-hidden />
               </span>
-              <span className="flex h-11 items-center justify-center leading-5">{name}</span>
+              <span className="flex min-h-10 items-center justify-center leading-5">{name}</span>
             </Link>
           ))}
         </div>

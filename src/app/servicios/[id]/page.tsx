@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
 import { ExternalLink } from "lucide-react";
@@ -7,7 +8,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { trackingAttrs } from "@/lib/analytics";
-import { findProvider, providers } from "@/lib/mock-data";
+import { ageLabel, findProvider, listings, providers } from "@/lib/mock-data";
 
 function isPersonalProvider(provider: NonNullable<ReturnType<typeof findProvider>>) {
   const value = [provider.id, provider.category, provider.businessName, ...provider.tags].join(" ").toLowerCase();
@@ -28,6 +29,12 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   const provider = findProvider(params.id);
   if (!provider) notFound();
   const personalProvider = isPersonalProvider(provider);
+  const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
+  const sourceLabel = provider.website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo";
+  const reviewDate = "Mayo de 2026";
+  const relatedServices = providers
+    .filter((item) => item.id !== provider.id && (item.municipality === provider.municipality || item.category === provider.category))
+    .slice(0, 3);
 
   return (
     <div className="section-shell">
@@ -56,10 +63,39 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
             <dl className="mt-4 grid gap-3 text-sm text-slatecopy">
               <div className="flex justify-between gap-4"><dt>Zona</dt><dd className="text-right font-semibold text-ink">{provider.serviceArea}</dd></div>
               <div className="flex justify-between gap-4"><dt>Municipio</dt><dd className="text-right font-semibold text-ink">{provider.municipality}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Edad recomendada</dt><dd className="text-right font-semibold text-ink">{listing ? ageLabel(listing) : "Consultar"}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Precio</dt><dd className="text-right font-semibold text-ink">{listing?.priceLabel ?? "Consultar"}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Disponibilidad</dt><dd className="text-right font-semibold text-ink">{listing?.availability ?? "Consultar disponibilidad"}</dd></div>
               <div className="flex justify-between gap-4"><dt>Teléfono</dt><dd className="text-right font-semibold text-ink">{provider.phone}</dd></div>
               <div className="flex justify-between gap-4"><dt>Email</dt><dd className="text-right font-semibold text-ink">{provider.email}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Fuente</dt><dd className="text-right font-semibold text-ink">{sourceLabel}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Última revisión</dt><dd className="text-right font-semibold text-ink">{reviewDate}</dd></div>
             </dl>
           </section>
+          <section className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="card p-5">
+              <h2 className="text-lg font-semibold text-ink">Servicios incluidos</h2>
+              <ul className="mt-3 grid gap-2 text-sm leading-6 text-muted">
+                {provider.tags.slice(0, 4).map((tag) => <li key={tag}>{tag}</li>)}
+              </ul>
+            </div>
+            <div className="card p-5">
+              <h2 className="text-lg font-semibold text-ink">Condiciones</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{listing?.details?.Horario ?? listing?.availability ?? "Confirma disponibilidad, precios y condiciones directamente con el proveedor antes de reservar."}</p>
+            </div>
+          </section>
+          {relatedServices.length > 0 ? (
+            <section className="mt-6 card p-5">
+              <h2 className="text-lg font-semibold text-ink">Servicios relacionados</h2>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {relatedServices.map((item) => (
+                  <Link key={item.id} href={`/servicios/${item.id}`} className="rounded-2xl border border-line bg-soft p-4 text-sm font-semibold text-slatecopy hover:text-ink">
+                    {item.businessName}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </article>
         <aside className="card h-fit p-6">
           {personalProvider ? <SafeEnvironmentCard compact title="Contacto protegido" body="En servicios entre particulares, Tenlo protege los datos de contacto y recomienda acordar siempre la comunicación entre adultos responsables." /> : null}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Filters from "@/components/Filters";
 import ListingCard from "@/components/ListingCard";
+import ResponsiveFilterPanel from "@/components/ResponsiveFilterPanel";
 import { listings, municipalities } from "@/lib/mock-data";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -109,11 +110,9 @@ export default function SearchPage({ searchParams }: { searchParams: SearchParam
         </div>
       ) : null}
       <div className="mt-8 grid gap-6 lg:grid-cols-[300px_1fr]">
-        <details className="lg:hidden">
-          <summary className="btn-secondary w-full cursor-pointer list-none">Filtrar</summary>
-          <div className="mt-4"><Filters selected={selected} /></div>
-        </details>
-        <div className="hidden lg:block"><Filters selected={selected} /></div>
+        <ResponsiveFilterPanel>
+          <Filters selected={selected} />
+        </ResponsiveFilterPanel>
         <section aria-label="Resultados de búsqueda">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-semibold text-slatecopy">{filtered.length} resultado{filtered.length === 1 ? "" : "s"}</p>

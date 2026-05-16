@@ -12,7 +12,13 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const municipality = municipalities.find((item) => item.slug === params.slug);
   return {
     title: `Servicios para familias en ${municipality?.name ?? "tu zona"} | Tenlo`,
-    description: municipality?.description
+    description: municipality?.description,
+    alternates: { canonical: `/zonas/${params.slug}` },
+    openGraph: {
+      title: `Servicios para familias en ${municipality?.name ?? "Madrid noroeste"} | Tenlo`,
+      description: municipality?.description,
+      url: `/zonas/${params.slug}`
+    }
   };
 }
 

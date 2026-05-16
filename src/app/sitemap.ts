@@ -14,7 +14,7 @@ function hasPublishedListings(categoryId: string, municipalityName?: string) {
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/buscar", "/categoria", "/centros", "/servicios", "/comunidad"];
   const trustRoutes = ["/privacidad", "/aviso-legal", "/cookies", "/normas-comunidad", "/contacto"];
-  const zoneRoutes = municipalities.map((municipality) => `/zona/${municipality.slug}`);
+  const zoneRoutes = municipalities.map((municipality) => `/zonas/${municipality.slug}`);
   const localRoutes = municipalities.flatMap((municipality) => (
     categories
       .filter((category) => hasPublishedListings(category.id, municipality.name))
@@ -45,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: route === "" ? "weekly" as const : "monthly" as const,
     priority: route === ""
       ? 1
-      : route.startsWith("/las-rozas") || route.startsWith("/majadahonda") || route.startsWith("/pozuelo") || route.startsWith("/boadilla") || route.startsWith("/zona/")
+      : route.startsWith("/las-rozas") || route.startsWith("/majadahonda") || route.startsWith("/pozuelo") || route.startsWith("/boadilla") || route.startsWith("/zona/") || route.startsWith("/zonas/")
         ? 0.8
         : route.startsWith("/centros/") || route.startsWith("/servicios/") || route.startsWith("/anuncios/")
           ? 0.7

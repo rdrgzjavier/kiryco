@@ -137,7 +137,7 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
   userId: id,
   businessName,
   category,
-  description: description ?? `${businessName}: recursos y servicios para familias en ${municipality}.`,
+  description: description ?? providerDescription(businessName, category, municipality),
   municipality,
   serviceArea: `${municipality} y alrededores`,
   website: website ?? "https://example.com",
@@ -149,6 +149,16 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
   tags: Array.from(new Set(rawTags.split(", ").concat([municipality, category]))),
   image
 }));
+
+function providerDescription(businessName: string, category: string, municipality: string) {
+  const value = category.toLowerCase();
+  if (value.includes("idiomas")) return `${businessName} ofrece aprendizaje de idiomas con grupos y niveles orientados a familias de ${municipality}.`;
+  if (value.includes("extraescolares")) return `${businessName} reúne actividades extraescolares y deportivas con horarios consultables en ${municipality}.`;
+  if (value.includes("libros")) return `${businessName} facilita material escolar, papelería y libros para el curso en ${municipality}.`;
+  if (value.includes("canguro")) return `${businessName} es una ficha de cuidado infantil con contacto protegido y disponibilidad orientativa en ${municipality}.`;
+  if (value.includes("clases")) return `${businessName} ofrece apoyo educativo por materia y nivel, con disponibilidad a confirmar en ${municipality}.`;
+  return `${businessName} es una ficha local de ${category.toLowerCase()} con datos de contacto y cobertura en ${municipality}.`;
+}
 
 function providerCategoryId(provider: Provider) {
   if (provider.category.toLowerCase().includes("clases") || provider.category.toLowerCase().includes("idiomas")) return "clases-particulares";
@@ -172,8 +182,8 @@ export const listings: Listing[] = [
     description: center.description,
     municipality: center.municipality,
     area: center.municipality,
-    recommendedAgeMin: 1,
-    recommendedAgeMax: 18,
+    recommendedAgeMin: center.stages.includes("0-3 años") ? 0 : 1,
+    recommendedAgeMax: center.stages.includes("0-3 años") ? 3 : 18,
     priceLabel: "Consultar",
     availability: "Ficha pública",
     publicationType: "centro" as const,

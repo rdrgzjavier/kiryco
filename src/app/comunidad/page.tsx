@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronDown, Search } from "lucide-react";
 import { communityInitiatives, communityPosts, municipalities } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/Badge";
+import ResponsiveFilterPanel from "@/components/ResponsiveFilterPanel";
 
 export const metadata: Metadata = {
   title: "Eventos, iniciativas y recursos familiares en Madrid noroeste",
@@ -31,63 +32,36 @@ export default function CommunityPage() {
         <Link href="/publicar?tipo=comunidad" className="btn-primary w-full md:w-auto">Publicar contenido</Link>
       </section>
 
-      {/* Filters Section */}
-      <details className="mt-8 lg:hidden">
-        <summary className="btn-secondary w-full cursor-pointer list-none">Filtrar</summary>
-        <div className="filter-shell mt-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
-          <div className="filter-control">
-            <Search size={18} className="text-muted" />
-            <input placeholder="Busca por palabra o tag..." className="filter-input" />
-          </div>
-          <div className="relative">
-            <select className="filter-select">
-              <option value="">Todas las zonas</option>
-              {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-              <ChevronDown size={18} className="text-muted" />
+      <div className="mt-8">
+        <ResponsiveFilterPanel>
+          <div className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]">
+            <div className="filter-control">
+              <Search size={18} className="text-muted" />
+              <input placeholder="Busca por palabra o tag..." className="filter-input" />
             </div>
-          </div>
-          <div className="relative">
-            <select className="filter-select">
-              <option>Tipo de contenido</option>
-              <option>Iniciativas y causas</option>
-              <option>Eventos familiares</option>
-              <option>Actividades al aire libre</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-              <ChevronDown size={18} className="text-muted" />
+            <div className="relative">
+              <select className="filter-select">
+                <option value="">Todas las zonas</option>
+                {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                <ChevronDown size={18} className="text-muted" />
+              </div>
             </div>
+            <div className="relative">
+              <select className="filter-select">
+                <option>Tipo de contenido</option>
+                <option>Iniciativas y causas</option>
+                <option>Eventos familiares</option>
+                <option>Actividades al aire libre</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                <ChevronDown size={18} className="text-muted" />
+              </div>
+            </div>
+            <button className="btn-primary px-8">Filtrar</button>
           </div>
-          <button className="btn-primary px-8">Filtrar</button>
-        </div>
-      </details>
-      <div className="filter-shell hidden lg:grid lg:grid-cols-[1fr_1fr_1fr_auto]">
-        <div className="filter-control">
-          <Search size={18} className="text-muted" />
-          <input placeholder="Busca por palabra o tag..." className="filter-input" />
-        </div>
-        <div className="relative">
-          <select className="filter-select">
-            <option value="">Todas las zonas</option>
-            {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-            <ChevronDown size={18} className="text-muted" />
-          </div>
-        </div>
-        <div className="relative">
-          <select className="filter-select">
-            <option>Tipo de contenido</option>
-            <option>Iniciativas y causas</option>
-            <option>Eventos familiares</option>
-            <option>Actividades al aire libre</option>
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-            <ChevronDown size={18} className="text-muted" />
-          </div>
-        </div>
-        <button className="btn-primary px-8">Filtrar</button>
+        </ResponsiveFilterPanel>
       </div>
 
       <section className="mt-8">
