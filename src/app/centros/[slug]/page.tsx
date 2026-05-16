@@ -74,23 +74,6 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
           </Link>
         ))}
       </section>
-      <section className="mt-8 card p-6">
-        <h2 className="text-2xl font-semibold text-ink">Criterios de información</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          <article className="rounded-xl border border-line bg-soft p-4">
-            <h3 className="text-sm font-bold text-ink">Sin rankings</h3>
-            <p className="mt-2 text-sm leading-6 text-muted">Tenlo no clasifica colegios de mejor a peor ni publica puntuaciones sin evidencia verificable.</p>
-          </article>
-          <article className="rounded-xl border border-line bg-soft p-4">
-            <h3 className="text-sm font-bold text-ink">Fuente pública</h3>
-            <p className="mt-2 text-sm leading-6 text-muted">La ficha resume datos públicos y orientativos que deben confirmarse con el centro.</p>
-          </article>
-          <article className="rounded-xl border border-line bg-soft p-4">
-            <h3 className="text-sm font-bold text-ink">Privacidad</h3>
-            <p className="mt-2 text-sm leading-6 text-muted">No se muestran datos identificativos de menores ni comentarios personales sobre profesores.</p>
-          </article>
-        </div>
-      </section>
     </div>
   );
 }
