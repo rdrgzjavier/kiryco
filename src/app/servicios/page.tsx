@@ -7,8 +7,14 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
 
 export const metadata: Metadata = {
-  title: "Servicios para familias | Tenlo",
-  description: "Profesores, academias, clubes, tiendas, librerías, canguros profesionales y servicios familiares por zona."
+  title: "Servicios para familias en Las Rozas, Majadahonda, Pozuelo y Boadilla",
+  description: "Directorio local de clases particulares, extraescolares, campamentos, canguros profesionales, uniformes, libros y recursos familiares en Madrid noroeste.",
+  alternates: { canonical: "/servicios" },
+  openGraph: {
+    title: "Servicios para familias en Madrid noroeste | Tenlo",
+    description: "Busca servicios familiares por zona, categoría, edad recomendada y nivel de verificación.",
+    url: "/servicios"
+  }
 };
 
 const serviceFallbacks = [

@@ -48,7 +48,13 @@ export function generateMetadata({ searchParams }: { searchParams: SearchParams 
 
   return {
     title,
-    description: "Filtra recursos por categoría, municipio, centro educativo, edad recomendada, precio y verificación."
+    description: "Filtra recursos por categoría, municipio, centro educativo, edad recomendada, precio y verificación.",
+    alternates: { canonical: "/buscar" },
+    openGraph: {
+      title,
+      description: "Resultados de búsqueda de Tenlo para servicios, centros y recursos familiares en Madrid noroeste.",
+      url: "/buscar"
+    }
   };
 }
 

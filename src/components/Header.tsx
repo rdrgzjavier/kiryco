@@ -16,15 +16,27 @@ export default function Header() {
   const isLoggedIn = false;
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const scrollY = window.scrollY;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
     return () => {
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-panel/90 backdrop-blur-xl">
-      {open ? <button aria-label="Cerrar menú" className="fixed inset-0 top-16 z-[-1] cursor-default bg-transparent md:hidden" onClick={() => setOpen(false)} /> : null}
       <div className="page flex min-h-16 items-center justify-between gap-3">
         <Link href="/" aria-label="Tenlo" className="shrink-0"><AnimatedLogo /></Link>
         <nav className="hidden min-w-0 items-center gap-5 lg:flex" aria-label="Principal">
@@ -60,28 +72,29 @@ export default function Header() {
           </button>
         </div>
       </div>
-      {open && (
-        <div className="border-t border-line bg-panel px-5 py-4 md:hidden">
-          <nav className="grid gap-1">
-            {nav.map(([label, href]) => (
-              <Link key={href} href={href} className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy transition-colors hover:bg-soft" onClick={() => setOpen(false)}>
-                {label}
+      {open ? (
+        <div className="fixed inset-x-0 bottom-0 top-16 z-50 md:hidden" onClick={() => setOpen(false)}>
+          <div className="absolute inset-0 bg-slate-950/30" aria-hidden />
+          <nav className="relative grid gap-1 border-t border-line bg-panel px-5 py-4 shadow-soft" aria-label="Menú móvil" onClick={(event) => event.stopPropagation()}>
+              {nav.map(([label, href]) => (
+                <Link key={href} href={href} className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy transition-colors hover:bg-soft" onClick={() => setOpen(false)}>
+                  {label}
+                </Link>
+              ))}
+              <Link href="/buscar?region=madrid" className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy" onClick={() => setOpen(false)}>
+                Madrid
               </Link>
-            ))}
-            <Link href="/buscar?region=madrid" className="flex min-h-14 items-center rounded-2xl px-4 text-base font-semibold text-slatecopy" onClick={() => setOpen(false)}>
-              Madrid
-            </Link>
-            {isLoggedIn ? (
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <Link href="/area-personal" className="btn-secondary text-center" onClick={() => setOpen(false)}><UserRound size={16} />Área personal</Link>
-                <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Publicar oferta</Link>
-              </div>
-            ) : (
-              <Link href="/login" className="btn-primary mt-2 text-center" onClick={() => setOpen(false)}><LogIn size={16} />Iniciar sesión</Link>
-            )}
-          </nav>
+              {isLoggedIn ? (
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <Link href="/area-personal" className="btn-secondary text-center" onClick={() => setOpen(false)}><UserRound size={16} />Área personal</Link>
+                  <Link href="/publicar" className="btn-primary text-center" onClick={() => setOpen(false)}>Publicar oferta</Link>
+                </div>
+              ) : (
+                <Link href="/login" className="btn-primary mt-2 text-center" onClick={() => setOpen(false)}><LogIn size={16} />Iniciar sesión</Link>
+              )}
+            </nav>
         </div>
-      )}
+      ) : null}
     </header>
   );
 }

@@ -5,8 +5,14 @@ import CenterCard from "@/components/CenterCard";
 import { centers, municipalities } from "@/lib/mock-data";
 
 export const metadata: Metadata = {
-  title: "Centros educativos cerca de tu familia | Tenlo",
-  description: "Consulta fichas estructuradas de colegios, institutos y escuelas infantiles con información pública y reseñas moderadas."
+  title: "Centros educativos en Madrid noroeste para familias",
+  description: "Fichas informativas de colegios y centros educativos en Las Rozas, Majadahonda, Pozuelo y Boadilla, sin rankings agresivos ni datos de menores.",
+  alternates: { canonical: "/centros" },
+  openGraph: {
+    title: "Centros educativos en Madrid noroeste | Tenlo",
+    description: "Información pública y recursos relacionados para comparar centros educativos con contexto local.",
+    url: "/centros"
+  }
 };
 
 export default function CentersPage() {

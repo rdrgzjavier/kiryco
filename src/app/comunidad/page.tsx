@@ -6,8 +6,14 @@ import { communityInitiatives, communityPosts, municipalities } from "@/lib/mock
 import { StatusBadge } from "@/components/Badge";
 
 export const metadata: Metadata = {
-  title: "Comunidad y participación | Tenlo",
-  description: "Iniciativas, eventos, causas y actividades locales revisadas para familias."
+  title: "Eventos, iniciativas y recursos familiares en Madrid noroeste",
+  description: "Contenido comunitario revisado para familias: iniciativas locales, eventos familiares, actividades al aire libre, causas y recursos seguros.",
+  alternates: { canonical: "/comunidad" },
+  openGraph: {
+    title: "Comunidad familiar en Madrid noroeste | Tenlo",
+    description: "Iniciativas, eventos y recursos comunitarios revisados antes de publicarse.",
+    url: "/comunidad"
+  }
 };
 
 export default function CommunityPage() {
@@ -91,17 +97,20 @@ export default function CommunityPage() {
             <h2 className="mt-2 text-2xl font-semibold text-ink">Proyectos que merece la pena conocer</h2>
           </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {communityInitiatives.map((initiative) => (
             <article key={initiative.id} className="card flex h-full flex-col overflow-hidden">
               <Link href={`/comunidad/${initiative.id}`} aria-label={`Ver iniciativa ${initiative.name}`}>
                 <img src={initiative.image} alt={`Imagen de ${initiative.name}`} className="h-44 w-full object-cover" loading="lazy" />
               </Link>
               <div className="flex flex-1 flex-col p-5">
-                <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 5).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
-                <h3 className="mt-4 text-xl font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
+                <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 2).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
+                <h3 className="mt-4 text-lg font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{initiative.summary}</p>
-                <p className="mt-3 pb-5 text-sm font-semibold text-slatecopy">{initiative.municipality}</p>
+                <div className="mt-4 grid gap-2 pb-5 text-sm">
+                  <p className="font-semibold text-slatecopy">{initiative.municipality}</p>
+                  <p className="text-muted">Contenido comunitario revisado</p>
+                </div>
                 <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
               </div>
             </article>

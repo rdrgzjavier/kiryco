@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -23,8 +24,20 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
+import { siteConfig } from "@/lib/site";
 
 const heroImage = "https://images.pexels.com/photos/33593549/pexels-photo-33593549.jpeg?auto=compress&cs=tinysrgb&w=1200";
+
+export const metadata: Metadata = {
+  title: "Tenlo | Servicios, centros y recursos para familias en Madrid noroeste",
+  description: "Encuentra actividades, apoyo escolar, campamentos, uniformes, canguros, centros educativos y recursos locales para familias de Las Rozas, Majadahonda, Pozuelo y Boadilla.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Tenlo | Servicios, centros y recursos para familias en Madrid noroeste",
+    description: siteConfig.description,
+    url: "/"
+  }
+};
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
@@ -180,9 +193,9 @@ export default function Home() {
           <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
           <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-muted lg:whitespace-nowrap">Categorías útiles para comparar servicios, centros y recursos locales.</p>
         </div>
-        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-4 sm:justify-items-stretch lg:grid-cols-7">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
-            <Link key={name} href={href} className="group grid aspect-square w-full max-w-40 grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32 sm:max-w-none">
+            <Link key={name} href={href} className="group grid aspect-square w-full grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
                 <Icon size={26} className={color} aria-hidden />
               </span>
