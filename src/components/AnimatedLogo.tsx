@@ -37,7 +37,7 @@ export default function AnimatedLogo() {
         <div className="relative inline-block">
           <span className="invisible select-none whitespace-nowrap" aria-hidden="true">que necesitas</span>
           <span
-            className={`absolute left-0 text-muted transition-opacity duration-500 ${
+            className={`absolute left-0 text-slatecopy transition-opacity duration-500 ${
               fade ? "opacity-100" : "opacity-0"
             }`}
           >

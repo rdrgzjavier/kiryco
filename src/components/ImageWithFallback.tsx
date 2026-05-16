@@ -8,13 +8,16 @@ type ImageWithFallbackProps = {
   alt: string;
   className?: string;
   loading?: "eager" | "lazy";
+  fetchPriority?: "high" | "low" | "auto";
 };
 
-export default function ImageWithFallback({ src, fallbackSrc, alt, className, loading = "lazy" }: ImageWithFallbackProps) {
+export default function ImageWithFallback({ src, fallbackSrc, alt, className, loading = "lazy", fetchPriority }: ImageWithFallbackProps) {
   const [currentSrc, setCurrentSrc] = useState(src ?? fallbackSrc);
+  const priorityProps = fetchPriority ? { fetchPriority } : {};
 
   return (
     <img
+      {...priorityProps}
       src={currentSrc}
       alt={alt}
       className={className}

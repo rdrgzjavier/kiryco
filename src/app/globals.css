@@ -43,7 +43,7 @@ body {
   }
 
   .chip {
-    @apply inline-flex items-center rounded-full bg-lavender px-3 py-1 text-sm font-semibold text-ink ring-1 ring-ink/10;
+    @apply inline-flex items-center rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy ring-1 ring-line;
   }
 
   .label {

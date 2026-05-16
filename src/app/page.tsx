@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { TrustBadge } from "@/components/Badge";
 import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
@@ -60,18 +61,21 @@ const audienceCards = [
     title: "Familias",
     text: "Encuentra y compara recursos locales sin navegar entre decenas de webs.",
     href: "/buscar",
+    cta: "Buscar servicios",
     Icon: UsersRound
   },
   {
     title: "Profesionales",
     text: "Da visibilidad a tu negocio y conecta con familias que ya te necesitan.",
     href: "/proveedores",
+    cta: "Ver ventajas",
     Icon: BriefcaseBusiness
   },
   {
     title: "Centros educativos",
     text: "Ordena recursos útiles alrededor del centro y mejora la experiencia familiar.",
     href: "/centros",
+    cta: "Explorar centros",
     Icon: GraduationCap
   }
 ];
@@ -81,7 +85,7 @@ const popularServices = [
     title: "Refuerzo de Matemáticas",
     provider: "Academic Madrid",
     category: "Apoyo escolar",
-    signal: "Perfil verificado",
+    signal: "Verificado",
     zone: "Majadahonda",
     href: "/categoria/clases-particulares",
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=85"
@@ -108,7 +112,7 @@ const popularServices = [
     title: "Inglés dinámico",
     provider: "Kids & Us",
     category: "Inglés",
-    signal: "Perfil verificado",
+    signal: "Verificado",
     zone: "Boadilla",
     href: "/categoria/clases-particulares",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=85"
@@ -159,7 +163,7 @@ export default function Home() {
         <div className="page grid gap-8 py-10 lg:grid-cols-[1.22fr_0.78fr] lg:py-14">
           <div className="flex flex-col justify-center">
             <div className="mb-6 h-40 overflow-hidden rounded-[28px] bg-soft md:hidden">
-              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" fetchPriority="high" />
             </div>
             <h1 className="page-title max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
             <p className="lead">Actividades, apoyo escolar, salud, tecnología, transporte y mucho más. Información organizada por zona, sin datos identificativos de menores.</p>
@@ -234,12 +238,12 @@ export default function Home() {
       <section className="page py-14 lg:py-16">
         <h2 className="section-title text-left md:text-center">Para quién está destinado Tenlo</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
-          {audienceCards.map(({ title, text, href, Icon }) => (
+          {audienceCards.map(({ title, text, href, cta, Icon }) => (
             <article key={title} className="card p-7">
               <Icon size={32} className="text-slatecopy" aria-hidden />
               <h3 className="mt-5 text-lg font-bold text-slatecopy">{title}</h3>
               <p className="mt-3 text-sm leading-6 text-muted">{text}</p>
-              <Link href={href} className="btn-secondary mt-5">Más información</Link>
+              <Link href={href} className="btn-secondary mt-5">{cta}</Link>
             </article>
           ))}
         </div>
@@ -261,8 +265,9 @@ export default function Home() {
         <div className="flex gap-5 overflow-x-auto pb-3 lg:grid lg:grid-cols-4 lg:overflow-visible">
           {popularServices.map((service) => (
             <article key={service.title} className="card min-w-[270px] overflow-hidden lg:min-w-0">
-              <Link href={service.href} aria-label={`Ver ${service.title}`}>
+              <Link href={service.href} aria-label={`Ver ${service.title}`} className="relative block">
                 <ImageWithFallback src={service.image} fallbackSrc={heroImage} alt={`Imagen de ${service.title}`} className="h-36 w-full object-cover" />
+                {service.signal === "Verificado" ? <span className="absolute right-3 top-3"><TrustBadge level="verified" variant="solid" /></span> : null}
               </Link>
               <div className="p-5">
                 <div className="flex items-center justify-between gap-3">
@@ -271,8 +276,8 @@ export default function Home() {
                 </div>
                 <h3 className="mt-4 text-lg font-bold text-slatecopy"><Link href={service.href}>{service.title}</Link></h3>
                 <p className="mt-1 text-sm text-muted">{service.provider}</p>
-                <div className="mt-4 flex items-center justify-between text-sm text-muted">
-                  <span className="inline-flex items-center gap-1"><CheckCircle2 size={16} className="text-sage" aria-hidden />{service.signal}</span>
+                <div className={`mt-4 flex items-center text-sm text-muted ${service.signal === "Verificado" ? "justify-end" : "justify-between"}`}>
+                  {service.signal !== "Verificado" ? <span className="inline-flex items-center gap-1"><CheckCircle2 size={16} className="text-sage" aria-hidden />{service.signal}</span> : null}
                   <span className="inline-flex items-center gap-1"><MapPin size={15} aria-hidden />{service.zone}</span>
                 </div>
               </div>

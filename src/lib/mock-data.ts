@@ -158,7 +158,7 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
   sourceName: website && website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo",
   sourceUrl: website && website !== "https://example.com" ? website : undefined,
   lastReviewed: "Mayo de 2026",
-  verificationStatus: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "Perfil verificado" : "Información recopilada",
+  verificationStatus: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "Verificado" : "Información recopilada",
   isPublicInformation: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
   verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
   trustLevel: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "verified" : "collected",
