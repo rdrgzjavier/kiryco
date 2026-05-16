@@ -1,7 +1,8 @@
 export const siteConfig = {
   name: "Tenlo",
-  domain: "https://tenlo.es",
   currentDomain: "https://kiryco.vercel.app",
+  futureDomain: "https://tenlo.es",
+  tagline: "Todo lo que necesitas alrededor del colegio, filtrado por tu zona y tu centro",
   shortDescription: "Servicios, centros y recursos familiares cerca del colegio",
   description:
     "Tenlo organiza servicios, centros educativos, iniciativas y recursos familiares en Madrid noroeste, con información revisada y sin datos identificativos de menores.",
@@ -19,5 +20,5 @@ export const siteConfig = {
 } as const;
 
 export function absoluteUrl(path = "") {
-  return `${siteConfig.domain}${path.startsWith("/") ? path : `/${path}`}`;
+  return `${siteConfig.currentDomain}${path.startsWith("/") ? path : `/${path}`}`;
 }

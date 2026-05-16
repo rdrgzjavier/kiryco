@@ -16,11 +16,11 @@ import {
   Search,
   ShieldCheck,
   Sparkles,
-  Star,
   UsersRound
 } from "lucide-react";
 import FavoriteButton from "@/components/FavoriteButton";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import { trackingAttrs } from "@/lib/analytics";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 const benefits = [
   { title: "Servicios verificados", text: "Calidad y confianza", Icon: ShieldCheck, color: "text-petrol" },
-  { title: "Valoraciones reales", text: "De otras familias", Icon: Star, color: "text-sage" },
+  { title: "Información revisada", text: "Fuentes y datos claros", Icon: CheckCircle2, color: "text-sage" },
   { title: "Todo en un lugar", text: "Ahorra tiempo", Icon: Heart, color: "text-coral" }
 ];
 
@@ -81,7 +81,7 @@ const popularServices = [
     title: "Refuerzo de Matemáticas",
     provider: "Academic Madrid",
     category: "Apoyo escolar",
-    rating: "4,9 (128)",
+    signal: "Perfil verificado",
     zone: "Majadahonda",
     href: "/categoria/clases-particulares",
     image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=85"
@@ -90,7 +90,7 @@ const popularServices = [
     title: "Fútbol extraescolar",
     provider: "Campus Sport",
     category: "Actividades",
-    rating: "4,8 (96)",
+    signal: "Contacto público",
     zone: "Las Rozas",
     href: "/categoria/extraescolares",
     image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=900&q=85"
@@ -99,7 +99,7 @@ const popularServices = [
     title: "Programación online",
     provider: "Codey School",
     category: "Tecnología",
-    rating: "4,9 (64)",
+    signal: "Información revisada",
     zone: "Pozuelo",
     href: "/buscar?tag=tecnologia",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85"
@@ -108,7 +108,7 @@ const popularServices = [
     title: "Inglés dinámico",
     provider: "Kids & Us",
     category: "Inglés",
-    rating: "4,7 (88)",
+    signal: "Perfil verificado",
     zone: "Boadilla",
     href: "/categoria/clases-particulares",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=85"
@@ -155,7 +155,7 @@ export default function Home() {
             </div>
             <h1 className="page-title max-w-3xl">Encuentra, compara y reserva servicios para tu familia</h1>
             <p className="lead">Actividades, apoyo escolar, salud, tecnología, transporte y mucho más. Información organizada por zona, sin datos identificativos de menores.</p>
-            <form action="/buscar" className="mt-8 grid gap-3 rounded-[24px] bg-panel p-3 shadow-soft sm:grid-cols-[1fr_0.72fr_auto]">
+            <ValidatedSearchForm className="mt-8 grid gap-3 rounded-[24px] bg-panel p-3 shadow-soft sm:grid-cols-[1fr_0.72fr_auto]" message="Indica qué quieres encontrar o dónde quieres buscar.">
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <Search size={20} className="text-muted" aria-hidden />
                 <span className="sr-only">Servicio</span>
@@ -170,7 +170,7 @@ export default function Home() {
                 </select>
               </label>
               <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar</button>
-            </form>
+            </ValidatedSearchForm>
             <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
                 <div key={title} className="grid w-full max-w-[270px] grid-cols-[56px_1fr] items-center gap-4 text-left sm:max-w-none">
@@ -254,7 +254,7 @@ export default function Home() {
                 <h3 className="mt-4 text-lg font-bold text-slatecopy"><Link href={service.href}>{service.title}</Link></h3>
                 <p className="mt-1 text-sm text-muted">{service.provider}</p>
                 <div className="mt-4 flex items-center justify-between text-sm text-muted">
-                  <span className="inline-flex items-center gap-1"><Star size={16} className="fill-coral text-coral" aria-hidden />{service.rating}</span>
+                  <span className="inline-flex items-center gap-1"><CheckCircle2 size={16} className="text-sage" aria-hidden />{service.signal}</span>
                   <span className="inline-flex items-center gap-1"><MapPin size={15} aria-hidden />{service.zone}</span>
                 </div>
               </div>

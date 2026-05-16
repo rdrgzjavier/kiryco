@@ -84,6 +84,15 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   trustLevel: "official"
 }));
 
+function centerAgeRange(stages: string[]) {
+  if (stages.includes("0-3 años")) return [0, 3] as const;
+  if (stages.includes("Bachillerato")) return [3, 18] as const;
+  if (stages.includes("ESO")) return [3, 16] as const;
+  if (stages.includes("Primaria")) return [3, 12] as const;
+  if (stages.includes("Infantil")) return [3, 6] as const;
+  return [undefined, undefined] as const;
+}
+
 type ProviderSeed = [
   string,
   string,
@@ -182,8 +191,8 @@ export const listings: Listing[] = [
     description: center.description,
     municipality: center.municipality,
     area: center.municipality,
-    recommendedAgeMin: center.stages.includes("0-3 años") ? 0 : 1,
-    recommendedAgeMax: center.stages.includes("0-3 años") ? 3 : 18,
+    recommendedAgeMin: centerAgeRange(center.stages)[0],
+    recommendedAgeMax: centerAgeRange(center.stages)[1],
     priceLabel: "Consultar",
     availability: "Ficha pública",
     publicationType: "centro" as const,
@@ -233,12 +242,12 @@ export const listings: Listing[] = [
 ];
 
 export const communityInitiatives: CommunityInitiative[] = [
-  { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Saber más" },
-  { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Saber más" },
-  { id: "banco-alimentos-pozuelo", name: "Banco de Alimentos Pozuelo", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Recogida y distribución de alimentos en Pozuelo.", tags: ["Social", "Pozuelo"], image: images.community, ctaLabel: "Saber más" },
-  { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Saber más" },
-  { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "https://example.com", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Saber más" },
-  { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "https://example.com", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Saber más" }
+  { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "banco-alimentos-pozuelo", name: "Banco de Alimentos Pozuelo", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Recogida y distribución de alimentos en Pozuelo.", tags: ["Social", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "https://example.com", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "https://example.com", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" }
 ];
 
 export const searchTags = Array.from(new Set([
@@ -259,4 +268,7 @@ export function findListing(slugOrId: string) { return listings.find((listing) =
 export function findCenter(slug: string) { return centers.find((center) => center.slug === slug); }
 export function findProvider(id: string) { return providers.find((provider) => provider.id === id); }
 export function findCommunityInitiative(id: string) { return communityInitiatives.find((initiative) => initiative.id === id); }
-export function ageLabel(listing: Listing) { if (!listing.recommendedAgeMin && !listing.recommendedAgeMax) return "Edad orientativa no indicada"; return `${listing.recommendedAgeMin ?? 1}-${listing.recommendedAgeMax ?? 18} años`; }
+export function ageLabel(listing: Listing) {
+  if (listing.recommendedAgeMin === undefined || listing.recommendedAgeMax === undefined) return "Consultar edad recomendada";
+  return `${listing.recommendedAgeMin}-${listing.recommendedAgeMax} años`;
+}

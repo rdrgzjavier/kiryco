@@ -13,10 +13,10 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["600"], variable: "--font
 export const metadata: Metadata = {
   title: {
     default: "Tenlo | Servicios, centros y recursos para familias en Madrid noroeste",
-    template: "%s | Tenlo"
+    template: "%s"
   },
   description: siteConfig.description,
-  metadataBase: new URL(siteConfig.domain),
+  metadataBase: new URL(siteConfig.currentDomain),
   icons: {
     icon: [
       { url: "/brand/tenlo-isotipo-32.png", sizes: "32x32", type: "image/png" },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_ES",
-    url: siteConfig.domain,
+    url: siteConfig.currentDomain,
     siteName: siteConfig.name,
     title: "Tenlo | Servicios, centros y recursos para familias en Madrid noroeste",
     description: siteConfig.description,
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
-    url: siteConfig.domain,
+    url: siteConfig.currentDomain,
     logo: absoluteUrl("/brand/tenlo-isotipo-512.png"),
     description: siteConfig.shortDescription,
     areaServed: siteConfig.municipalities.map((name) => ({
@@ -68,11 +68,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    url: siteConfig.domain,
+    url: siteConfig.currentDomain,
     description: siteConfig.shortDescription,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteConfig.domain}/buscar?tag={search_term_string}`,
+      target: `${siteConfig.currentDomain}/buscar?tag={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };

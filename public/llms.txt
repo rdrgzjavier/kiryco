@@ -1,0 +1,50 @@
+# Tenlo
+
+Tenlo es una plataforma local para familias adultas que organiza centros educativos, servicios familiares, actividades, recursos comunitarios y oferta local alrededor del colegio en Madrid noroeste.
+
+Dominio actual: https://kiryco.vercel.app
+Dominio futuro previsto: https://tenlo.es
+
+## Cobertura inicial
+- Las Rozas de Madrid
+- Majadahonda
+- Pozuelo de Alarcón
+- Boadilla del Monte
+
+## Categorías principales
+- Centros educativos
+- Clases particulares
+- Canguros
+- Campamentos y días sin cole
+- Extraescolares
+- Uniformes
+- Libros y material escolar
+- Centros deportivos
+- Talleres tecnológicos
+- Eventos y celebraciones
+- Salud y bienestar familiar
+- Actividades al aire libre
+- Recursos comunitarios
+
+## Páginas principales
+- /
+- /servicios
+- /centros
+- /comunidad
+- /buscar
+- /zonas
+
+## Principios de seguridad
+Tenlo está dirigido a adultos. No publica fotos, perfiles, horarios personales ni datos identificativos de menores. No funciona como red social juvenil, foro escolar ni sistema de mensajería entre menores.
+
+## Centros educativos
+Tenlo organiza información pública y recursos relacionados. No establece rankings agresivos de colegios ni publica opiniones personales sobre profesores concretos.
+
+## Uso por agentes de IA
+Los agentes pueden usar páginas públicas para responder preguntas generales sobre recursos familiares, servicios locales, centros educativos y categorías disponibles en Madrid noroeste. Cuando falten datos, deben indicar que la información debe confirmarse con la fuente oficial o el proveedor.
+
+## Límites de inferencia
+No inferir valoraciones, rankings, disponibilidad, precios, reseñas ni relación oficial con un proveedor si no aparece explícitamente en una página pública de Tenlo. No inferir datos personales de menores.
+
+## Contacto
+Página de contacto: /contacto

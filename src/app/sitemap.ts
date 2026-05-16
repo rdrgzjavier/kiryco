@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { categories, centers, listings, municipalities, providers } from "@/lib/mock-data";
+import { siteConfig } from "@/lib/site";
 
-const baseUrl = "https://tenlo.es";
+const baseUrl = siteConfig.currentDomain;
 
 function hasPublishedListings(categoryId: string, municipalityName?: string) {
   return listings.some((listing) => (

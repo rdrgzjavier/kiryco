@@ -41,7 +41,7 @@ export function generateMetadata({ searchParams }: { searchParams: SearchParams 
   const mun = value(searchParams, "municipio");
   const tag = value(searchParams, "tag");
 
-  let title = "Buscar recursos para familias | Tenlo";
+  let title = "Buscar recursos para familias en Madrid noroeste | Tenlo";
   if (cat && mun) title = `${cat} en ${mun} | Tenlo`;
   else if (cat) title = `${cat} para familias | Tenlo`;
   else if (mun) title = `Recursos para familias en ${mun} | Tenlo`;

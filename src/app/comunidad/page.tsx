@@ -5,6 +5,7 @@ import { ChevronDown, Search } from "lucide-react";
 import { communityInitiatives, communityPosts, municipalities } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/Badge";
 import ResponsiveFilterPanel from "@/components/ResponsiveFilterPanel";
+import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 
 export const metadata: Metadata = {
   title: "Eventos, iniciativas y recursos familiares en Madrid noroeste",
@@ -34,23 +35,23 @@ export default function CommunityPage() {
 
       <div className="mt-8">
         <ResponsiveFilterPanel>
-          <div className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]">
+          <ValidatedSearchForm className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]" message="Completa al menos una palabra, zona o tipo de contenido para filtrar.">
             <div className="filter-control">
               <Search size={18} className="text-muted" />
-              <input placeholder="Busca por palabra o tag..." className="filter-input" />
+              <input name="tag" placeholder="Busca por palabra o tag..." className="filter-input" />
             </div>
             <div className="relative">
-              <select className="filter-select">
+              <select name="municipio" className="filter-select">
                 <option value="">Todas las zonas</option>
-                {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+                {municipalities.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
                 <ChevronDown size={18} className="text-muted" />
               </div>
             </div>
             <div className="relative">
-              <select className="filter-select">
-                <option>Tipo de contenido</option>
+              <select name="tipo" className="filter-select">
+                <option value="">Tipo de contenido</option>
                 <option>Iniciativas y causas</option>
                 <option>Eventos familiares</option>
                 <option>Actividades al aire libre</option>
@@ -59,8 +60,8 @@ export default function CommunityPage() {
                 <ChevronDown size={18} className="text-muted" />
               </div>
             </div>
-            <button className="btn-primary px-8">Filtrar</button>
-          </div>
+            <button className="btn-primary px-8" type="submit">Filtrar</button>
+          </ValidatedSearchForm>
         </ResponsiveFilterPanel>
       </div>
 
@@ -85,7 +86,7 @@ export default function CommunityPage() {
                   <p className="font-semibold text-slatecopy">{initiative.municipality}</p>
                   <p className="text-muted">Contenido comunitario revisado</p>
                 </div>
-                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
+                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Consultar recurso comunitario {initiative.name}</Link>
               </div>
             </article>
           ))}
@@ -100,7 +101,7 @@ export default function CommunityPage() {
               <h2 className="mt-3 text-xl font-semibold text-ink">{post.title}</h2>
               <p className="mt-2 text-sm leading-6 text-muted">{post.summary}</p>
               <p className="mt-3 text-sm font-semibold text-slatecopy">{post.municipality}</p>
-              <Link href="/publicar?tipo=comunidad" className="btn-primary mt-4 w-full justify-center">Saber más</Link>
+              <Link href="/publicar?tipo=comunidad" className="btn-primary mt-4 w-full justify-center">Consultar publicación comunitaria</Link>
             </article>
           ))}
         </div>

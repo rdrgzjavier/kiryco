@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import { categories, centers, municipalities, searchTags } from "@/lib/mock-data";
 
 type FiltersProps = {
@@ -11,7 +12,7 @@ export default function Filters({ selected = {} }: FiltersProps) {
   return (
     <aside className="card h-fit p-5">
       <h2 className="text-lg font-semibold text-ink">Filtros</h2>
-      <form action="/buscar" className="mt-5 grid gap-4">
+      <ValidatedSearchForm className="mt-5 grid gap-4" message="Elige al menos un filtro o escribe una palabra clave.">
         <label className="field-label">Categoría<select name="categoria" className="field" defaultValue={selected.categoria ?? ""}><option value="">Todas</option>{categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
         <label className="field-label">Municipio<select name="municipio" className="field" defaultValue={selected.municipio ?? ""}><option value="">Todos</option>{municipalities.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}</select></label>
         <label className="field-label">Centro educativo<select name="centro" className="field" defaultValue={selected.centro ?? ""}><option value="">Cualquiera</option>{centers.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
@@ -22,7 +23,7 @@ export default function Filters({ selected = {} }: FiltersProps) {
         <label className="field-label">Disponibilidad<select name="disponibilidad" className="field" defaultValue={selected.disponibilidad ?? ""}><option value="">Cualquiera</option><option value="semana">Disponible esta semana</option><option value="tardes">Tardes</option><option value="fin-semana">Fin de semana</option><option value="plazas">Plazas abiertas</option></select></label>
         <button className="btn-primary w-full" type="submit">Aplicar filtros</button>
         <Link href="/buscar" className="btn-secondary w-full">Limpiar</Link>
-      </form>
+      </ValidatedSearchForm>
       <div className="mt-6 border-t border-line pt-5">
         <p className="text-sm font-semibold text-ink">Tags frecuentes</p>
         <div className="mt-3 flex flex-wrap gap-2">

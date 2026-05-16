@@ -4,7 +4,10 @@ import { ChevronDown, ExternalLink, Search } from "lucide-react";
 import { categories, municipalities, providers } from "@/lib/mock-data";
 import { TrustBadge } from "@/components/Badge";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import ValidatedSearchForm from "@/components/ValidatedSearchForm";
+import JsonLd from "@/components/JsonLd";
 import { trackingAttrs } from "@/lib/analytics";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Servicios para familias en Las Rozas, Majadahonda, Pozuelo y Boadilla",
@@ -39,36 +42,47 @@ export default function ServicesPage() {
 
   return (
     <div className="section-shell">
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Servicios para familias en Madrid noroeste",
+        itemListElement: providers.map((provider, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: absoluteUrl(`/servicios/${provider.id}`),
+          name: provider.businessName
+        }))
+      }} />
       <p className="label">Profesionales y negocios locales</p>
       <h1 className="page-title">Servicios para familias</h1>
       <p className="lead">Profesores, academias, clubes, tiendas, librerías, canguros profesionales, campamentos, idiomas y apoyo especializado para familias.</p>
 
       {/* Filters Section */}
-      <div className="filter-shell sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+      <ValidatedSearchForm className="filter-shell sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]" message="Completa al menos una palabra clave, zona, tipología o precio para filtrar.">
         <div className="filter-control">
           <Search size={18} className="text-muted" />
-          <input placeholder="Palabra clave..." className="filter-input" />
+          <input name="tag" placeholder="Palabra clave..." className="filter-input" />
         </div>
         <div className="relative">
-          <select className="filter-select">
+          <select name="municipio" className="filter-select">
             <option value="">Todas las zonas</option>
-            {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+            {municipalities.map(m => <option key={m.id} value={m.name}>{m.name}</option>)}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
             <ChevronDown size={18} className="text-muted" />
           </div>
         </div>
         <div className="relative">
-          <select className="filter-select">
+          <select name="categoria" className="filter-select">
             <option value="">Todas las tipologías</option>
-            {serviceCategories.map(c => <option key={c.id} value={c.slug}>{c.name}</option>)}
+            {serviceCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
             <ChevronDown size={18} className="text-muted" />
           </div>
         </div>
         <div className="relative">
-          <select className="filter-select">
+          <select name="precio" className="filter-select">
             <option value="">Cualquier precio</option>
             <option value="gratis">Gratis</option>
             <option value="25">Hasta 25 €</option>
@@ -79,8 +93,8 @@ export default function ServicesPage() {
             <ChevronDown size={18} className="text-muted" />
           </div>
         </div>
-        <button className="btn-primary px-8">Filtrar</button>
-      </div>
+        <button className="btn-primary px-8" type="submit">Filtrar</button>
+      </ValidatedSearchForm>
 
       <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
         <h2 className="section-title">Servicios disponibles</h2>
@@ -90,16 +104,17 @@ export default function ServicesPage() {
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((provider) => (
           <article key={provider.id} className="card flex h-full flex-col overflow-hidden">
-            <Link href={`/servicios/${provider.id}`} aria-label={`Ver ficha de ${provider.businessName}`}>
+            <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="relative block">
               <ImageWithFallback src={provider.image} fallbackSrc={providerFallback(provider.id)} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" />
+              <span className="absolute right-3 top-3"><TrustBadge level={provider.trustLevel} /></span>
             </Link>
             <div className="flex flex-1 flex-col p-5">
-              <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><TrustBadge level={provider.trustLevel} /></div>
+              <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span></div>
               <h3 className="text-lg font-semibold text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
               <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
               <div className="mt-auto flex gap-2 pt-5">
-                <Link href={`/servicios/${provider.id}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Ver ficha</Link>
+                <Link href={`/servicios/${provider.id}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Consultar servicio de {provider.businessName}</Link>
                 {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
               </div>
             </div>
