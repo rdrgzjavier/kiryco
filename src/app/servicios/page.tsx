@@ -78,7 +78,7 @@ export default function ServicesPage() {
 
       <div className="mt-12 flex flex-wrap items-end justify-between gap-4">
         <h2 className="section-title">Servicios disponibles</h2>
-        <Link href="/publicar" className="btn-secondary">Publicar oferta</Link>
+        <Link href="/login" className="btn-secondary">Publicar oferta</Link>
       </div>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

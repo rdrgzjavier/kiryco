@@ -14,7 +14,7 @@ export function TrustBadge({ level }: { level: TrustLevel }) {
   const config = {
     collected: { label: "Información recopilada", Icon: Database, className: "bg-soft text-slatecopy ring-line" },
     verified: { label: "Perfil verificado", Icon: CheckCircle2, className: "bg-sage/10 text-sage ring-sage/20" },
-    official: { label: "Perfil oficial", Icon: ShieldCheck, className: "bg-lavender text-ink ring-ink/10" }
+    official: { label: "Perfil verificado", Icon: ShieldCheck, className: "bg-sage/10 text-sage ring-sage/20" }
   } satisfies Record<TrustLevel, { label: string; Icon: LucideIcon; className: string }>;
   const { label, Icon, className } = config[level];
 

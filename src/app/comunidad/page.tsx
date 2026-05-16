@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/Badge";
 
 export const metadata: Metadata = {
   title: "Comunidad y participación | Tenlo",
-  description: "Un espacio seguro para familias con iniciativas locales, foro moderado y recursos compartidos."
+  description: "Iniciativas, eventos, causas y actividades locales revisadas para familias."
 };
 
 export default function CommunityPage() {
@@ -15,10 +15,48 @@ export default function CommunityPage() {
     <div className="section-shell">
       <p className="label">Participación ciudadana</p>
       <h1 className="page-title">Comunidad Tenlo</h1>
-      <p className="lead">Un espacio para preguntas útiles, avisos, recomendaciones e iniciativas revisadas. No permite grupos de clase, mensajería abierta sin control, críticas personales ni datos de menores.</p>
+      <p className="lead">Iniciativas, eventos, causas, actividades al aire libre y recursos locales que aportan valor a familias. Todo se revisa antes de publicarse: sin foros abiertos, grupos privados ni datos de menores.</p>
+
+      <section className="mt-8 grid gap-5 rounded-2xl border border-line bg-panel p-5 shadow-soft md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <h2 className="text-xl font-bold text-slatecopy">Comparte contenido útil para la comunidad</h2>
+          <p className="mt-2 text-sm leading-6 text-muted">Puedes proponer ONGs, carreras solidarias, eventos familiares, actividades al aire libre o iniciativas locales. Para publicar debes iniciar sesión y el equipo de Tenlo revisará el contenido antes de mostrarlo.</p>
+        </div>
+        <Link href="/publicar?tipo=comunidad" className="btn-primary w-full md:w-auto">Publicar contenido</Link>
+      </section>
 
       {/* Filters Section */}
-      <div className="filter-shell sm:grid-cols-[1fr_1fr_1fr_auto]">
+      <details className="mt-8 lg:hidden">
+        <summary className="btn-secondary w-full cursor-pointer list-none">Filtrar</summary>
+        <div className="filter-shell mt-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
+          <div className="filter-control">
+            <Search size={18} className="text-muted" />
+            <input placeholder="Busca por palabra o tag..." className="filter-input" />
+          </div>
+          <div className="relative">
+            <select className="filter-select">
+              <option value="">Todas las zonas</option>
+              {municipalities.map(m => <option key={m.id} value={m.slug}>{m.name}</option>)}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <ChevronDown size={18} className="text-muted" />
+            </div>
+          </div>
+          <div className="relative">
+            <select className="filter-select">
+              <option>Tipo de contenido</option>
+              <option>Iniciativas y causas</option>
+              <option>Eventos familiares</option>
+              <option>Actividades al aire libre</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+              <ChevronDown size={18} className="text-muted" />
+            </div>
+          </div>
+          <button className="btn-primary px-8">Filtrar</button>
+        </div>
+      </details>
+      <div className="filter-shell hidden lg:grid lg:grid-cols-[1fr_1fr_1fr_auto]">
         <div className="filter-control">
           <Search size={18} className="text-muted" />
           <input placeholder="Busca por palabra o tag..." className="filter-input" />
@@ -36,7 +74,8 @@ export default function CommunityPage() {
           <select className="filter-select">
             <option>Tipo de contenido</option>
             <option>Iniciativas y causas</option>
-            <option>Foro y Tablón</option>
+            <option>Eventos familiares</option>
+            <option>Actividades al aire libre</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
             <ChevronDown size={18} className="text-muted" />
@@ -54,16 +93,16 @@ export default function CommunityPage() {
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           {communityInitiatives.map((initiative) => (
-            <article key={initiative.id} className="card overflow-hidden">
+            <article key={initiative.id} className="card flex h-full flex-col overflow-hidden">
               <Link href={`/comunidad/${initiative.id}`} aria-label={`Ver iniciativa ${initiative.name}`}>
                 <img src={initiative.image} alt={`Imagen de ${initiative.name}`} className="h-44 w-full object-cover" loading="lazy" />
               </Link>
-              <div className="p-5">
+              <div className="flex flex-1 flex-col p-5">
                 <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 5).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
                 <h3 className="mt-4 text-xl font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
-                <p className="mt-2 text-sm leading-6 text-muted">{initiative.summary}</p>
-                <p className="mt-3 text-xs font-semibold text-slatecopy">{initiative.municipality}</p>
-                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-5 w-full justify-center">Saber más</Link>
+                <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{initiative.summary}</p>
+                <p className="mt-3 text-sm font-semibold text-slatecopy">{initiative.municipality}</p>
+                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
               </div>
             </article>
           ))}
@@ -77,20 +116,20 @@ export default function CommunityPage() {
               <div className="flex flex-wrap gap-2"><span className="chip">{post.category}</span><StatusBadge status={post.status} /></div>
               <h2 className="mt-3 text-xl font-semibold text-ink">{post.title}</h2>
               <p className="mt-2 text-sm leading-6 text-muted">{post.summary}</p>
-              <p className="mt-3 text-xs font-semibold text-slatecopy">{post.municipality}</p>
-              <Link href="/publicar" className="btn-secondary mt-4">Saber más</Link>
+              <p className="mt-3 text-sm font-semibold text-slatecopy">{post.municipality}</p>
+              <Link href="/publicar?tipo=comunidad" className="btn-primary mt-4 w-full justify-center">Saber más</Link>
             </article>
           ))}
         </div>
         <aside className="card h-fit p-5">
-          <h2 className="text-xl font-semibold text-ink">Normas rápidas</h2>
+          <h2 className="text-xl font-semibold text-ink">Reglas de publicación</h2>
           <ul className="mt-4 grid gap-3 text-sm leading-6 text-muted">
             <li>Sin fotos ni datos personales de menores.</li>
-            <li>Sin conversaciones privadas entre menores.</li>
-            <li>Sin críticas personales a profesores.</li>
+            <li>Sin foros, grupos de clase ni conversaciones privadas.</li>
+            <li>Solo iniciativas, eventos y recursos con valor comunitario.</li>
             <li>Publicaciones revisadas antes de aparecer.</li>
           </ul>
-          <Link href="/publicar" className="btn-primary mt-5 w-full">Publicar pregunta</Link>
+          <Link href="/publicar?tipo=comunidad" className="btn-primary mt-5 w-full">Publicar contenido</Link>
         </aside>
       </div>
     </div>

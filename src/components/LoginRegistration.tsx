@@ -123,9 +123,9 @@ export default function LoginRegistration() {
             <h2 className="text-base font-bold text-slatecopy">¿Ya tienes cuenta?</h2>
             <form className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
               <label className="sr-only" htmlFor="login-email">Email</label>
-              <input id="login-email" type="email" className="field m-0" placeholder="Email" />
+              <input id="login-email" type="email" className="field m-0 placeholder:text-muted" placeholder="Email" />
               <label className="sr-only" htmlFor="login-password">Contraseña</label>
-              <input id="login-password" type="password" className="field m-0" placeholder="Contraseña" />
+              <input id="login-password" type="password" className="field m-0 placeholder:text-muted" placeholder="Contraseña" />
               <button className="btn-secondary" type="submit">Entrar</button>
             </form>
           </div>
@@ -155,14 +155,14 @@ export default function LoginRegistration() {
             <section className="grid gap-4 rounded-2xl border border-line bg-white p-4 md:grid-cols-2">
               <label className="field-label md:col-span-2">
                 {showBusinessFields ? "Nombre público de la entidad o profesional" : "Nombre público del adulto"}
-                <input required className="field" placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."} />
+                <input required className="field font-normal placeholder:text-muted" placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."} />
               </label>
-              <label className="field-label">Email de contacto<input required type="email" className="field" /></label>
-              <label className="field-label">Teléfono de contacto<input type="tel" className="field" /></label>
-              <label className="field-label">Contraseña<input required type="password" minLength={8} className="field" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
+              <label className="field-label">Email de contacto<input required type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" /></label>
+              <label className="field-label">Teléfono de contacto<input type="tel" className="field font-normal placeholder:text-muted" placeholder="Teléfono de contacto" /></label>
+              <label className="field-label">Contraseña<input required type="password" minLength={8} className="field font-normal placeholder:text-muted" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
               <label className="field-label">
                 Confirmar contraseña
-                <input required type="password" minLength={8} className="field" value={passwordConfirm} onChange={(event) => setPasswordConfirm(event.target.value)} aria-invalid={passwordMismatch} />
+                <input required type="password" minLength={8} className="field font-normal placeholder:text-muted" value={passwordConfirm} onChange={(event) => setPasswordConfirm(event.target.value)} aria-invalid={passwordMismatch} placeholder="Repite la contraseña" />
                 {passwordMismatch && <span className="mt-2 block text-sm font-semibold text-coral">Las contraseñas no coinciden.</span>}
               </label>
               <label className="field-label">
@@ -189,24 +189,24 @@ export default function LoginRegistration() {
                     {subtypeOptions.map((option) => <option key={option}>{option}</option>)}
                   </select>
                 </label>
-                <label className="field-label">Web o enlace público<input className="field" placeholder="https://" /></label>
-                <label className="field-label md:col-span-2">Descripción breve<textarea required className="field min-h-28 py-3" placeholder="Cuenta qué ofreces, para quién y en qué zona trabajas." /></label>
-                <label className="field-label">Dirección o zona de servicio<input className="field" placeholder="Ej. Majadahonda y alrededores" /></label>
+                <label className="field-label">Web o enlace público<input className="field font-normal placeholder:text-muted" placeholder="https://" /></label>
+                <label className="field-label md:col-span-2">Descripción breve<textarea required className="field min-h-28 py-3 font-normal placeholder:text-muted" placeholder="Cuenta qué ofreces, para quién y en qué zona trabajas." /></label>
+                <label className="field-label">Dirección o zona de servicio<input className="field font-normal placeholder:text-muted" placeholder="Ej. Majadahonda y alrededores" /></label>
                 <label className="field-label">Modalidad<select className="field" defaultValue=""><option value="">Selecciona modalidad</option><option>Presencial</option><option>Online</option><option>Presencial y online</option><option>A domicilio</option></select></label>
                 {showAgeAndAvailability && (
                   <>
-                    <label className="field-label">Edades orientativas<input className="field" placeholder="Ej. 6-12 años, familias, adultos" /></label>
-                    <label className="field-label">Disponibilidad<input className="field" placeholder="Ej. tardes, fines de semana, vacaciones" /></label>
-                    <label className="field-label md:col-span-2">Horarios o franjas<textarea className="field min-h-24 py-3" placeholder="Indica horarios de apertura, clases, turnos o disponibilidad sin incluir horarios personales de menores." /></label>
+                    <label className="field-label">Edades orientativas<input className="field font-normal placeholder:text-muted" placeholder="Ej. 6-12 años, familias, adultos" /></label>
+                    <label className="field-label">Disponibilidad<input className="field font-normal placeholder:text-muted" placeholder="Ej. tardes, fines de semana, vacaciones" /></label>
+                    <label className="field-label md:col-span-2">Horarios o franjas<textarea className="field min-h-24 py-3 font-normal placeholder:text-muted" placeholder="Indica horarios de apertura, clases, turnos o disponibilidad sin incluir horarios personales de menores." /></label>
                   </>
                 )}
                 {showCredentials && (
                   <>
-                    <label className="field-label">Licencia, colegiación o autorización aplicable<input className="field" placeholder="Ej. nº colegiado, autorización, licencia municipal" /></label>
-                    <label className="field-label">Seguro o responsable del servicio<input className="field" placeholder="Ej. entidad responsable, póliza, titular del servicio" /></label>
+                    <label className="field-label">Licencia, colegiación o autorización aplicable<input className="field font-normal placeholder:text-muted" placeholder="Ej. nº colegiado, autorización, licencia municipal" /></label>
+                    <label className="field-label">Seguro o responsable del servicio<input className="field font-normal placeholder:text-muted" placeholder="Ej. entidad responsable, póliza, titular del servicio" /></label>
                   </>
                 )}
-                <label className="field-label md:col-span-2">Características relevantes<textarea className="field min-h-24 py-3" placeholder="Idiomas, grupos reducidos, recogida, necesidades especiales, materiales, ratios, etc." /></label>
+                <label className="field-label md:col-span-2">Características relevantes<textarea className="field min-h-24 py-3 font-normal placeholder:text-muted" placeholder="Idiomas, grupos reducidos, recogida, necesidades especiales, materiales, ratios, etc." /></label>
               </section>
             )}
 

@@ -27,7 +27,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/buscar?region=madrid" className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-slatecopy transition-colors hover:text-ink">
+          <Link href="/buscar?region=madrid" className="mr-3 inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-slatecopy transition-colors hover:text-ink lg:mr-5">
             <MapPin size={16} className="text-ink" aria-hidden />
             Madrid
           </Link>

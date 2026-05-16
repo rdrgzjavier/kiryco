@@ -146,7 +146,7 @@ export default function Home() {
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <Search size={20} className="text-muted" aria-hidden />
                 <span className="sr-only">Servicio</span>
-                <input name="tag" placeholder="¿Qué servicio buscas?" className="w-full bg-transparent text-base outline-none" />
+                <input name="tag" placeholder="¿Qué quieres encontrar?" className="w-full bg-transparent text-base placeholder:text-muted outline-none" />
               </label>
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <MapPin size={20} className="text-muted" aria-hidden />
@@ -156,7 +156,7 @@ export default function Home() {
                   {municipalities.map((municipality) => <option key={municipality.id} value={municipality.name}>{municipality.name}</option>)}
                 </select>
               </label>
-              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios</button>
+              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar</button>
             </form>
             <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
@@ -180,9 +180,9 @@ export default function Home() {
           <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
           <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-muted lg:whitespace-nowrap">Categorías útiles para comparar servicios, centros y recursos locales.</p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-4 lg:grid-cols-7">
+        <div className="grid grid-cols-2 justify-center gap-3 sm:grid-cols-4 lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
-            <Link key={name} href={href} className="group grid min-h-32 grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2">
+            <Link key={name} href={href} className="group grid aspect-square w-full max-w-40 grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32 sm:max-w-none">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
                 <Icon size={26} className={color} aria-hidden />
               </span>

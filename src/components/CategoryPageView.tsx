@@ -14,10 +14,13 @@ export default function CategoryPageView({ category }: { category: Category }) {
       <p className="mt-3 max-w-3xl text-slatecopy">{category.description}</p>
       <div className="mt-5 flex flex-wrap gap-3">
         <Link className="btn-primary" href="/publicar">Publicar en esta categoría</Link>
-        <Link className="btn-secondary" href="/proveedores">Alta de proveedor</Link>
       </div>
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[280px_1fr]">
-        <Filters selected={{ categoria: category.id }} />
+        <details className="lg:hidden">
+          <summary className="btn-secondary w-full cursor-pointer list-none">Filtrar</summary>
+          <div className="mt-4"><Filters selected={{ categoria: category.id }} /></div>
+        </details>
+        <div className="hidden lg:block"><Filters selected={{ categoria: category.id }} /></div>
         <div className="grid content-start items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {categoryListings.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
         </div>

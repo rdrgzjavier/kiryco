@@ -11,6 +11,30 @@ function value(params: SearchParams, key: string) {
   return Array.isArray(raw) ? raw[0] : raw;
 }
 
+const keywordAliases: Record<string, string[]> = {
+  profesor: ["profesor", "profesora", "clase", "clases", "apoyo", "academia"],
+  profesores: ["profesor", "profesora", "clase", "clases", "apoyo", "academia"],
+  matematicas: ["matematicas", "matemáticas", "mates"],
+  mates: ["matematicas", "matemáticas", "mates"],
+  canguro: ["canguro", "canguros", "babysitter", "cuidador"],
+  cumpleanos: ["cumpleanos", "cumpleaños", "fiestas", "eventos", "sala"],
+  tecnologia: ["tecnologia", "tecnología", "robotica", "robótica", "programacion", "programación"]
+};
+
+function normalize(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function queryTokenGroups(query: string) {
+  return normalize(query)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((token) => (keywordAliases[token] ?? [token]).map(normalize));
+}
+
 export function generateMetadata({ searchParams }: { searchParams: SearchParams }): Metadata {
   const cat = value(searchParams, "categoria");
   const mun = value(searchParams, "municipio");
@@ -50,9 +74,9 @@ export default function SearchPage({ searchParams }: { searchParams: SearchParam
     if (selected.tipo && listing.publicationType !== selected.tipo) return false;
     if (selected.verificado === "1" && !listing.verified) return false;
     if (selected.tag) {
-      const needle = selected.tag.toLowerCase();
-      const haystack = [listing.title, listing.description, listing.categoryId, ...listing.tags].join(" ").toLowerCase();
-      if (!haystack.includes(needle)) return false;
+      const needleGroups = queryTokenGroups(selected.tag);
+      const haystack = normalize([listing.title, listing.description, listing.categoryId, listing.municipality, listing.area, ...listing.tags].join(" "));
+      if (!needleGroups.every((group) => group.some((needle) => haystack.includes(needle)))) return false;
     }
     if (selected.edad && typeof ageMin === "number" && typeof ageMax === "number") {
       const listingMin = listing.recommendedAgeMin ?? 0;

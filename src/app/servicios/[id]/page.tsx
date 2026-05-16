@@ -9,6 +9,11 @@ import ProfileAvatar from "@/components/ProfileAvatar";
 import { trackingAttrs } from "@/lib/analytics";
 import { findProvider, providers } from "@/lib/mock-data";
 
+function isPersonalProvider(provider: NonNullable<ReturnType<typeof findProvider>>) {
+  const value = [provider.id, provider.category, provider.businessName, ...provider.tags].join(" ").toLowerCase();
+  return value.includes("canguro") || value.includes("profesor") || value.includes("particular");
+}
+
 export function generateStaticParams() {
   return providers.map((provider) => ({ id: provider.id }));
 }
@@ -22,6 +27,7 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 export default function ServiceDetailPage({ params }: { params: { id: string } }) {
   const provider = findProvider(params.id);
   if (!provider) notFound();
+  const personalProvider = isPersonalProvider(provider);
 
   return (
     <div className="section-shell">
@@ -56,7 +62,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
           </section>
         </article>
         <aside className="card h-fit p-6">
-          <SafeEnvironmentCard compact title="Contacto protegido" body="Tenlo no solicita ni muestra datos personales de menores. Contacta siempre como adulto responsable." />
+          {personalProvider ? <SafeEnvironmentCard compact title="Contacto protegido" body="En servicios entre particulares, Tenlo protege los datos de contacto y recomienda acordar siempre la comunicación entre adultos responsables." /> : null}
           {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}>Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: provider.id, type: "provider" })}>Contactar</a>}
         </aside>
       </div>
