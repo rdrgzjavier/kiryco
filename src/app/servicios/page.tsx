@@ -39,11 +39,11 @@ const plans = [
 ];
 
 const situations = [
-  "Busco apoyo escolar cerca del cole",
-  "Necesito campamento en días sin cole",
-  "Quiero encontrar extraescolares en mi zona",
-  "Necesito una sala para un cumpleaños",
-  "Busco un canguro cerca de casa"
+  { text: "Busco apoyo escolar cerca del cole", href: "/buscar?tag=clases-particulares" },
+  { text: "Necesito campamento en días sin cole", href: "/buscar?tag=campamentos" },
+  { text: "Quiero encontrar extraescolares en mi zona", href: "/buscar?tag=extraescolares" },
+  { text: "Necesito una sala para un cumpleaños", href: "/buscar?tag=salas%20multiusos" },
+  { text: "Busco un canguro cerca de casa", href: "/buscar?tag=canguros" }
 ];
 
 export default function ServicesPage() {
@@ -70,7 +70,7 @@ export default function ServicesPage() {
         <h2 className="text-xl font-bold text-slatecopy">Situaciones que Tenlo ayuda a resolver</h2>
         <div className="mt-4 flex flex-wrap gap-2">
           {situations.map((situation) => (
-            <Link key={situation} href={`/buscar?tag=${encodeURIComponent(situation)}`} className="chip hover:text-ink">{situation}</Link>
+            <Link key={situation.text} href={situation.href} className="chip hover:text-ink">{situation.text}</Link>
           ))}
         </div>
       </section>
@@ -124,7 +124,7 @@ export default function ServicesPage() {
           <article key={provider.id} className="card flex h-full flex-col overflow-hidden">
             <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="relative block">
               <ImageWithFallback src={provider.image} fallbackSrc={providerFallback(provider.id)} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" />
-              <span className="absolute right-3 top-3"><TrustBadge level={provider.trustLevel} /></span>
+              <span className="absolute right-3 top-3"><TrustBadge level={provider.trustLevel} variant="solid" /></span>
             </Link>
             <div className="flex flex-1 flex-col p-5">
               <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span></div>
@@ -132,7 +132,7 @@ export default function ServicesPage() {
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
               <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
               <div className="mt-auto flex gap-2 pt-5">
-                <Link href={`/servicios/${provider.id}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Consultar servicio de {provider.businessName}</Link>
+                <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Consultar</Link>
                 {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
               </div>
             </div>

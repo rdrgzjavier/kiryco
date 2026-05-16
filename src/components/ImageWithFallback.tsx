@@ -19,6 +19,7 @@ export default function ImageWithFallback({ src, fallbackSrc, alt, className, lo
       alt={alt}
       className={className}
       loading={loading}
+      decoding="async"
       onError={() => {
         if (currentSrc !== fallbackSrc) setCurrentSrc(fallbackSrc);
       }}

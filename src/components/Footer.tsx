@@ -35,7 +35,7 @@ export default function Footer() {
           <div>
             <p className="text-3xl font-extrabold text-ink">Tenlo</p>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted">
-              La plataforma que conecta a familias adultas con servicios educativos, bienestar y recursos locales de confianza.
+              La plataforma que conecta a familias con servicios educativos, bienestar y recursos locales de confianza.
             </p>
           </div>
           <div className="flex items-start gap-2 text-sm font-semibold leading-6 text-petrol">

@@ -135,11 +135,11 @@ const faqs = [
 ];
 
 const realSituations = [
-  "Necesito campamento para la próxima semana",
-  "Busco apoyo escolar cerca del cole",
-  "Quiero encontrar extraescolares en mi zona",
-  "Necesito una sala para celebrar un cumpleaños",
-  "Busco un canguro cerca de casa"
+  { text: "Necesito campamento para la próxima semana", href: "/buscar?tag=campamentos" },
+  { text: "Busco apoyo escolar cerca del cole", href: "/buscar?tag=clases-particulares" },
+  { text: "Quiero encontrar extraescolares en mi zona", href: "/buscar?tag=extraescolares" },
+  { text: "Necesito una sala para celebrar un cumpleaños", href: "/buscar?tag=salas%20multiusos" },
+  { text: "Busco un canguro cerca de casa", href: "/buscar?tag=canguros" }
 ];
 
 export default function Home() {
@@ -172,14 +172,14 @@ export default function Home() {
               <label className="flex min-h-14 items-center gap-3 rounded-2xl bg-white px-4 ring-1 ring-line">
                 <MapPin size={20} className="text-muted" aria-hidden />
                 <span className="sr-only">Zona</span>
-                <select name="municipio" className="w-full bg-transparent text-base text-muted outline-none">
+                <select name="municipio" className="w-full bg-transparent pr-8 text-base text-muted outline-none">
                   <option value="">¿Dónde?</option>
                   {municipalities.map((municipality) => <option key={municipality.id} value={municipality.name}>{municipality.name}</option>)}
                 </select>
               </label>
-              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios cerca del colegio</button>
+              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios</button>
             </ValidatedSearchForm>
-            <Link href="/centros" className="mt-4 inline-flex w-fit text-sm font-bold text-ink underline">Explorar centros educativos</Link>
+            <Link href="/centros" className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-bold text-ink">Explorar centros educativos <ArrowRight size={16} aria-hidden /></Link>
             <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
                 <div key={title} className="grid w-full max-w-[270px] grid-cols-[56px_1fr] items-center gap-4 text-left sm:max-w-none">
@@ -191,7 +191,7 @@ export default function Home() {
           </div>
           <div className="relative hidden min-h-[370px] lg:block">
             <div className="absolute inset-x-4 bottom-0 top-6 overflow-hidden rounded-[44px] bg-white xl:inset-x-8">
-              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="eager" />
+              <ImageWithFallback src={heroImage} fallbackSrc="https://images.pexels.com/photos/7880624/pexels-photo-7880624.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Persona adulta caminando de la mano con una menor, sin datos identificativos" className="h-full w-full object-cover object-center" loading="lazy" />
             </div>
           </div>
         </div>
@@ -251,7 +251,7 @@ export default function Home() {
           <h2 className="mt-2 text-2xl font-bold text-slatecopy">Tenlo ayuda cuando necesitas resolver algo concreto</h2>
           <div className="mt-5 flex flex-wrap gap-2">
             {realSituations.map((situation) => (
-              <Link key={situation} href={`/buscar?tag=${encodeURIComponent(situation)}`} className="chip hover:text-ink">{situation}</Link>
+              <Link key={situation.text} href={situation.href} className="chip hover:text-ink">{situation.text}</Link>
             ))}
           </div>
         </div>

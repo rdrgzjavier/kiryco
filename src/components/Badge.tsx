@@ -10,16 +10,17 @@ export function VerifiedBadge({ verified }: { verified?: boolean }) {
   );
 }
 
-export function TrustBadge({ level }: { level: TrustLevel }) {
+export function TrustBadge({ level, variant = "soft" }: { level: TrustLevel; variant?: "soft" | "solid" }) {
   const config = {
     collected: { label: "Información recopilada", Icon: Database, className: "bg-soft text-slatecopy ring-line" },
     verified: { label: "Perfil verificado", Icon: CheckCircle2, className: "bg-sage/10 text-sage ring-sage/20" },
     official: { label: "Perfil verificado", Icon: ShieldCheck, className: "bg-sage/10 text-sage ring-sage/20" }
   } satisfies Record<TrustLevel, { label: string; Icon: LucideIcon; className: string }>;
   const { label, Icon, className } = config[level];
+  const solidClassName = level === "collected" ? "bg-white text-slatecopy ring-line shadow-sm" : "bg-sage text-white ring-sage shadow-sm";
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${variant === "solid" ? solidClassName : className}`}>
       <Icon size={14} aria-hidden /> {label}
     </span>
   );

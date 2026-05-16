@@ -78,7 +78,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
     <article className="card flex flex-col overflow-hidden">
       <Link href={detailHref} aria-label={`Ver ficha de ${listing.title}`} className="relative block">
         <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId, listing.slug)} alt={`Imagen de ${listing.title}`} className="h-40 w-full object-cover" />
-        <span className="absolute right-3 top-3"><TrustBadge level={listing.trustLevel} /></span>
+        <span className="absolute right-3 top-3"><TrustBadge level={listing.trustLevel} variant="solid" /></span>
       </Link>
       <div className="flex flex-col p-5">
         <div className="flex flex-wrap gap-2">
@@ -102,7 +102,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
         <div className="mt-5 flex flex-wrap gap-2">
-          <Link href={detailHref} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Ver ficha de {listing.title}</Link>
+          <Link href={detailHref} aria-label={`Ver ficha de ${listing.title}`} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Ver ficha</Link>
           <button className="icon-button" aria-label="Contactar" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={18} /></button>
           <button className="icon-button" aria-label="Guardar" {...trackingAttrs("save_favorite", { item: listing.id, category: listing.categoryId })}><Bookmark size={18} /></button>
         </div>
