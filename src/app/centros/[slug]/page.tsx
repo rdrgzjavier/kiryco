@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { centers, findCenter, reviews } from "@/lib/mock-data";
+import { centers, findCenter } from "@/lib/mock-data";
 import { TrustBadge } from "@/components/Badge";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
@@ -23,7 +23,6 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function CenterDetailPage({ params }: { params: { slug: string } }) {
   const center = findCenter(params.slug);
   if (!center) notFound();
-  const centerReviews = reviews.filter((review) => review.centerId === center.id && review.status === "published");
 
   return (
     <div className="page py-10">
@@ -54,12 +53,13 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         <section className="card p-6">
           <h2 className="text-2xl font-semibold text-ink">Datos públicos</h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            {[["Municipio", center.municipality], ["Dirección", center.address], ["Teléfono", center.phone], ["Email", center.email], ["Web oficial", center.website], ["Etapas", center.stages.join(", ")], ["Idiomas", center.languages.join(", ")], ["Servicios", center.services.join(", ")]].map(([label, value]) => (
+            {[["Municipio", center.municipality], ["Dirección", center.address], ["Teléfono", center.phone], ["Email", center.email], ["Web oficial", center.website], ["Etapas", center.stages.join(", ")], ["Idiomas", center.languages.join(", ")], ["Servicios", center.services.join(", ")], ["Última revisión", center.lastReviewed ?? "Información pendiente de revisión"], ["Fuente", center.source], ["Estado", center.verificationStatus ?? "Información pública"]].map(([label, value]) => (
               <div key={label} className="rounded-xl border border-line bg-soft p-4"><dt className="label">{label}</dt><dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd></div>
             ))}
           </dl>
-          <p className="mt-5 rounded-xl border border-line bg-white p-4 text-sm leading-6 text-slatecopy">Datos públicos orientativos. Confirma admisión, horarios, precios y servicios en la web oficial del centro antes de tomar una decisión.</p>
+          <p className="mt-5 rounded-xl border border-line bg-white p-4 text-sm leading-6 text-slatecopy">Tenlo no elabora rankings de colegios. Organiza información pública y recursos relacionados para que las familias comparen con contexto. Confirma admisión, horarios, precios y servicios en la web oficial del centro.</p>
           {center.sourceUrl ? <a href={center.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold text-ink underline">Fuente: {center.source}</a> : null}
+          <Link href="/contacto" className="ml-0 mt-4 inline-flex text-sm font-semibold text-ink underline sm:ml-4">¿Hay un dato incorrecto? Avísanos</Link>
         </section>
         <aside className="card h-fit p-6">
           <h2 className="text-xl font-semibold text-ink">Solicitar revisión de ficha</h2>
@@ -75,15 +75,20 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         ))}
       </section>
       <section className="mt-8 card p-6">
-        <h2 className="text-2xl font-semibold text-ink">Valoraciones estructuradas</h2>
-        <p className="mt-2 rounded-xl border border-line bg-soft p-4 text-sm leading-6 text-slatecopy">Las valoraciones están moderadas y buscan ayudar a las familias con información útil y respetuosa.</p>
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          {centerReviews.length > 0 ? centerReviews.map((review) => (
-            <article key={review.id} className="rounded-xl border border-line p-4">
-              <p className="text-sm leading-6 text-slatecopy">{review.comment}</p>
-              <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold text-muted"><span>Comunicación {review.ratingCommunication}/5</span><span>Instalaciones {review.ratingFacilities}/5</span><span>Ambiente {review.ratingEnvironment}/5</span><span>Idiomas {review.ratingLanguages}/5</span><span>Actividades {review.ratingActivities}/5</span><span>Atención {review.ratingAttention}/5</span></div>
-            </article>
-          )) : <p className="rounded-xl border border-line p-4 text-sm leading-6 text-muted">Aún no hay valoraciones familiares moderadas publicadas para este centro.</p>}
+        <h2 className="text-2xl font-semibold text-ink">Criterios de información</h2>
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          <article className="rounded-xl border border-line bg-soft p-4">
+            <h3 className="text-sm font-bold text-ink">Sin rankings</h3>
+            <p className="mt-2 text-sm leading-6 text-muted">Tenlo no clasifica colegios de mejor a peor ni publica puntuaciones sin evidencia verificable.</p>
+          </article>
+          <article className="rounded-xl border border-line bg-soft p-4">
+            <h3 className="text-sm font-bold text-ink">Fuente pública</h3>
+            <p className="mt-2 text-sm leading-6 text-muted">La ficha resume datos públicos y orientativos que deben confirmarse con el centro.</p>
+          </article>
+          <article className="rounded-xl border border-line bg-soft p-4">
+            <h3 className="text-sm font-bold text-ink">Privacidad</h3>
+            <p className="mt-2 text-sm leading-6 text-muted">No se muestran datos identificativos de menores ni comentarios personales sobre profesores.</p>
+          </article>
         </div>
       </section>
     </div>

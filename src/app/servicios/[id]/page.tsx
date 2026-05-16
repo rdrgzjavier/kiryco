@@ -30,8 +30,8 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   if (!provider) notFound();
   const personalProvider = isPersonalProvider(provider);
   const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
-  const sourceLabel = provider.website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo";
-  const reviewDate = "Mayo de 2026";
+  const sourceLabel = provider.sourceName ?? (provider.website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo");
+  const reviewDate = provider.lastReviewed ?? "Información pendiente de revisión";
   const relatedServices = providers
     .filter((item) => item.id !== provider.id && (item.municipality === provider.municipality || item.category === provider.category))
     .slice(0, 3);
@@ -70,7 +70,9 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
               <div className="flex justify-between gap-4"><dt>Email</dt><dd className="text-right font-semibold text-ink">{provider.email}</dd></div>
               <div className="flex justify-between gap-4"><dt>Fuente</dt><dd className="text-right font-semibold text-ink">{sourceLabel}</dd></div>
               <div className="flex justify-between gap-4"><dt>Última revisión</dt><dd className="text-right font-semibold text-ink">{reviewDate}</dd></div>
+              <div className="flex justify-between gap-4"><dt>Estado de verificación</dt><dd className="text-right font-semibold text-ink">{provider.verificationStatus ?? "Información pendiente de revisión"}</dd></div>
             </dl>
+            <Link href="/contacto" className="mt-5 inline-flex text-sm font-semibold text-ink underline">¿Hay un dato incorrecto? Avísanos</Link>
           </section>
           <section className="mt-6 grid gap-4 md:grid-cols-2">
             <div className="card p-5">

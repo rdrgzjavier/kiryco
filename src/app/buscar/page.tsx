@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Filters from "@/components/Filters";
 import ListingCard from "@/components/ListingCard";
+import LoadMoreGrid from "@/components/LoadMoreGrid";
 import ResponsiveFilterPanel from "@/components/ResponsiveFilterPanel";
 import { listings, municipalities } from "@/lib/mock-data";
 
@@ -117,9 +118,9 @@ export default function SearchPage({ searchParams }: { searchParams: SearchParam
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm font-semibold text-slatecopy">{filtered.length} resultado{filtered.length === 1 ? "" : "s"}</p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <LoadMoreGrid className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map((listing) => <ListingCard key={listing.id} listing={listing} />)}
-          </div>
+          </LoadMoreGrid>
         </section>
       </div>
     </div>

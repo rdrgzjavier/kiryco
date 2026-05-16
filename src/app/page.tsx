@@ -134,6 +134,14 @@ const faqs = [
   ["¿Qué significa perfil verificado?", "Indica que la ficha tiene señales adicionales de confianza, como datos contrastados, contacto público o revisión del equipo Tenlo."]
 ];
 
+const realSituations = [
+  "Necesito campamento para la próxima semana",
+  "Busco apoyo escolar cerca del cole",
+  "Quiero encontrar extraescolares en mi zona",
+  "Necesito una sala para celebrar un cumpleaños",
+  "Busco un canguro cerca de casa"
+];
+
 export default function Home() {
   const stats = getSiteStats();
   const totalPublished = listings.filter((listing) => listing.status === "published").length;
@@ -169,8 +177,9 @@ export default function Home() {
                   {municipalities.map((municipality) => <option key={municipality.id} value={municipality.name}>{municipality.name}</option>)}
                 </select>
               </label>
-              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar</button>
+              <button className="btn-primary min-w-40" type="submit" {...trackingAttrs("search", { placement: "home_hero" })}>Buscar servicios cerca del colegio</button>
             </ValidatedSearchForm>
+            <Link href="/centros" className="mt-4 inline-flex w-fit text-sm font-bold text-ink underline">Explorar centros educativos</Link>
             <div className="mt-7 grid justify-items-center gap-4 sm:grid-cols-3 sm:justify-items-stretch">
               {benefits.map(({ title, text, Icon, color }) => (
                 <div key={title} className="grid w-full max-w-[270px] grid-cols-[56px_1fr] items-center gap-4 text-left sm:max-w-none">
@@ -237,6 +246,15 @@ export default function Home() {
       </section>
 
       <section className="page py-14 lg:py-16">
+        <div className="mb-8 rounded-[24px] border border-line bg-white p-6 shadow-soft">
+          <p className="label">Situaciones reales</p>
+          <h2 className="mt-2 text-2xl font-bold text-slatecopy">Tenlo ayuda cuando necesitas resolver algo concreto</h2>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {realSituations.map((situation) => (
+              <Link key={situation} href={`/buscar?tag=${encodeURIComponent(situation)}`} className="chip hover:text-ink">{situation}</Link>
+            ))}
+          </div>
+        </div>
         <div className="mb-6 text-left md:text-center">
           <h2 className="section-title w-full">Servicios populares en tu zona</h2>
         </div>

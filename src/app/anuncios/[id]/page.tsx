@@ -54,7 +54,10 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               ["Edad recomendada", ageLabel(listing)],
               ["Precio", listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")],
               ["Estado", listing.condition ?? "No aplica"],
-              ["Disponibilidad", listing.availability ?? "Consultar"]
+              ["Disponibilidad", listing.availability ?? "Consultar"],
+              ["Fuente", listing.sourceName ?? "Información recopilada por Tenlo"],
+              ["Última revisión", listing.lastReviewed ?? "Información pendiente de revisión"],
+              ["Verificación", listing.verificationStatus ?? "Información pendiente de revisión"]
             ].map(([label, value]) => (
               <div key={label} className="rounded-xl border border-line bg-panel p-4">
                 <p className="label">{label}</p>
@@ -72,6 +75,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                 </div>
               ))}
             </dl>
+            <a href="/contacto" className="mt-5 inline-flex text-sm font-semibold text-ink underline">¿Hay un dato incorrecto? Avísanos</a>
           </section>
         </article>
         <aside className="space-y-4">

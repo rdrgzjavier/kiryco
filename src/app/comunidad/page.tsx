@@ -6,6 +6,7 @@ import { communityInitiatives, communityPosts, municipalities } from "@/lib/mock
 import { StatusBadge } from "@/components/Badge";
 import ResponsiveFilterPanel from "@/components/ResponsiveFilterPanel";
 import ValidatedSearchForm from "@/components/ValidatedSearchForm";
+import LoadMoreGrid from "@/components/LoadMoreGrid";
 
 export const metadata: Metadata = {
   title: "Eventos, iniciativas y recursos familiares en Madrid noroeste",
@@ -72,7 +73,7 @@ export default function CommunityPage() {
             <h2 className="mt-2 text-2xl font-semibold text-ink">Proyectos que merece la pena conocer</h2>
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <LoadMoreGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {communityInitiatives.map((initiative) => (
             <article key={initiative.id} className="card flex h-full flex-col overflow-hidden">
               <Link href={`/comunidad/${initiative.id}`} aria-label={`Ver iniciativa ${initiative.name}`}>
@@ -90,7 +91,7 @@ export default function CommunityPage() {
               </div>
             </article>
           ))}
-        </div>
+        </LoadMoreGrid>
       </section>
 
       <div className="mt-8 grid gap-4 md:grid-cols-[1fr_340px]">

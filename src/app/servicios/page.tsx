@@ -6,6 +6,7 @@ import { TrustBadge } from "@/components/Badge";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import JsonLd from "@/components/JsonLd";
+import LoadMoreGrid from "@/components/LoadMoreGrid";
 import { trackingAttrs } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/site";
 
@@ -37,6 +38,14 @@ const plans = [
   ["Premium", "Visibilidad por zona/categoría, campañas estacionales y landing propia dentro de Tenlo."]
 ];
 
+const situations = [
+  "Busco apoyo escolar cerca del cole",
+  "Necesito campamento en días sin cole",
+  "Quiero encontrar extraescolares en mi zona",
+  "Necesito una sala para un cumpleaños",
+  "Busco un canguro cerca de casa"
+];
+
 export default function ServicesPage() {
   const serviceCategories = categories.filter(c => c.id !== "centros");
 
@@ -57,6 +66,14 @@ export default function ServicesPage() {
       <p className="label">Profesionales y negocios locales</p>
       <h1 className="page-title">Servicios para familias</h1>
       <p className="lead">Profesores, academias, clubes, tiendas, librerías, canguros profesionales, campamentos, idiomas y apoyo especializado para familias.</p>
+      <section className="mt-8 rounded-2xl border border-line bg-white p-5 shadow-soft">
+        <h2 className="text-xl font-bold text-slatecopy">Situaciones que Tenlo ayuda a resolver</h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {situations.map((situation) => (
+            <Link key={situation} href={`/buscar?tag=${encodeURIComponent(situation)}`} className="chip hover:text-ink">{situation}</Link>
+          ))}
+        </div>
+      </section>
 
       {/* Filters Section */}
       <ValidatedSearchForm className="filter-shell sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]" message="Completa al menos una palabra clave, zona, tipología o precio para filtrar.">
@@ -102,7 +119,7 @@ export default function ServicesPage() {
         <Link href="/login" className="btn-secondary">Publicar oferta</Link>
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <LoadMoreGrid className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((provider) => (
           <article key={provider.id} className="card flex h-full flex-col overflow-hidden">
             <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="relative block">
@@ -121,7 +138,7 @@ export default function ServicesPage() {
             </div>
           </article>
         ))}
-      </div>
+      </LoadMoreGrid>
 
       {/* Plans Section moved to bottom/signup flow context */}
       <section className="mt-20 rounded-3xl bg-lavender/30 p-8 md:p-12">

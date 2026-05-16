@@ -1,4 +1,4 @@
-import type { Category, Center, CommunityInitiative, CommunityPost, Listing, Municipality, Provider, Review } from "./types";
+import type { Category, Center, CommunityInitiative, CommunityPost, Listing, Municipality, Provider } from "./types";
 
 const images = {
   center: "https://images.unsplash.com/photo-1577891729319-f4871c6ec217?auto=format&fit=crop&w=1200&q=80",
@@ -78,6 +78,9 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   description,
   source: "Información pública oficial",
   sourceUrl: `https://www.${slug}.es`,
+  lastReviewed: "Mayo de 2026",
+  verificationStatus: "Información pública",
+  isPublicInformation: true,
   tags: [...baseTags, ...tags, municipality],
   image: stages.includes("0-3 años") ? images.nursery : images.center,
   verified: true,
@@ -152,6 +155,11 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
   website: website ?? "https://example.com",
   phone,
   email,
+  sourceName: website && website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo",
+  sourceUrl: website && website !== "https://example.com" ? website : undefined,
+  lastReviewed: "Mayo de 2026",
+  verificationStatus: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "Perfil verificado" : "Información recopilada",
+  isPublicInformation: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
   verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
   trustLevel: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "verified" : "collected",
   plan: "gratuito",
@@ -195,6 +203,11 @@ export const listings: Listing[] = [
     recommendedAgeMax: centerAgeRange(center.stages)[1],
     priceLabel: "Consultar",
     availability: "Ficha pública",
+    sourceName: center.source,
+    sourceUrl: center.sourceUrl,
+    lastReviewed: center.lastReviewed,
+    verificationStatus: center.verificationStatus,
+    isPublicInformation: center.isPublicInformation,
     publicationType: "centro" as const,
     status: "published" as const,
     verified: true,
@@ -225,6 +238,11 @@ export const listings: Listing[] = [
       recommendedAgeMax: provider.category.toLowerCase().includes("cumpleaños") ? 14 : 16,
       priceLabel: "Consultar",
       availability,
+      sourceName: provider.sourceName,
+      sourceUrl: provider.sourceUrl,
+      lastReviewed: provider.lastReviewed,
+      verificationStatus: provider.verificationStatus,
+      isPublicInformation: provider.isPublicInformation,
       publicationType: "proveedor" as const,
       status: "published" as const,
       verified: provider.verified,
@@ -257,7 +275,6 @@ export const searchTags = Array.from(new Set([
   ...communityInitiatives.flatMap((initiative) => initiative.tags)
 ])).sort((a, b) => a.localeCompare(b, "es"));
 
-export const reviews: Review[] = [];
 export const communityPosts: CommunityPost[] = [
   { id: "cp1", title: "Mejores parques en Boadilla para ir con niños", category: "General", municipality: "Boadilla del Monte", summary: "Recomendaciones de la comunidad.", status: "published" },
   { id: "cp2", title: "Actividades gratuitas en Pozuelo este fin de semana", category: "Extraescolares", municipality: "Pozuelo de Alarcón", summary: "Agenda cultural y deportiva.", status: "published" }
