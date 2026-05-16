@@ -25,6 +25,7 @@ export default function CentersPage() {
         "@context": "https://schema.org",
         "@type": "ItemList",
         name: "Centros educativos en Madrid noroeste",
+        description: "Listado informativo de centros educativos con datos públicos, sin rankings agresivos.",
         itemListElement: centers.map((center, index) => ({
           "@type": "ListItem",
           position: index + 1,

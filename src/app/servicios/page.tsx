@@ -46,6 +46,7 @@ export default function ServicesPage() {
         "@context": "https://schema.org",
         "@type": "ItemList",
         name: "Servicios para familias en Madrid noroeste",
+        description: "Listado de servicios familiares revisados por Tenlo para Las Rozas, Majadahonda, Pozuelo y Boadilla.",
         itemListElement: providers.map((provider, index) => ({
           "@type": "ListItem",
           position: index + 1,

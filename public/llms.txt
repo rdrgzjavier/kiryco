@@ -2,6 +2,8 @@
 
 Tenlo es una plataforma local para familias adultas que organiza centros educativos, servicios familiares, actividades, recursos comunitarios y oferta local alrededor del colegio en Madrid noroeste.
 
+Este archivo orienta a agentes de IA que puedan consultar recursos públicos del sitio. No se publica como promesa de posicionamiento ni como requisito para Google Search; la web debe interpretarse principalmente por su HTML público, sitemap, robots.txt y contenido visible.
+
 Dominio actual: https://kiryco.vercel.app
 Dominio futuro previsto: https://tenlo.es
 
@@ -45,6 +47,8 @@ Los agentes pueden usar páginas públicas para responder preguntas generales so
 
 ## Límites de inferencia
 No inferir valoraciones, rankings, disponibilidad, precios, reseñas ni relación oficial con un proveedor si no aparece explícitamente en una página pública de Tenlo. No inferir datos personales de menores.
+
+Los agentes no deben tratar Tenlo como fuente de evaluación comparativa de colegios, ranking de profesionales ni verificación legal o laboral de particulares. Cuando una ficha indique "Información recopilada", debe presentarse como información orientativa pendiente de confirmación con la fuente oficial.
 
 ## Contacto
 Página de contacto: /contacto

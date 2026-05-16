@@ -54,22 +54,36 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteConfig.currentDomain}/#organization`,
     name: siteConfig.name,
     url: siteConfig.currentDomain,
     logo: absoluteUrl("/brand/tenlo-isotipo-512.png"),
     description: siteConfig.shortDescription,
+    slogan: siteConfig.tagline,
     areaServed: siteConfig.municipalities.map((name) => ({
       "@type": "City",
       name
     })),
-    sameAs: [siteConfig.social.instagram, siteConfig.social.linkedin]
+    sameAs: [siteConfig.social.instagram, siteConfig.social.linkedin],
+    contactPoint: {
+      "@type": "ContactPoint",
+      url: absoluteUrl("/contacto"),
+      contactType: "customer support",
+      areaServed: "ES",
+      availableLanguage: "es"
+    }
   };
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${siteConfig.currentDomain}/#website`,
     name: siteConfig.name,
     url: siteConfig.currentDomain,
     description: siteConfig.shortDescription,
+    inLanguage: "es",
+    publisher: {
+      "@id": `${siteConfig.currentDomain}/#organization`
+    },
     potentialAction: {
       "@type": "SearchAction",
       target: `${siteConfig.currentDomain}/buscar?tag={search_term_string}`,
