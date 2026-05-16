@@ -57,7 +57,6 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
               <div key={label} className="rounded-xl border border-line bg-soft p-4"><dt className="label">{label}</dt><dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd></div>
             ))}
           </dl>
-          <p className="mt-5 rounded-xl border border-line bg-white p-4 text-sm leading-6 text-slatecopy">Tenlo no elabora rankings de colegios. Organiza información pública y recursos relacionados para que las familias comparen con contexto. Confirma admisión, horarios, precios y servicios en la web oficial del centro.</p>
           {center.sourceUrl ? <a href={center.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold text-ink underline">Fuente: {center.source}</a> : null}
           <Link href="/contacto" className="ml-0 mt-4 inline-flex text-sm font-semibold text-ink underline sm:ml-4">¿Hay un dato incorrecto? Avísanos</Link>
         </section>
