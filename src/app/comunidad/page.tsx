@@ -101,7 +101,7 @@ export default function CommunityPage() {
                 <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 5).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
                 <h3 className="mt-4 text-xl font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{initiative.summary}</p>
-                <p className="mt-3 text-sm font-semibold text-slatecopy">{initiative.municipality}</p>
+                <p className="mt-3 pb-5 text-sm font-semibold text-slatecopy">{initiative.municipality}</p>
                 <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
               </div>
             </article>

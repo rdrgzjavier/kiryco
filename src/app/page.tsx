@@ -127,7 +127,7 @@ export default function Home() {
   const statCards = [
     { value: `+${formatStat(stats.centers)}`, label: "Centros educativos", Icon: GraduationCap },
     { value: `+${formatStat(Math.max(stats.localResources, totalPublished))}`, label: "Recursos locales", Icon: MapPinned },
-    { value: `+${formatStat(stats.families)}`, label: "Familias activas", Icon: UsersRound },
+    { value: "+4", label: "Zonas cubiertas", Icon: MapPin },
     { value: "100%", label: "Moderado y seguro", Icon: ShieldCheck }
   ];
   const featuredCenters = centers.slice(0, 3);
@@ -180,7 +180,7 @@ export default function Home() {
           <h2 className="section-title">Encuentra antes el tipo de ayuda que necesitas</h2>
           <p className="mx-auto mt-3 max-w-4xl text-sm leading-6 text-muted lg:whitespace-nowrap">Categorías útiles para comparar servicios, centros y recursos locales.</p>
         </div>
-        <div className="grid grid-cols-2 justify-center gap-3 sm:grid-cols-4 lg:grid-cols-7">
+        <div className="grid grid-cols-2 justify-items-center gap-3 sm:grid-cols-4 sm:justify-items-stretch lg:grid-cols-7">
           {homeCategories.map(({ name, href, Icon, color }) => (
             <Link key={name} href={href} className="group grid aspect-square w-full max-w-40 grid-rows-[48px_44px] place-items-center gap-3 rounded-2xl border border-line bg-white p-4 text-center text-sm font-bold text-slatecopy shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 sm:aspect-auto sm:min-h-32 sm:max-w-none">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-soft ring-1 ring-line transition-colors group-hover:bg-lavender">
@@ -196,7 +196,7 @@ export default function Home() {
       <section className="page py-14 lg:py-16">
         <div className="mx-auto mb-7 max-w-3xl text-left md:text-center">
           <h2 className="section-title lg:whitespace-nowrap">Oferta local para decidir con confianza</h2>
-          <p className="mt-3 text-sm leading-6 text-muted">Datos vivos del directorio Tenlo: centros educativos, recursos disponibles y familias activas en la zona.</p>
+          <p className="mt-3 text-sm leading-6 text-muted">Datos vivos del directorio Tenlo: centros educativos, recursos disponibles, zonas cubiertas y revisión del contenido.</p>
         </div>
         <div className="grid grid-cols-2 overflow-hidden rounded-[24px] border border-line bg-white shadow-soft lg:grid-cols-4">
           {statCards.map(({ value, label, Icon }) => (

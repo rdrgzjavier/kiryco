@@ -33,7 +33,7 @@ export default function CenterCard({ center }: { center: Center }) {
         <div className="mt-4 flex flex-wrap gap-2">
           {center.tags.slice(0, 6).map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy">{tag}</span>)}
         </div>
-        <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
+        <dl className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Municipio</dt><dd className="font-medium text-ink">{center.municipality}</dd></div>
           <div className="flex justify-between gap-3"><dt>Etapas</dt><dd className="text-right font-medium text-ink">{center.stages.join(", ")}</dd></div>
           <div className="flex justify-between gap-3"><dt>Idiomas</dt><dd className="font-medium text-ink">{center.languages.join(", ")}</dd></div>

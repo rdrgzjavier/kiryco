@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { LogIn, MapPin, Menu, UserRound, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 
 const nav = [
@@ -15,8 +15,16 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const isLoggedIn = false;
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-panel/90 backdrop-blur-xl">
+      {open ? <button aria-label="Cerrar menú" className="fixed inset-0 top-16 z-[-1] cursor-default bg-transparent md:hidden" onClick={() => setOpen(false)} /> : null}
       <div className="page flex min-h-16 items-center justify-between gap-3">
         <Link href="/" aria-label="Tenlo" className="shrink-0"><AnimatedLogo /></Link>
         <nav className="hidden min-w-0 items-center gap-5 lg:flex" aria-label="Principal">
