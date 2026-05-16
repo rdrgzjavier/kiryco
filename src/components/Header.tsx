@@ -18,12 +18,17 @@ export default function Header() {
   useEffect(() => {
     if (!open) return;
     const scrollY = window.scrollY;
+    const pageContent = [document.querySelector("main"), document.querySelector("footer")].filter(Boolean) as HTMLElement[];
     document.documentElement.style.overflow = "hidden";
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
     document.body.style.left = "0";
     document.body.style.right = "0";
     document.body.style.width = "100%";
+    pageContent.forEach((element) => {
+      element.setAttribute("inert", "");
+      element.setAttribute("aria-hidden", "true");
+    });
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.position = "";
@@ -31,12 +36,16 @@ export default function Header() {
       document.body.style.left = "";
       document.body.style.right = "";
       document.body.style.width = "";
+      pageContent.forEach((element) => {
+        element.removeAttribute("inert");
+        element.removeAttribute("aria-hidden");
+      });
       window.scrollTo(0, scrollY);
     };
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-panel/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-[100] border-b border-line bg-panel/90 backdrop-blur-xl">
       <div className="page flex min-h-16 items-center justify-between gap-3">
         <Link href="/" aria-label="Tenlo" className="shrink-0"><AnimatedLogo /></Link>
         <nav className="hidden min-w-0 items-center gap-5 lg:flex" aria-label="Principal">
@@ -73,7 +82,7 @@ export default function Header() {
         </div>
       </div>
       {open ? (
-        <div className="fixed inset-x-0 bottom-0 top-16 z-50 md:hidden" onClick={() => setOpen(false)}>
+        <div className="fixed inset-x-0 bottom-0 top-16 z-[90] md:hidden" onClick={() => setOpen(false)}>
           <div className="absolute inset-0 bg-slate-950/30" aria-hidden />
           <nav className="relative grid gap-1 border-t border-line bg-panel px-5 py-4 shadow-soft" aria-label="Menú móvil" onClick={(event) => event.stopPropagation()}>
               {nav.map(([label, href]) => (

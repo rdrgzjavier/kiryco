@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const words = ["cerca", "pronto", "seguro", "que necesitas"];
+const words = ["cerca", "pronto", "seguro", "que necesitas", ""];
 
 export default function AnimatedLogo() {
   const [index, setIndex] = useState(0);
@@ -28,19 +28,23 @@ export default function AnimatedLogo() {
     return () => clearInterval(interval);
   }, []);
 
+  const currentWord = words[index];
+
   return (
     <div className="flex items-center gap-1 text-xl font-extrabold leading-none tracking-tight sm:text-[23px]">
       <span className="text-ink">Tenlo</span>
-      <div className="relative inline-block">
-        <span className="invisible select-none whitespace-nowrap" aria-hidden="true">que necesitas</span>
-        <span
-          className={`absolute left-0 text-muted transition-opacity duration-500 ${
-            fade ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          {words[index]}
-        </span>
-      </div>
+      {currentWord ? (
+        <div className="relative inline-block">
+          <span className="invisible select-none whitespace-nowrap" aria-hidden="true">que necesitas</span>
+          <span
+            className={`absolute left-0 text-muted transition-opacity duration-500 ${
+              fade ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {currentWord}
+          </span>
+        </div>
+      ) : null}
     </div>
   );
 }
