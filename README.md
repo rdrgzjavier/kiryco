@@ -1,6 +1,6 @@
 # Tenlo
 
-Web app de **Tenlo**, una plataforma para adultos orientada a encontrar recursos alrededor del colegio por zona, centro y categoría.
+Web app de **Tenlo**, una plataforma para encontrar recursos alrededor del colegio por zona, centro y categoría.
 
 Claim:
 
@@ -13,13 +13,13 @@ Claim:
 - TypeScript
 - Tailwind CSS
 - Datos mockeados en `src/lib/mock-data.ts`
-- Esquema preparado para Supabase en `docs/supabase-schema.sql`
+- Esquema preparado para Supabase en `supabase/migrations/0001_tenlo_mvp.sql`
 
 ## Perfil y privacidad
 
 - Registro para familias, profesionales locales, centros educativos y equipo interno.
-- Imagen de perfil opcional desde el dispositivo.
-- Rol visible en publicaciones y tablón para diferenciar familias, servicios profesionales y centros.
+- Sin subida de imagen de perfil en el MVP.
+- Rol visible en publicaciones para diferenciar familias, servicios profesionales y centros.
 - Sin perfiles, fotos, nombres, clase u horarios personales de menores.
 
 ## Ejecutar en local
@@ -67,8 +67,8 @@ npm run build
 ## Próximos pasos para Supabase
 
 1. Crear proyecto Supabase.
-2. Ejecutar `docs/supabase-schema.sql`.
-3. Añadir variables `.env.local` con URL y anon key.
+2. Ejecutar `supabase/migrations/0001_tenlo_mvp.sql`.
+3. Añadir variables `.env.local` con URL y publishable key.
 4. Sustituir `src/lib/mock-data.ts` por un cliente de datos con funciones equivalentes.
-5. Conectar Supabase Auth con email/password y magic link.
+5. Conectar Supabase Auth con email/password y Google.
 6. Activar reglas RLS por rol: familia, profesional local, centro y admin.
