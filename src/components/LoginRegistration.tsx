@@ -13,8 +13,11 @@ import {
   Sparkles,
   UsersRound
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { type FormEvent, useMemo, useState } from "react";
 import { centers, municipalities } from "@/lib/mock-data";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import type { ProfileRole } from "@/lib/supabase/types";
 
 type UserTypeId =
   | "familia"
@@ -44,6 +47,36 @@ const userTypes: Array<{
   { id: "salud-bienestar", label: "Salud y bienestar", helper: "Psicología, odontología, nutrición y bienestar familiar.", subtypes: ["Psicólogo", "Odontólogo", "Logopeda", "Nutricionista", "Otro profesional sanitario"] },
   { id: "campamentos", label: "Campamentos y vacaciones", helper: "Campamentos, días sin cole y actividades vacacionales.", subtypes: ["Campamento urbano", "Días sin cole", "Campamento externo", "Actividad vacacional"] },
   { id: "otros", label: "Otros", helper: "Servicios locales que no encajan en las categorías anteriores.", subtypes: ["Comercio local", "Asociación", "Servicio familiar", "Otro"] }
+];
+
+const roleByType: Record<UserTypeId, ProfileRole> = {
+  familia: "family",
+  "centro-educativo": "school",
+  extraescolares: "activity_provider",
+  "tecnologia-online": "technology_provider",
+  transporte: "transport_provider",
+  "fiestas-eventos": "event_provider",
+  "profesional-independiente": "teacher",
+  "salud-bienestar": "health_wellness",
+  campamentos: "camp_provider",
+  otros: "shop"
+};
+
+const publicRoles: ProfileRole[] = [
+  "family",
+  "school",
+  "nursery",
+  "shop",
+  "sports_center",
+  "activity_provider",
+  "technology_provider",
+  "transport_provider",
+  "event_provider",
+  "teacher",
+  "childcare",
+  "health_wellness",
+  "camp_provider",
+  "community_org"
 ];
 
 const roleExamples = [
@@ -89,25 +122,174 @@ function needsMinorSafetyNotice(type: UserTypeId, subtype: string) {
   return type === "profesional-independiente" || normalized.includes("canguro") || normalized.includes("profesor") || normalized.includes("particular");
 }
 
+function nextPath(value: string | null) {
+  return value?.startsWith("/") ? value : "/area-personal";
+}
+
+function safeProfileRole(value: unknown): ProfileRole {
+  return typeof value === "string" && publicRoles.includes(value as ProfileRole) ? (value as ProfileRole) : "family";
+}
+
 export default function LoginRegistration() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = nextPath(searchParams.get("next"));
+  const supabase = createSupabaseBrowserClient();
+
   const [userType, setUserType] = useState<UserTypeId>("familia");
   const current = selectedType(userType);
   const [subtype, setSubtype] = useState(current.subtypes?.[0] ?? "");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [municipality, setMunicipality] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [accepted, setAccepted] = useState(false);
+  const [loading, setLoading] = useState<"login" | "register" | "google" | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   const Icon = typeIcons[userType];
   const showBusinessFields = needsBusinessFields(userType);
   const showAgeAndAvailability = needsAgeAndAvailability(userType);
   const showCredentials = needsCredentials(userType);
   const showMinorSafety = needsMinorSafetyNotice(userType, subtype);
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
   const passwordMismatch = passwordConfirm.length > 0 && password !== passwordConfirm;
-
   const subtypeOptions = useMemo(() => current.subtypes ?? [], [current]);
 
   function handleTypeChange(value: UserTypeId) {
     const next = selectedType(value);
     setUserType(value);
     setSubtype(next.subtypes?.[0] ?? "");
+  }
+
+  async function createOrUpdateProfile(userId: string) {
+    const role = roleByType[userType];
+    const status = role === "family" ? "approved" : "pending_review";
+    const fallbackName = registerEmail.split("@")[0] || loginEmail.split("@")[0] || "Usuario Tenlo";
+
+    const { error: profileError } = await supabase.from("profiles").upsert(
+      {
+        id: userId,
+        role,
+        display_name: displayName || fallbackName,
+        public_name: displayName || fallbackName,
+        contact_email: registerEmail || loginEmail,
+        phone: phone || null,
+        municipality: municipality || null,
+        status
+      },
+      { onConflict: "id" }
+    );
+
+    if (profileError) throw profileError;
+  }
+
+  async function ensureProfileAfterLogin(user: { id: string; email?: string; user_metadata?: Record<string, unknown> }) {
+    const { data } = await supabase.from("profiles").select("id").eq("id", user.id).maybeSingle();
+    if (data) return;
+
+    const role = safeProfileRole(user.user_metadata?.role);
+    const fallbackName = typeof user.user_metadata?.display_name === "string" && user.user_metadata.display_name.length > 0
+      ? user.user_metadata.display_name
+      : user.email?.split("@")[0] || "Usuario Tenlo";
+    const { error: profileError } = await supabase.from("profiles").insert({
+      id: user.id,
+      role,
+      display_name: fallbackName,
+      public_name: fallbackName,
+      contact_email: user.email ?? null,
+      status: role === "family" ? "approved" : "pending_review"
+    });
+
+    if (profileError) throw profileError;
+  }
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+    setLoading("login");
+
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword
+    });
+
+    try {
+      if (loginError) throw loginError;
+      if (data.user) await ensureProfileAfterLogin(data.user);
+      router.push(redirectTo);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No hemos podido iniciar sesión.");
+    } finally {
+      setLoading(null);
+    }
+  }
+
+  async function handleRegister(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+
+    if (password !== passwordConfirm) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
+    if (!accepted) {
+      setError("Debes confirmar que eres una persona adulta o entidad responsable.");
+      return;
+    }
+
+    setLoading("register");
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: registerEmail,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
+        data: {
+          display_name: displayName,
+          role: roleByType[userType]
+        }
+      }
+    });
+
+    try {
+      if (signUpError) throw signUpError;
+      if (data.user && data.session) {
+        await createOrUpdateProfile(data.user.id);
+        router.push(redirectTo);
+        router.refresh();
+        return;
+      }
+      setMessage("Cuenta creada. Revisa tu email para confirmar el acceso antes de entrar en Tenlo.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "No hemos podido crear la cuenta.");
+    } finally {
+      setLoading(null);
+    }
+  }
+
+  async function handleGoogleLogin() {
+    setError(null);
+    setMessage(null);
+    setLoading("google");
+    const { error: googleError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`
+      }
+    });
+
+    if (googleError) {
+      setError(googleError.message);
+      setLoading(null);
+    }
   }
 
   return (
@@ -121,16 +303,22 @@ export default function LoginRegistration() {
 
           <div className="mt-6 rounded-2xl border border-line bg-soft p-4">
             <h2 className="text-base font-bold text-slatecopy">¿Ya tienes cuenta?</h2>
-            <form className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
+            <form className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]" onSubmit={handleLogin}>
               <label className="sr-only" htmlFor="login-email">Email</label>
-              <input id="login-email" type="email" className="field m-0 placeholder:text-muted" placeholder="Email" />
+              <input id="login-email" type="email" required className="field m-0 placeholder:text-muted" placeholder="Email" value={loginEmail} onChange={(event) => setLoginEmail(event.target.value)} />
               <label className="sr-only" htmlFor="login-password">Contraseña</label>
-              <input id="login-password" type="password" className="field m-0 placeholder:text-muted" placeholder="Contraseña" />
-              <button className="btn-secondary" type="submit">Entrar</button>
+              <input id="login-password" type="password" required className="field m-0 placeholder:text-muted" placeholder="Contraseña" value={loginPassword} onChange={(event) => setLoginPassword(event.target.value)} />
+              <button className="btn-secondary" type="submit" disabled={loading === "login"}>{loading === "login" ? "Entrando..." : "Entrar"}</button>
             </form>
+            <button className="btn-primary mt-3 w-full justify-center" type="button" onClick={handleGoogleLogin} disabled={loading === "google"}>
+              {loading === "google" ? "Conectando..." : "Continuar con Google"}
+            </button>
           </div>
 
-          <form className="mt-6 grid gap-5">
+          {error ? <p className="mt-4 rounded-xl border border-coral/30 bg-coral/10 p-3 text-sm font-semibold text-coral">{error}</p> : null}
+          {message ? <p className="mt-4 rounded-xl border border-sage/30 bg-sage/10 p-3 text-sm font-semibold text-petrol">{message}</p> : null}
+
+          <form className="mt-6 grid gap-5" onSubmit={handleRegister}>
             <section className="rounded-2xl border border-line bg-white p-4">
               <label className="field-label">
                 Tipo de usuario
@@ -155,10 +343,10 @@ export default function LoginRegistration() {
             <section className="grid gap-4 rounded-2xl border border-line bg-white p-4 md:grid-cols-2">
               <label className="field-label md:col-span-2">
                 {showBusinessFields ? "Nombre público de la entidad o profesional" : "Nombre público del adulto"}
-                <input required className="field font-normal placeholder:text-muted" placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."} />
+                <input required className="field font-normal placeholder:text-muted" placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."} value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
               </label>
-              <label className="field-label">Email de contacto<input required type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" /></label>
-              <label className="field-label">Teléfono de contacto<input type="tel" className="field font-normal placeholder:text-muted" placeholder="Teléfono de contacto" /></label>
+              <label className="field-label">Email de contacto<input required type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" value={registerEmail} onChange={(event) => setRegisterEmail(event.target.value)} /></label>
+              <label className="field-label">Teléfono de contacto<input type="tel" className="field font-normal placeholder:text-muted" placeholder="Teléfono de contacto" value={phone} onChange={(event) => setPhone(event.target.value)} /></label>
               <label className="field-label">Contraseña<input required type="password" minLength={8} className="field font-normal placeholder:text-muted" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
               <label className="field-label">
                 Confirmar contraseña
@@ -167,9 +355,9 @@ export default function LoginRegistration() {
               </label>
               <label className="field-label">
                 Municipio principal
-                <select required className="field" defaultValue="">
+                <select required className="field" value={municipality} onChange={(event) => setMunicipality(event.target.value)}>
                   <option value="" disabled>Selecciona municipio</option>
-                  {municipalities.map((m) => <option key={m.id}>{m.name}</option>)}
+                  {municipalities.map((m) => <option key={m.id} value={m.name}>{m.name}</option>)}
                 </select>
               </label>
               <label className="field-label">
@@ -218,10 +406,10 @@ export default function LoginRegistration() {
             )}
 
             <label className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold leading-6 text-slatecopy">
-              <input required type="checkbox" className="mr-2 h-4 w-4 rounded border-line" />
+              <input required type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} className="mr-2 h-4 w-4 rounded border-line" />
               Confirmo que soy mayor de 18 años o actúo en nombre de una entidad responsable, y que la información no incluye datos personales, fotos ni horarios identificativos de menores.
             </label>
-            <button className="btn-primary w-full md:w-fit" type="submit" disabled={passwordMismatch}>Crear cuenta</button>
+            <button className="btn-primary w-full md:w-fit" type="submit" disabled={passwordMismatch || loading === "register"}>{loading === "register" ? "Creando cuenta..." : "Crear cuenta"}</button>
           </form>
         </div>
 

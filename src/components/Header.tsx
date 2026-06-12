@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LogIn, MapPin, Menu, UserRound, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const nav = [
   ["Centros", "/centros"],
@@ -13,7 +14,19 @@ const nav = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const isLoggedIn = false;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const supabase = createSupabaseBrowserClient();
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(Boolean(data.session));
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(Boolean(session));
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (!open) return;

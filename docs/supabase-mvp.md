@@ -54,8 +54,24 @@ SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 3. Ejecutar el SQL de `supabase/migrations/0001_tenlo_mvp.sql` desde el SQL Editor de Supabase o convertirlo en migracion CLI.
-4. Activar Auth por email y, cuando toque, Google.
-5. Conectar `/login`, `/area-personal`, `/favoritos` y `/publicar` a las tablas reales.
+4. Ejecutar el SQL de `supabase/migrations/0002_data_api_grants.sql` para que la API pueda usar las tablas con RLS.
+5. Activar Auth por email y Google.
+6. Conectar `/login`, `/area-personal`, `/favoritos` y `/publicar` a las tablas reales.
+
+## Google Auth
+
+En Supabase:
+
+1. `Authentication > Sign In / Providers`.
+2. Activar Google.
+3. Pegar Client ID y Client Secret de Google Cloud.
+4. Revisar que la URL de callback indicada por Supabase este dada de alta en Google Cloud.
+
+En Google Cloud:
+
+1. Crear credenciales OAuth para aplicacion web.
+2. Anadir como origen autorizado `https://kiryco.vercel.app`.
+3. Anadir como redirect autorizado la URL que muestra Supabase para Google.
 
 ## Pendiente de fase 2
 

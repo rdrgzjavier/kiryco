@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Bookmark, ClipboardList, FilePlus2, Settings, ShieldCheck } from "lucide-react";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Área personal | Tenlo",
@@ -34,7 +36,37 @@ const accountActions = [
   }
 ];
 
-export default function PersonalAreaPage() {
+async function ensureProfile() {
+  const supabase = createSupabaseServerClient();
+  const { data: authData } = await supabase.auth.getUser();
+  const user = authData.user;
+
+  if (!user) redirect("/login?next=/area-personal");
+
+  const { data: existingProfile } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
+  if (existingProfile) return { user, profile: existingProfile };
+
+  const fallbackName = user.email?.split("@")[0] ?? "Usuario Tenlo";
+  const { data: profile } = await supabase
+    .from("profiles")
+    .insert({
+      id: user.id,
+      role: "family",
+      display_name: fallbackName,
+      public_name: fallbackName,
+      contact_email: user.email ?? null,
+      status: "approved"
+    })
+    .select("*")
+    .single();
+
+  return { user, profile };
+}
+
+export default async function PersonalAreaPage() {
+  const { user, profile } = await ensureProfile();
+  const reviewStatus = profile?.status === "approved" ? "Cuenta activa" : "Pendiente de revisión";
+
   return (
     <div className="section-shell">
       <p className="label">Cuenta Tenlo</p>
@@ -47,8 +79,10 @@ export default function PersonalAreaPage() {
             <ShieldCheck size={22} aria-hidden />
           </span>
           <div>
-            <h2 className="text-base font-bold text-slatecopy">Acceso pendiente de autenticación real</h2>
-            <p className="mt-1 text-sm leading-6 text-muted">Esta pantalla queda preparada para Supabase Auth. Cuando activemos login real, aquí se mostrarán tus datos y el estado de revisión de tus publicaciones.</p>
+            <h2 className="text-base font-bold text-slatecopy">{reviewStatus}</h2>
+            <p className="mt-1 text-sm leading-6 text-muted">
+              Sesión iniciada como <strong>{profile?.display_name ?? user.email}</strong>. Las cuentas profesionales, centros y entidades pasan por revisión antes de publicar contenido visible en Tenlo.
+            </p>
           </div>
         </div>
       </div>
