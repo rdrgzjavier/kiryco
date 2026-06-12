@@ -32,50 +32,76 @@ export type ModerationStatus =
 
 export type TrustLevel = "collected" | "verified" | "official";
 
+type ProfileRow = {
+  id: string;
+  role: ProfileRole;
+  display_name: string;
+  contact_email: string | null;
+  phone: string | null;
+  municipality: string | null;
+  public_name: string | null;
+  status: ModerationStatus;
+  review_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type ProfileInsert = {
+  id: string;
+  role?: ProfileRole;
+  display_name: string;
+  contact_email?: string | null;
+  phone?: string | null;
+  municipality?: string | null;
+  public_name?: string | null;
+  status?: ModerationStatus;
+  review_notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+};
+
+type ServiceRow = {
+  id: string;
+  owner_id: string | null;
+  slug: string;
+  title: string;
+  category_id: string;
+  municipality: string;
+  status: ModerationStatus;
+  trust_level: TrustLevel;
+  tags: string[];
+  created_at: string;
+  updated_at: string;
+};
+
+type ServiceInsert = {
+  id?: string;
+  owner_id?: string | null;
+  slug: string;
+  title: string;
+  category_id: string;
+  municipality: string;
+  status?: ModerationStatus;
+  trust_level?: TrustLevel;
+  tags?: string[];
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
       profiles: {
-        Row: {
-          id: string;
-          role: ProfileRole;
-          display_name: string;
-          contact_email: string | null;
-          phone: string | null;
-          municipality: string | null;
-          public_name: string | null;
-          status: ModerationStatus;
-          review_notes: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Partial<Database["public"]["Tables"]["profiles"]["Row"]> & {
-          id: string;
-          display_name: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["profiles"]["Row"]>;
+        Row: ProfileRow;
+        Insert: ProfileInsert;
+        Update: Partial<ProfileRow>;
+        Relationships: [];
       };
       services: {
-        Row: {
-          id: string;
-          owner_id: string | null;
-          slug: string;
-          title: string;
-          category_id: string;
-          municipality: string;
-          status: ModerationStatus;
-          trust_level: TrustLevel;
-          tags: string[];
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Partial<Database["public"]["Tables"]["services"]["Row"]> & {
-          slug: string;
-          title: string;
-          category_id: string;
-          municipality: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["services"]["Row"]>;
+        Row: ServiceRow;
+        Insert: ServiceInsert;
+        Update: Partial<ServiceRow>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
