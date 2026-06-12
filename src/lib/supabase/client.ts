@@ -1,7 +1,6 @@
 "use client";
 
 import { createBrowserClient } from "@supabase/ssr";
-import type { Database } from "./types";
 
 export function createSupabaseBrowserClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,5 +12,5 @@ export function createSupabaseBrowserClient() {
     throw new Error("Faltan variables publicas de Supabase.");
   }
 
-  return createBrowserClient<Database>(url, key);
+  return createBrowserClient(url, key);
 }
