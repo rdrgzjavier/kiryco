@@ -4,6 +4,8 @@ import {
   BriefcaseBusiness,
   Bus,
   CalendarDays,
+  Eye,
+  EyeOff,
   GraduationCap,
   HeartPulse,
   HelpCircle,
@@ -147,6 +149,9 @@ export default function LoginRegistration() {
   const [municipality, setMunicipality] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState<"login" | "register" | "google" | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -307,7 +312,18 @@ export default function LoginRegistration() {
               <label className="sr-only" htmlFor="login-email">Email</label>
               <input id="login-email" type="email" required className="field m-0 placeholder:text-muted" placeholder="Email" value={loginEmail} onChange={(event) => setLoginEmail(event.target.value)} />
               <label className="sr-only" htmlFor="login-password">Contraseña</label>
-              <input id="login-password" type="password" required className="field m-0 placeholder:text-muted" placeholder="Contraseña" value={loginPassword} onChange={(event) => setLoginPassword(event.target.value)} />
+              <div className="relative">
+                <input id="login-password" type={showLoginPassword ? "text" : "password"} required className="field m-0 pr-12 placeholder:text-muted" placeholder="Contraseña" value={loginPassword} onChange={(event) => setLoginPassword(event.target.value)} />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 my-auto inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                  onClick={() => setShowLoginPassword((visible) => !visible)}
+                  aria-label={showLoginPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  aria-pressed={showLoginPassword}
+                >
+                  {showLoginPassword ? <EyeOff size={20} aria-hidden /> : <Eye size={20} aria-hidden />}
+                </button>
+              </div>
               <button className="btn-secondary" type="submit" disabled={loading === "login"}>{loading === "login" ? "Entrando..." : "Entrar"}</button>
             </form>
             <button className="btn-primary mt-3 w-full justify-center" type="button" onClick={handleGoogleLogin} disabled={loading === "google"}>
@@ -347,12 +363,37 @@ export default function LoginRegistration() {
               </label>
               <label className="field-label">Email de contacto<input required type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" value={registerEmail} onChange={(event) => setRegisterEmail(event.target.value)} /></label>
               <label className="field-label">Teléfono de contacto<input type="tel" className="field font-normal placeholder:text-muted" placeholder="Teléfono de contacto" value={phone} onChange={(event) => setPhone(event.target.value)} /></label>
-              <label className="field-label">Contraseña<input required type="password" minLength={8} className="field font-normal placeholder:text-muted" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
-              <label className="field-label">
-                Confirmar contraseña
-                <input required type="password" minLength={8} className="field font-normal placeholder:text-muted" value={passwordConfirm} onChange={(event) => setPasswordConfirm(event.target.value)} aria-invalid={passwordMismatch} placeholder="Repite la contraseña" />
+              <div className="field-label">
+                <label htmlFor="register-password">Contraseña</label>
+                <div className="relative mt-2">
+                  <input id="register-password" required type={showPassword ? "text" : "password"} minLength={8} className="field m-0 pr-12 font-normal placeholder:text-muted" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 my-auto inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                    onClick={() => setShowPassword((visible) => !visible)}
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    aria-pressed={showPassword}
+                  >
+                    {showPassword ? <EyeOff size={20} aria-hidden /> : <Eye size={20} aria-hidden />}
+                  </button>
+                </div>
+              </div>
+              <div className="field-label">
+                <label htmlFor="register-password-confirm">Confirmar contraseña</label>
+                <div className="relative mt-2">
+                  <input id="register-password-confirm" required type={showPasswordConfirm ? "text" : "password"} minLength={8} className="field m-0 pr-12 font-normal placeholder:text-muted" value={passwordConfirm} onChange={(event) => setPasswordConfirm(event.target.value)} aria-invalid={passwordMismatch} placeholder="Repite la contraseña" />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 my-auto inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink/20"
+                    onClick={() => setShowPasswordConfirm((visible) => !visible)}
+                    aria-label={showPasswordConfirm ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    aria-pressed={showPasswordConfirm}
+                  >
+                    {showPasswordConfirm ? <EyeOff size={20} aria-hidden /> : <Eye size={20} aria-hidden />}
+                  </button>
+                </div>
                 {passwordMismatch && <span className="mt-2 block text-sm font-semibold text-coral">Las contraseñas no coinciden.</span>}
-              </label>
+              </div>
               <label className="field-label">
                 Municipio principal
                 <select required className="field" value={municipality} onChange={(event) => setMunicipality(event.target.value)}>
