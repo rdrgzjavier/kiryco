@@ -132,6 +132,19 @@ function safeProfileRole(value: unknown): ProfileRole {
   return typeof value === "string" && publicRoles.includes(value as ProfileRole) ? (value as ProfileRole) : "family";
 }
 
+function normalizePublicName(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function isValidPublicName(value: string) {
+  const normalized = normalizePublicName(value);
+  return normalized.length >= 3 && normalized.length <= 40 && /^[\p{L}\p{N} ._-]+$/u.test(normalized);
+}
+
+function isDuplicatePublicNameError(error: unknown) {
+  return typeof error === "object" && error !== null && "code" in error && (error as { code?: string }).code === "23505";
+}
+
 export default function LoginRegistration() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -144,6 +157,7 @@ export default function LoginRegistration() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [usernameStatus, setUsernameStatus] = useState<"idle" | "checking" | "available" | "taken" | "invalid" | "unknown">("idle");
   const [registerEmail, setRegisterEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [municipality, setMunicipality] = useState("");
@@ -171,6 +185,35 @@ export default function LoginRegistration() {
     setSubtype(next.subtypes?.[0] ?? "");
   }
 
+  async function checkUsernameAvailability(value = displayName) {
+    const normalized = normalizePublicName(value);
+
+    if (!isValidPublicName(value)) {
+      setUsernameStatus("invalid");
+      return false;
+    }
+
+    setUsernameStatus("checking");
+    const { data, error: availabilityError } = await supabase
+      .from("profile_usernames")
+      .select("public_name_normalized")
+      .eq("public_name_normalized", normalized)
+      .maybeSingle();
+
+    if (availabilityError) {
+      setUsernameStatus("unknown");
+      return true;
+    }
+
+    if (data) {
+      setUsernameStatus("taken");
+      return false;
+    }
+
+    setUsernameStatus("available");
+    return true;
+  }
+
   async function createOrUpdateProfile(userId: string) {
     const role = roleByType[userType];
     const status = role === "family" ? "approved" : "pending_review";
@@ -191,6 +234,15 @@ export default function LoginRegistration() {
     );
 
     if (profileError) throw profileError;
+
+    const normalizedName = normalizePublicName(displayName || fallbackName);
+    await supabase.from("profile_usernames").upsert(
+      {
+        profile_id: userId,
+        public_name_normalized: normalizedName
+      },
+      { onConflict: "profile_id" }
+    );
   }
 
   async function ensureProfileAfterLogin(user: { id: string; email?: string; user_metadata?: Record<string, unknown> }) {
@@ -211,6 +263,14 @@ export default function LoginRegistration() {
     });
 
     if (profileError) throw profileError;
+
+    await supabase.from("profile_usernames").upsert(
+      {
+        profile_id: user.id,
+        public_name_normalized: normalizePublicName(fallbackName)
+      },
+      { onConflict: "profile_id" }
+    );
   }
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
@@ -251,6 +311,12 @@ export default function LoginRegistration() {
       return;
     }
 
+    const isUsernameAvailable = await checkUsernameAvailability(displayName);
+    if (!isUsernameAvailable) {
+      setError("El nombre de usuario no está disponible o no cumple el formato.");
+      return;
+    }
+
     setLoading("register");
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: registerEmail,
@@ -274,7 +340,7 @@ export default function LoginRegistration() {
       }
       setMessage("Cuenta creada. Revisa tu email para confirmar el acceso antes de entrar en Tenlo.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No hemos podido crear la cuenta.");
+      setError(isDuplicatePublicNameError(err) ? "Ese nombre de usuario ya está en uso." : err instanceof Error ? err.message : "No hemos podido crear la cuenta.");
     } finally {
       setLoading(null);
     }
@@ -358,8 +424,28 @@ export default function LoginRegistration() {
 
             <section className="grid gap-4 rounded-2xl border border-line bg-white p-4 md:grid-cols-2">
               <label className="field-label md:col-span-2">
-                {showBusinessFields ? "Nombre público de la entidad o profesional" : "Nombre público del adulto"}
-                <input required className="field font-normal placeholder:text-muted" placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."} value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
+                {showBusinessFields ? "Nombre público de la entidad o profesional" : "Nombre usuario"}
+                <input
+                  required
+                  className="field font-normal placeholder:text-muted"
+                  placeholder={showBusinessFields ? "Ej. Academia Norte, Colegio Los Olivos" : "Ej. Marta G."}
+                  value={displayName}
+                  onChange={(event) => {
+                    setDisplayName(event.target.value);
+                    setUsernameStatus("idle");
+                  }}
+                  onBlur={() => {
+                    if (displayName.trim()) void checkUsernameAvailability(displayName);
+                  }}
+                  aria-describedby="username-availability"
+                />
+                <span id="username-availability" className={`mt-2 block text-sm font-semibold ${usernameStatus === "available" ? "text-petrol" : usernameStatus === "taken" || usernameStatus === "invalid" ? "text-coral" : "text-muted"}`}>
+                  {usernameStatus === "checking" && "Comprobando disponibilidad..."}
+                  {usernameStatus === "available" && "Nombre usuario disponible."}
+                  {usernameStatus === "taken" && "Ese nombre usuario ya está en uso."}
+                  {usernameStatus === "invalid" && "Usa entre 3 y 40 caracteres: letras, números, espacios, punto, guion o guion bajo."}
+                  {usernameStatus === "unknown" && "No hemos podido comprobarlo ahora. Lo validaremos al crear la cuenta."}
+                </span>
               </label>
               <label className="field-label">Email de contacto<input required type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" value={registerEmail} onChange={(event) => setRegisterEmail(event.target.value)} /></label>
               <label className="field-label">Teléfono de contacto<input type="tel" className="field font-normal placeholder:text-muted" placeholder="Teléfono de contacto" value={phone} onChange={(event) => setPhone(event.target.value)} /></label>

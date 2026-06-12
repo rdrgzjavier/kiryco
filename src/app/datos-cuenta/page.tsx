@@ -8,6 +8,14 @@ export const metadata: Metadata = {
   description: "Consulta datos de cuenta, cambia contraseña o solicita la baja en Tenlo."
 };
 
+function metadataName(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+}
+
+function normalizePublicName(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 export default async function AccountDataPage() {
   const supabase = createSupabaseServerClient();
   const { data: authData } = await supabase.auth.getUser();
@@ -15,13 +23,38 @@ export default async function AccountDataPage() {
 
   if (!user) redirect("/login?next=/datos-cuenta");
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from("profiles")
     .select("display_name,public_name,contact_email,role,status,municipality")
     .eq("id", user.id)
     .maybeSingle();
 
-  const displayName = profile?.display_name ?? profile?.public_name ?? user.email?.split("@")[0] ?? "Usuario Tenlo";
+  const metadataDisplayName = metadataName(user.user_metadata?.display_name);
+  const emailFallback = user.email?.split("@")[0] ?? "";
+
+  if (profile && metadataDisplayName && (!profile.public_name || profile.public_name === emailFallback)) {
+    const { data: updatedProfile } = await supabase
+      .from("profiles")
+      .update({
+        display_name: metadataDisplayName,
+        public_name: metadataDisplayName
+      })
+      .eq("id", user.id)
+      .select("display_name,public_name,contact_email,role,status,municipality")
+      .maybeSingle();
+
+    profile = updatedProfile ?? profile;
+
+    await supabase.from("profile_usernames").upsert(
+      {
+        profile_id: user.id,
+        public_name_normalized: normalizePublicName(metadataDisplayName)
+      },
+      { onConflict: "profile_id" }
+    );
+  }
+
+  const displayName = profile?.public_name ?? profile?.display_name ?? user.email?.split("@")[0] ?? "Usuario Tenlo";
 
   return (
     <div className="section-shell">

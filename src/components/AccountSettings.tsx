@@ -3,6 +3,7 @@
 import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LogOut, Trash2 } from "lucide-react";
+import { municipalities } from "@/lib/mock-data";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type AccountSettingsProps = {
@@ -33,12 +34,15 @@ function roleLabel(role: string) {
 export default function AccountSettings({ email, displayName, role, status, municipality }: AccountSettingsProps) {
   const router = useRouter();
   const supabase = createSupabaseBrowserClient();
+  const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [municipalityValue, setMunicipalityValue] = useState(municipality ?? "");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState("");
-  const [loading, setLoading] = useState<"password" | "delete" | "logout" | null>(null);
+  const [loading, setLoading] = useState<"password" | "municipality" | "delete" | "logout" | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,6 +50,16 @@ export default function AccountSettings({ email, displayName, role, status, muni
     event.preventDefault();
     setError(null);
     setMessage(null);
+
+    if (!currentPassword) {
+      setError("Escribe tu contraseña actual para confirmar que eres tú.");
+      return;
+    }
+
+    if (!email) {
+      setError("No hemos podido confirmar el email de la cuenta para cambiar la contraseña.");
+      return;
+    }
 
     if (password.length < 8) {
       setError("La contraseña debe tener al menos 8 caracteres.");
@@ -58,6 +72,17 @@ export default function AccountSettings({ email, displayName, role, status, muni
     }
 
     setLoading("password");
+    const { error: confirmError } = await supabase.auth.signInWithPassword({
+      email,
+      password: currentPassword
+    });
+
+    if (confirmError) {
+      setLoading(null);
+      setError("La contraseña actual no es correcta.");
+      return;
+    }
+
     const { error: updateError } = await supabase.auth.updateUser({ password });
     setLoading(null);
 
@@ -66,9 +91,39 @@ export default function AccountSettings({ email, displayName, role, status, muni
       return;
     }
 
+    setCurrentPassword("");
     setPassword("");
     setPasswordConfirm("");
-    setMessage("Contrasena actualizada correctamente.");
+    setMessage("Contraseña actualizada correctamente.");
+  }
+
+  async function handleMunicipalityUpdate(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+
+    const { data: authData } = await supabase.auth.getUser();
+    const user = authData.user;
+
+    if (!user) {
+      setError("No hemos podido confirmar tu sesión.");
+      return;
+    }
+
+    setLoading("municipality");
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ municipality: municipalityValue || null })
+      .eq("id", user.id);
+    setLoading(null);
+
+    if (updateError) {
+      setError(updateError.message);
+      return;
+    }
+
+    setMessage("Municipio principal actualizado.");
+    router.refresh();
   }
 
   async function handleDeleteRequest(event: FormEvent<HTMLFormElement>) {
@@ -144,16 +199,35 @@ export default function AccountSettings({ email, displayName, role, status, muni
             <dt className="text-sm font-semibold text-muted">Estado</dt>
             <dd className="mt-1 text-base font-bold text-slatecopy">{statusLabel(status)}</dd>
           </div>
-          <div className="rounded-2xl bg-soft p-4 md:col-span-2">
-            <dt className="text-sm font-semibold text-muted">Municipio principal</dt>
-            <dd className="mt-1 text-base font-bold text-slatecopy">{municipality || "No indicado"}</dd>
-          </div>
         </dl>
+        <form className="mt-5 grid gap-3 rounded-2xl bg-soft p-4 md:grid-cols-[1fr_auto]" onSubmit={handleMunicipalityUpdate}>
+          <label className="field-label">
+            Municipio principal
+            <select className="field bg-white" value={municipalityValue} onChange={(event) => setMunicipalityValue(event.target.value)}>
+              <option value="">No indicado</option>
+              {municipalities.map((item) => (
+                <option key={item.id} value={item.name}>{item.name}</option>
+              ))}
+            </select>
+          </label>
+          <button className="btn-secondary self-end justify-center" type="submit" disabled={loading === "municipality"}>
+            {loading === "municipality" ? "Guardando..." : "Guardar municipio"}
+          </button>
+        </form>
       </section>
 
       <section className="card p-5 md:p-6">
         <h2 className="text-xl font-bold text-slatecopy">Cambiar contraseña</h2>
         <form className="mt-5 grid gap-4 md:grid-cols-2" onSubmit={handlePasswordUpdate}>
+          <div className="field-label md:col-span-2">
+            <label htmlFor="account-current-password">Contraseña actual</label>
+            <div className="relative mt-2">
+              <input id="account-current-password" required type={showCurrentPassword ? "text" : "password"} className="field m-0 pr-12 font-normal placeholder:text-muted" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder="Escribe tu contraseña actual" />
+              <button type="button" className="absolute inset-y-0 right-3 my-auto inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted transition hover:text-ink focus:outline-none focus:ring-2 focus:ring-ink/20" onClick={() => setShowCurrentPassword((visible) => !visible)} aria-label={showCurrentPassword ? "Ocultar contraseña actual" : "Mostrar contraseña actual"} aria-pressed={showCurrentPassword}>
+                {showCurrentPassword ? <EyeOff size={20} aria-hidden /> : <Eye size={20} aria-hidden />}
+              </button>
+            </div>
+          </div>
           <div className="field-label">
             <label htmlFor="account-password">Nueva contraseña</label>
             <div className="relative mt-2">

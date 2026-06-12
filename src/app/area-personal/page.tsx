@@ -36,6 +36,22 @@ const accountActions = [
   }
 ];
 
+function metadataName(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0 ? value.trim() : null;
+}
+
+function metadataRole(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0 ? value : "family";
+}
+
+function metadataStatus(role: string) {
+  return role === "family" ? "approved" : "pending_review";
+}
+
+function normalizePublicName(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
 async function ensureProfile() {
   const supabase = createSupabaseServerClient();
   const { data: authData } = await supabase.auth.getUser();
@@ -44,21 +60,57 @@ async function ensureProfile() {
   if (!user) redirect("/login?next=/area-personal");
 
   const { data: existingProfile } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle();
-  if (existingProfile) return { user, profile: existingProfile };
+  if (existingProfile) {
+    const metadataDisplayName = metadataName(user.user_metadata?.display_name);
+    const emailFallback = user.email?.split("@")[0] ?? "";
 
-  const fallbackName = user.email?.split("@")[0] ?? "Usuario Tenlo";
+    if (metadataDisplayName && (!existingProfile.public_name || existingProfile.public_name === emailFallback)) {
+      const { data: updatedProfile } = await supabase
+        .from("profiles")
+        .update({
+          display_name: metadataDisplayName,
+          public_name: metadataDisplayName
+        })
+        .eq("id", user.id)
+        .select("*")
+        .maybeSingle();
+
+      await supabase.from("profile_usernames").upsert(
+        {
+          profile_id: user.id,
+          public_name_normalized: normalizePublicName(metadataDisplayName)
+        },
+        { onConflict: "profile_id" }
+      );
+
+      return { user, profile: updatedProfile ?? existingProfile };
+    }
+
+    return { user, profile: existingProfile };
+  }
+
+  const role = metadataRole(user.user_metadata?.role);
+  const fallbackName = metadataName(user.user_metadata?.display_name) ?? user.email?.split("@")[0] ?? "Usuario Tenlo";
   const { data: profile } = await supabase
     .from("profiles")
     .insert({
       id: user.id,
-      role: "family",
+      role,
       display_name: fallbackName,
       public_name: fallbackName,
       contact_email: user.email ?? null,
-      status: "approved"
+      status: metadataStatus(role)
     })
     .select("*")
     .single();
+
+  await supabase.from("profile_usernames").upsert(
+    {
+      profile_id: user.id,
+      public_name_normalized: normalizePublicName(fallbackName)
+    },
+    { onConflict: "profile_id" }
+  );
 
   return { user, profile };
 }
@@ -66,27 +118,13 @@ async function ensureProfile() {
 export default async function PersonalAreaPage() {
   const { user, profile } = await ensureProfile();
   const reviewStatus = profile?.status === "approved" ? "Cuenta activa" : "Pendiente de revisión";
-  const displayName = profile?.display_name ?? user.email?.split("@")[0] ?? "Tenlo";
+  const displayName = profile?.public_name ?? profile?.display_name ?? user.email?.split("@")[0] ?? "Tenlo";
 
   return (
     <div className="section-shell">
       <p className="label">Área personal</p>
       <h1 className="page-title">Hola, {displayName}</h1>
-      <p className="lead max-w-5xl">Un espacio para gestionar favoritos, publicaciones y datos de contacto desde una cuenta adulta.</p>
-
-      <div className="mt-8 rounded-2xl border border-sage/30 bg-sage/10 p-5">
-        <div className="flex gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-petrol ring-1 ring-sage/25">
-            <ShieldCheck size={22} aria-hidden />
-          </span>
-          <div>
-            <h2 className="text-base font-bold text-slatecopy">{reviewStatus}</h2>
-            <p className="mt-1 text-sm leading-6 text-muted">
-              Sesión iniciada como <strong>{displayName}</strong>. Las cuentas profesionales, centros y entidades pasan por revisión antes de publicar contenido visible en Tenlo.
-            </p>
-          </div>
-        </div>
-      </div>
+      <p className="lead max-w-5xl">El espacio donde podrás gestionar favoritos, publicaciones y datos de contacto de tu cuenta.</p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         {accountActions.map(({ title, text, href, Icon }) => (
@@ -96,6 +134,16 @@ export default async function PersonalAreaPage() {
             <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="mt-6 inline-flex max-w-full items-center gap-3 rounded-2xl border border-sage/30 bg-sage/10 px-4 py-3">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white text-petrol ring-1 ring-sage/25">
+          <ShieldCheck size={20} aria-hidden />
+        </span>
+        <div>
+          <h2 className="text-sm font-bold text-slatecopy">{reviewStatus}</h2>
+          <p className="text-sm leading-6 text-muted">Sesión iniciada como <strong>{displayName}</strong>.</p>
+        </div>
       </div>
     </div>
   );
