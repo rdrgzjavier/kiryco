@@ -19,7 +19,7 @@ const accountActions = [
   {
     title: "Mis publicaciones",
     text: "Revisa ofertas, recursos o fichas enviadas a Tenlo.",
-    href: "/publicar",
+    href: "/mis-publicaciones",
     Icon: ClipboardList
   },
   {
@@ -30,8 +30,8 @@ const accountActions = [
   },
   {
     title: "Datos de cuenta",
-    text: "Actualiza tus datos de contacto y preferencias.",
-    href: "/login",
+    text: "Consulta tus datos, cambia contraseña o solicita la baja.",
+    href: "/datos-cuenta",
     Icon: Settings
   }
 ];
@@ -66,12 +66,13 @@ async function ensureProfile() {
 export default async function PersonalAreaPage() {
   const { user, profile } = await ensureProfile();
   const reviewStatus = profile?.status === "approved" ? "Cuenta activa" : "Pendiente de revisión";
+  const displayName = profile?.display_name ?? user.email?.split("@")[0] ?? "Tenlo";
 
   return (
     <div className="section-shell">
-      <p className="label">Cuenta Tenlo</p>
-      <h1 className="page-title">Área personal</h1>
-      <p className="lead">Un espacio para gestionar favoritos, publicaciones y datos de contacto desde una cuenta adulta.</p>
+      <p className="label">Área personal</p>
+      <h1 className="page-title">Hola, {displayName}</h1>
+      <p className="lead max-w-5xl">Un espacio para gestionar favoritos, publicaciones y datos de contacto desde una cuenta adulta.</p>
 
       <div className="mt-8 rounded-2xl border border-sage/30 bg-sage/10 p-5">
         <div className="flex gap-3">
@@ -81,7 +82,7 @@ export default async function PersonalAreaPage() {
           <div>
             <h2 className="text-base font-bold text-slatecopy">{reviewStatus}</h2>
             <p className="mt-1 text-sm leading-6 text-muted">
-              Sesión iniciada como <strong>{profile?.display_name ?? user.email}</strong>. Las cuentas profesionales, centros y entidades pasan por revisión antes de publicar contenido visible en Tenlo.
+              Sesión iniciada como <strong>{displayName}</strong>. Las cuentas profesionales, centros y entidades pasan por revisión antes de publicar contenido visible en Tenlo.
             </p>
           </div>
         </div>
