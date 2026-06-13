@@ -145,6 +145,13 @@ function isDuplicatePublicNameError(error: unknown) {
   return typeof error === "object" && error !== null && "code" in error && (error as { code?: string }).code === "23505";
 }
 
+function blurActiveField() {
+  const activeElement = document.activeElement;
+  if (activeElement instanceof HTMLElement) {
+    activeElement.blur();
+  }
+}
+
 export default function LoginRegistration() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -275,6 +282,7 @@ export default function LoginRegistration() {
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    blurActiveField();
     setError(null);
     setMessage(null);
     setLoading("login");
@@ -298,6 +306,7 @@ export default function LoginRegistration() {
 
   async function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    blurActiveField();
     setError(null);
     setMessage(null);
 
@@ -347,6 +356,7 @@ export default function LoginRegistration() {
   }
 
   async function handleGoogleLogin() {
+    blurActiveField();
     setError(null);
     setMessage(null);
     setLoading("google");
