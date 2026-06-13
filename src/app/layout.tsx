@@ -4,6 +4,7 @@ import { Inter, Poppins } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import AnalyticsEvents from "@/components/AnalyticsEvents";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -95,6 +96,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <link rel="preconnect" href="https://images.pexels.com" />
         <link rel="dns-prefetch" href="https://images.pexels.com" />
+        {process.env.NEXT_PUBLIC_COOKIEBOT_ID ? (
+          <Script
+            id="Cookiebot"
+            src="https://consent.cookiebot.com/uc.js"
+            data-cbid={process.env.NEXT_PUBLIC_COOKIEBOT_ID}
+            data-blockingmode="auto"
+            strategy="beforeInteractive"
+          />
+        ) : null}
         <Script id="gtm-consent-default" strategy="beforeInteractive">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'granted','security_storage':'granted'});`}
         </Script>
@@ -105,6 +115,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NCVMLXWZ" height="0" width="0" style={{ display: "none", visibility: "hidden" }} /></noscript>
         <Header />
+        <AnalyticsEvents />
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
         <main>{children}</main>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { centers, findCenter } from "@/lib/mock-data";
 import { TrustBadge } from "@/components/Badge";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
 import { trackingAttrs } from "@/lib/analytics";
 
@@ -23,6 +24,21 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function CenterDetailPage({ params }: { params: { slug: string } }) {
   const center = findCenter(params.slug);
   if (!center) notFound();
+  const centerUrl = center.website?.startsWith("http") ? center.website : undefined;
+  const centerEmail = center.email.includes("@") ? center.email : undefined;
+  const publicData = [
+    ["Municipio", center.municipality],
+    ["Dirección", center.address],
+    ["Teléfono", center.phone],
+    ["Email", center.email],
+    ["Web oficial", center.website],
+    ["Etapas", center.stages.join(", ")],
+    ["Idiomas", center.languages.join(", ")],
+    ["Servicios", center.services.join(", ")],
+    ["Última revisión", center.lastReviewed ?? "Información pendiente de revisión"],
+    ["Fuente", center.source],
+    ["Estado", center.verificationStatus ?? "Información pendiente de validar"]
+  ];
 
   return (
     <div className="page py-10">
@@ -35,15 +51,15 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         address: center.address,
         areaServed: center.municipality,
         telephone: center.phone,
-        email: center.email,
-        url: center.website
+        email: centerEmail,
+        url: centerUrl
       }} />
       <div className="flex flex-wrap items-center gap-2">
         <span className="chip capitalize">{center.type}</span>
         {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
         <TrustBadge level={center.trustLevel} />
       </div>
-      <img src={center.image ?? "/images/cards/centro-educativo.svg"} alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
+      <ImageWithFallback src={center.image} fallbackSrc="/images/cards/centro-educativo.svg" alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
       <h1 className="mt-4 text-4xl font-bold text-ink">{center.name}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-8 text-slatecopy">{center.description}</p>
       <div className="mt-5 flex flex-wrap gap-2">
@@ -53,7 +69,7 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         <section className="card p-6">
           <h2 className="text-2xl font-semibold text-ink">Datos públicos</h2>
           <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            {[["Municipio", center.municipality], ["Dirección", center.address], ["Teléfono", center.phone], ["Email", center.email], ["Web oficial", center.website], ["Etapas", center.stages.join(", ")], ["Idiomas", center.languages.join(", ")], ["Servicios", center.services.join(", ")], ["Última revisión", center.lastReviewed ?? "Información pendiente de revisión"], ["Fuente", center.source], ["Estado", center.verificationStatus ?? "Información pública"]].map(([label, value]) => (
+            {publicData.map(([label, value]) => (
               <div key={label} className="rounded-xl border border-line bg-soft p-4"><dt className="label">{label}</dt><dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd></div>
             ))}
           </dl>
@@ -61,9 +77,9 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
           <Link href="/contacto" className="ml-0 mt-4 inline-flex text-sm font-semibold text-ink underline sm:ml-4">¿Hay un dato incorrecto? Avísanos</Link>
         </section>
         <aside className="card h-fit p-6">
-          <h2 className="text-xl font-semibold text-ink">Solicitar revisión de ficha</h2>
-          <p className="mt-2 text-sm leading-6 text-muted">Los centros pueden proponer correcciones o validar datos públicos.</p>
-          <Link href="/centros-educativos" className="btn-primary mt-5 w-full" {...trackingAttrs("publish", { item: center.id, type: "center_claim" })}>Solicitar revisión</Link>
+          <h2 className="text-xl font-semibold text-ink">Validar esta ficha</h2>
+          <p className="mt-2 text-sm leading-6 text-muted">Si representas este centro, puedes corregir datos, aportar una imagen oficial o solicitar que el equipo de Tenlo valide la ficha.</p>
+          <Link href={`/validar-ficha?tipo=centro&id=${center.slug}`} className="btn-primary mt-5 w-full" {...trackingAttrs("claim_profile_click", { item: center.id, type: "center" })}>Validar ficha</Link>
         </aside>
       </div>
       <section className="mt-8 grid gap-4 md:grid-cols-5">

@@ -133,7 +133,7 @@ export default function ServicesPage() {
               <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
               <div className="mt-auto flex gap-2 pt-5">
                 <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Consultar</Link>
-                {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
+                {provider.website.startsWith("http") ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
               </div>
             </div>
           </article>

@@ -71,20 +71,20 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   municipality,
   address: "Consultar dirección pública en web oficial",
   phone,
-  email: `info@${slug}.es`,
-  website: `https://www.${slug}.es`,
+  email: "Pendiente de validar",
+  website: "Pendiente de validar",
   languages: ["Inglés"],
   services: ["Comedor", "Extraescolares", "Orientación"],
   description,
-  source: "Información pública oficial",
-  sourceUrl: `https://www.${slug}.es`,
+  source: "Información pública pendiente de validar",
+  sourceUrl: undefined,
   lastReviewed: "Mayo de 2026",
-  verificationStatus: "Información pública",
+  verificationStatus: "Pendiente de validar",
   isPublicInformation: true,
   tags: [...baseTags, ...tags, municipality],
   image: stages.includes("0-3 años") ? images.nursery : images.center,
-  verified: true,
-  trustLevel: "official"
+  verified: false,
+  trustLevel: "collected"
 }));
 
 function centerAgeRange(stages: string[]) {
@@ -138,34 +138,40 @@ const providerSeeds: ProviderSeed[] = [
 ];
 
 providerSeeds.push(
-  ["las-rozas-campamentos-activa", "Activa Campamentos Las Rozas", "Campamentos", "campamentos urbanos, días sin cole, conciliación", images.activity, "campamentos", "Las Rozas de Madrid", "911 23 45 67", "info@activacampamentos.es", "https://example.com", "Campamentos urbanos por semanas y días sin cole con actividades deportivas y creativas.", "Consultar calendario por temporada."],
-  ["pozuelo-robotica-lab", "Robótica Lab Pozuelo", "Talleres tecnológicos", "robótica, programación, tecnología", images.activity, "tecnologia", "Pozuelo de Alarcón", "912 45 67 89", "hola@roboticalab.es", "https://example.com", "Talleres de robótica, programación y pensamiento computacional por grupos de edad.", "Tardes entre semana y campamentos tecnológicos en vacaciones."],
-  ["majadahonda-club-raqueta", "Club Raqueta Majadahonda", "Centros deportivos", "tenis, pádel, escuela deportiva", images.sport, "centros-deportivos", "Majadahonda", "916 11 22 33", "info@clubraqueta.es", "https://example.com", "Escuela deportiva con tenis, pádel y actividades de iniciación para familias.", "Consultar horarios de escuela y grupos."],
-  ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "916 22 33 44", "hola@uniformesboadilla.es", "https://example.com", "Tienda local para uniformes, prendas escolares y pequeños arreglos.", "Horario comercial habitual."]
+  ["las-rozas-campamentos-activa", "Activa Campamentos Las Rozas", "Campamentos", "campamentos urbanos, días sin cole, conciliación", images.activity, "campamentos", "Las Rozas de Madrid", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para campamentos urbanos por semanas y días sin cole.", "Consultar calendario por temporada."],
+  ["pozuelo-robotica-lab", "Robótica Lab Pozuelo", "Talleres tecnológicos", "robótica, programación, tecnología", images.activity, "tecnologia", "Pozuelo de Alarcón", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para talleres de robótica, programación y pensamiento computacional por grupos de edad.", "Tardes entre semana y campamentos tecnológicos en vacaciones."],
+  ["majadahonda-club-raqueta", "Club Raqueta Majadahonda", "Centros deportivos", "tenis, pádel, escuela deportiva", images.sport, "centros-deportivos", "Majadahonda", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para escuela deportiva con tenis, pádel y actividades de iniciación.", "Consultar horarios de escuela y grupos."],
+  ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para uniformes, prendas escolares y pequeños arreglos.", "Horario comercial habitual."]
 );
 
-export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => ({
-  id,
-  userId: id,
-  businessName,
-  category,
-  description: description ?? providerDescription(businessName, category, municipality),
-  municipality,
-  serviceArea: `${municipality} y alrededores`,
-  website: website ?? "https://example.com",
-  phone,
-  email,
-  sourceName: website && website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo",
-  sourceUrl: website && website !== "https://example.com" ? website : undefined,
-  lastReviewed: "Mayo de 2026",
-  verificationStatus: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "Verificado" : "Información recopilada",
-  isPublicInformation: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
-  verified: !phone.includes("Contacto protegido") && !email.includes("tenlo.es"),
-  trustLevel: !phone.includes("Contacto protegido") && !email.includes("tenlo.es") ? "verified" : "collected",
-  plan: "gratuito",
-  tags: Array.from(new Set(rawTags.split(", ").concat([municipality, category]))),
-  image
-}));
+export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => {
+  const hasOfficialWebsite = Boolean(website?.startsWith("http"));
+  const protectedContact = phone.includes("Contacto protegido") || email.includes("tenlo.es");
+  const verificationStatus = hasOfficialWebsite ? "Verificado" : protectedContact ? "Información recopilada" : "Pendiente de validar";
+
+  return {
+    id,
+    userId: id,
+    businessName,
+    category,
+    description: description ?? providerDescription(businessName, category, municipality),
+    municipality,
+    serviceArea: `${municipality} y alrededores`,
+    website: hasOfficialWebsite ? website! : "",
+    phone,
+    email,
+    sourceName: hasOfficialWebsite ? "Web oficial del proveedor" : "Información pendiente de validar por Tenlo",
+    sourceUrl: hasOfficialWebsite ? website : undefined,
+    lastReviewed: "Mayo de 2026",
+    verificationStatus,
+    isPublicInformation: hasOfficialWebsite,
+    verified: hasOfficialWebsite,
+    trustLevel: hasOfficialWebsite ? "verified" : "collected",
+    plan: "gratuito",
+    tags: Array.from(new Set(rawTags.split(", ").concat([municipality, category]))),
+    image
+  };
+});
 
 function providerDescription(businessName: string, category: string, municipality: string) {
   const value = category.toLowerCase();
@@ -210,7 +216,7 @@ export const listings: Listing[] = [
     isPublicInformation: center.isPublicInformation,
     publicationType: "centro" as const,
     status: "published" as const,
-    verified: true,
+      verified: center.verified,
     trustLevel: center.trustLevel,
     tags: center.tags,
     image: center.image,
@@ -253,19 +259,19 @@ export const listings: Listing[] = [
         Contacto: provider.phone,
         Email: provider.email,
         Horario: availability,
-        Web: provider.website
+        Web: provider.website || "Pendiente de validar"
       }
     };
   })
 ];
 
 export const communityInitiatives: CommunityInitiative[] = [
-  { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
-  { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "https://example.com", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
-  { id: "banco-alimentos-pozuelo", name: "Banco de Alimentos Pozuelo", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Recogida y distribución de alimentos en Pozuelo.", tags: ["Social", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
-  { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "https://example.com", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
-  { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "https://example.com", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
-  { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "https://example.com", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" }
+  { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "banco-alimentos-pozuelo", name: "Banco de Alimentos Pozuelo", url: "", municipality: "Pozuelo de Alarcón", summary: "Recogida y distribución de alimentos en Pozuelo.", tags: ["Social", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
+  { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" }
 ];
 
 export const searchTags = Array.from(new Set([

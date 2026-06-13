@@ -88,6 +88,42 @@ type ServiceInsert = {
   updated_at?: string;
 };
 
+type ClaimRequestRow = {
+  id: string;
+  user_id: string | null;
+  entity_type: "center" | "provider" | "community";
+  entity_id: string;
+  entity_name: string;
+  requester_name: string;
+  requester_email: string;
+  requester_phone: string | null;
+  role_description: string;
+  corrections: string | null;
+  official_website: string | null;
+  image_url: string | null;
+  status: ModerationStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+type ClaimRequestInsert = {
+  id?: string;
+  user_id?: string | null;
+  entity_type: ClaimRequestRow["entity_type"];
+  entity_id: string;
+  entity_name: string;
+  requester_name: string;
+  requester_email: string;
+  requester_phone?: string | null;
+  role_description: string;
+  corrections?: string | null;
+  official_website?: string | null;
+  image_url?: string | null;
+  status?: ModerationStatus;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -101,6 +137,12 @@ export type Database = {
         Row: ServiceRow;
         Insert: ServiceInsert;
         Update: Partial<ServiceRow>;
+        Relationships: [];
+      };
+      claim_requests: {
+        Row: ClaimRequestRow;
+        Insert: ClaimRequestInsert;
+        Update: Partial<ClaimRequestRow>;
         Relationships: [];
       };
     };

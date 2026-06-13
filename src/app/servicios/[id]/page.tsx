@@ -5,6 +5,7 @@ import SafeEnvironmentCard from "@/components/SafeEnvironmentCard";
 import { ExternalLink } from "lucide-react";
 import { TrustBadge } from "@/components/Badge";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { trackingAttrs } from "@/lib/analytics";
@@ -30,7 +31,9 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   if (!provider) notFound();
   const personalProvider = isPersonalProvider(provider);
   const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
-  const sourceLabel = provider.sourceName ?? (provider.website !== "https://example.com" ? "Web oficial del proveedor" : "Información recopilada por Tenlo");
+  const providerUrl = provider.website?.startsWith("http") ? provider.website : undefined;
+  const providerEmail = provider.email.includes("@") ? provider.email : undefined;
+  const sourceLabel = provider.sourceName ?? (providerUrl ? "Web oficial del proveedor" : "Información pendiente de validar por Tenlo");
   const reviewDate = provider.lastReviewed ?? "Información pendiente de revisión";
   const relatedServices = providers
     .filter((item) => item.id !== provider.id && (item.municipality === provider.municipality || item.category === provider.category))
@@ -46,12 +49,12 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         description: provider.description,
         areaServed: provider.serviceArea,
         telephone: provider.phone,
-        email: provider.email,
-        url: provider.website !== "https://example.com" ? provider.website : undefined
+        email: providerEmail,
+        url: providerUrl
       }} />
       <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <article>
-          <img src={provider.image} alt={`Imagen de ${provider.businessName}`} className="h-64 w-full rounded-2xl border border-line object-cover sm:h-80" />
+          <ImageWithFallback src={provider.image} fallbackSrc="/images/cards/servicio-familiar.svg" alt={`Imagen de ${provider.businessName}`} className="h-64 w-full rounded-2xl border border-line object-cover sm:h-80" />
           <div className="mt-6 flex flex-wrap gap-2"><span className="chip">{provider.category}</span><TrustBadge level={provider.trustLevel} />{provider.tags.slice(0, 6).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
           <div className="mt-6 flex items-center gap-4">
             <ProfileAvatar name={provider.businessName} role="provider" image={provider.image} />
@@ -101,7 +104,8 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         </article>
         <aside className="card h-fit p-6">
           {personalProvider ? <SafeEnvironmentCard compact title="Contacto protegido" body="En servicios entre particulares, Tenlo protege los datos de contacto y recomienda acordar siempre la comunicación entre adultos responsables." /> : null}
-          {provider.website !== "https://example.com" ? <a href={provider.website} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}>Web oficial<ExternalLink size={16} /></a> : <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: provider.id, type: "provider" })}>Contactar</a>}
+          {providerUrl ? <a href={providerUrl} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}>Web oficial<ExternalLink size={16} /></a> : providerEmail ? <a href={`mailto:${provider.email}`} className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: provider.id, type: "provider" })}>Contactar</a> : null}
+          <Link href={`/validar-ficha?tipo=servicio&id=${provider.id}`} className="btn-secondary mt-3 w-full" {...trackingAttrs("claim_profile_click", { item: provider.id, type: "provider" })}>Validar ficha</Link>
         </aside>
       </div>
     </div>
