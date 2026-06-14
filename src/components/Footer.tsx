@@ -4,23 +4,48 @@ import { Instagram, Linkedin, ShieldCheck } from "lucide-react";
 const columns = [
   {
     title: "Familias",
-    links: [["Buscar servicios", "/buscar"], ["Servicios populares", "/servicios"], ["Comunidad", "/comunidad"], ["Categorías", "/categoria"]]
+    links: [
+      ["Buscar servicios", "/buscar"],
+      ["Servicios populares", "/servicios"],
+      ["Comunidad", "/comunidad"],
+      ["Categorías", "/categoria"],
+      ["Sugerencias", "/sugerencias"]
+    ]
   },
   {
     title: "Profesionales",
-    links: [["Publicar oferta", "/publicar"], ["Ventajas", "/proveedores"], ["Servicios", "/servicios"], ["Contacto", "/contacto"]]
+    links: [
+      ["Publicar oferta", "/publicar"],
+      ["Validar ficha", "/validar-ficha"],
+      ["Servicios", "/servicios"],
+      ["Contacto", "/contacto"]
+    ]
   },
   {
     title: "Recursos",
-    links: [["Centros educativos", "/centros"], ["Guías locales", "/comunidad"], ["Buscar recursos", "/buscar"]]
+    links: [
+      ["Centros educativos", "/centros"],
+      ["Guías locales", "/comunidad"],
+      ["Buscar recursos", "/buscar"]
+    ]
   },
   {
     title: "Zonas",
-    links: [["Las Rozas de Madrid", "/buscar?municipio=Las%20Rozas%20de%20Madrid"], ["Majadahonda", "/buscar?municipio=Majadahonda"], ["Pozuelo de Alarcón", "/buscar?municipio=Pozuelo%20de%20Alarc%C3%B3n"], ["Boadilla del Monte", "/buscar?municipio=Boadilla%20del%20Monte"]]
+    links: [
+      ["Las Rozas de Madrid", "/buscar?municipio=Las%20Rozas%20de%20Madrid"],
+      ["Majadahonda", "/buscar?municipio=Majadahonda"],
+      ["Pozuelo de Alarcón", "/buscar?municipio=Pozuelo%20de%20Alarc%C3%B3n"],
+      ["Boadilla del Monte", "/buscar?municipio=Boadilla%20del%20Monte"]
+    ]
   },
   {
     title: "Legal",
-    links: [["Privacidad", "/privacidad"], ["Términos de uso", "/aviso-legal"], ["Aviso legal", "/aviso-legal"], ["Cookies", "/cookies"]]
+    links: [
+      ["Privacidad", "/privacidad"],
+      ["Términos de uso", "/aviso-legal"],
+      ["Aviso legal", "/aviso-legal"],
+      ["Cookies", "/cookies"]
+    ]
   }
 ];
 
@@ -43,8 +68,12 @@ export default function Footer() {
             <span>Dirigida a adultos, con publicaciones revisadas y privacidad desde el inicio.</span>
           </div>
           <div className="flex gap-3">
-            <Link href="https://www.instagram.com/tenlocerca/" className="icon-button" aria-label="Instagram"><Instagram size={18} /></Link>
-            <Link href="https://www.linkedin.com/company/tenlocerca" className="icon-button" aria-label="LinkedIn"><Linkedin size={18} /></Link>
+            <Link href="https://www.instagram.com/tenlocerca/" className="icon-button" aria-label="Instagram">
+              <Instagram size={18} />
+            </Link>
+            <Link href="https://www.linkedin.com/company/tenlocerca" className="icon-button" aria-label="LinkedIn">
+              <Linkedin size={18} />
+            </Link>
           </div>
         </div>
         <div className="mt-8 text-sm text-muted">© {new Date().getFullYear()} Tenlo. Todos los derechos reservados.</div>

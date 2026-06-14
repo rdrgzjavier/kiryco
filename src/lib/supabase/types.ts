@@ -124,6 +124,32 @@ type ClaimRequestInsert = {
   updated_at?: string;
 };
 
+type FeedbackRequestRow = {
+  id: string;
+  user_id: string | null;
+  context: string | null;
+  item_id: string | null;
+  name: string | null;
+  email: string | null;
+  message: string;
+  status: ModerationStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+type FeedbackRequestInsert = {
+  id?: string;
+  user_id?: string | null;
+  context?: string | null;
+  item_id?: string | null;
+  name?: string | null;
+  email?: string | null;
+  message: string;
+  status?: ModerationStatus;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -143,6 +169,12 @@ export type Database = {
         Row: ClaimRequestRow;
         Insert: ClaimRequestInsert;
         Update: Partial<ClaimRequestRow>;
+        Relationships: [];
+      };
+      feedback_requests: {
+        Row: FeedbackRequestRow;
+        Insert: FeedbackRequestInsert;
+        Update: Partial<FeedbackRequestRow>;
         Relationships: [];
       };
     };

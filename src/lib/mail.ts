@@ -1,4 +1,4 @@
-export const ADMIN_EMAIL = "tenlocerca@gmail.com";
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "tenlocerca@gmail.com";
 export const BRAND = {
   name: "Tenlo",
   claim: "Todo lo que necesitas alrededor del colegio, filtrado por tu zona y tu centro.",

@@ -14,7 +14,7 @@ function hasPublishedListings(categoryId: string, municipalityName?: string) {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/buscar", "/categoria", "/centros", "/servicios", "/comunidad"];
-  const trustRoutes = ["/privacidad", "/aviso-legal", "/cookies", "/normas-comunidad", "/contacto"];
+  const trustRoutes = ["/privacidad", "/aviso-legal", "/cookies", "/normas-comunidad", "/contacto", "/sugerencias"];
   const zoneRoutes = municipalities.map((municipality) => `/zonas/${municipality.slug}`);
   const localRoutes = municipalities.flatMap((municipality) => (
     categories

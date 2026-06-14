@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { centers, findCenter } from "@/lib/mock-data";
-import { TrustBadge } from "@/components/Badge";
+import { ShieldCheck } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
 import { trackingAttrs } from "@/lib/analytics";
+import { centers, findCenter } from "@/lib/mock-data";
+
+const centerFallbackImage = "https://images.pexels.com/photos/5212320/pexels-photo-5212320.jpeg?auto=compress&cs=tinysrgb&w=1600";
 
 export function generateStaticParams() {
   return centers.map((center) => ({ slug: center.slug }));
@@ -24,21 +26,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function CenterDetailPage({ params }: { params: { slug: string } }) {
   const center = findCenter(params.slug);
   if (!center) notFound();
+
   const centerUrl = center.website?.startsWith("http") ? center.website : undefined;
   const centerEmail = center.email.includes("@") ? center.email : undefined;
-  const publicData = [
-    ["Municipio", center.municipality],
-    ["Dirección", center.address],
-    ["Teléfono", center.phone],
-    ["Email", center.email],
-    ["Web oficial", center.website],
-    ["Etapas", center.stages.join(", ")],
-    ["Idiomas", center.languages.join(", ")],
-    ["Servicios", center.services.join(", ")],
-    ["Última revisión", center.lastReviewed ?? "Información pendiente de revisión"],
-    ["Fuente", center.source],
-    ["Estado", center.verificationStatus ?? "Información pendiente de validar"]
-  ];
+  const isVerified = center.trustLevel === "verified" || center.trustLevel === "official";
+  const quickLinks = ["Uniformes", "Puertas abiertas", "Becas", "Extraescolares", "Admisiones"];
 
   return (
     <div className="page py-10">
@@ -48,47 +40,81 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
         "@type": "EducationalOrganization",
         name: center.name,
         description: center.description,
-        address: center.address,
+        address: cleanValue(center.address),
         areaServed: center.municipality,
-        telephone: center.phone,
+        telephone: cleanValue(center.phone),
         email: centerEmail,
         url: centerUrl
       }} />
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="chip capitalize">{center.type}</span>
-        {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
-        <TrustBadge level={center.trustLevel} />
+
+      <ImageWithFallback src={center.image} fallbackSrc={centerFallbackImage} alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
+
+      <div className="mt-4 flex items-start gap-3">
+        {isVerified ? <ShieldCheck className="mt-2 shrink-0 text-emerald-700" size={30} aria-label="Ficha verificada" /> : null}
+        <h1 className="text-4xl font-bold text-ink">{center.name}</h1>
       </div>
-      <ImageWithFallback src={center.image} fallbackSrc="/images/cards/centro-educativo.svg" alt={`Imagen de ${center.name}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
-      <h1 className="mt-4 text-4xl font-bold text-ink">{center.name}</h1>
       <p className="mt-3 max-w-3xl text-lg leading-8 text-slatecopy">{center.description}</p>
+
       <div className="mt-5 flex flex-wrap gap-2">
+        <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold capitalize text-slatecopy">{center.type}</span>
+        {center.religiousCharacter ? <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold capitalize text-slatecopy">{center.religiousCharacter}</span> : null}
         {center.tags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
       </div>
+
+      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {quickLinks.map((item) => (
+          <Link key={item} href={`/buscar?centro=${center.id}`} className="card inline-flex min-h-14 items-center justify-center px-4 py-3 text-center text-sm font-bold text-ink transition-colors hover:border-primary hover:text-primary">
+            {item}
+          </Link>
+        ))}
+      </section>
+
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_360px]">
-        <section className="card p-6">
-          <h2 className="text-2xl font-semibold text-ink">Datos públicos</h2>
-          <dl className="mt-5 grid gap-4 sm:grid-cols-2">
-            {publicData.map(([label, value]) => (
-              <div key={label} className="rounded-xl border border-line bg-soft p-4"><dt className="label">{label}</dt><dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd></div>
-            ))}
-          </dl>
-          {center.sourceUrl ? <a href={center.sourceUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold text-ink underline">Fuente: {center.source}</a> : null}
-          <Link href="/contacto" className="ml-0 mt-4 inline-flex text-sm font-semibold text-ink underline sm:ml-4">¿Hay un dato incorrecto? Avísanos</Link>
+        <section className="grid gap-5">
+          <InfoBlock title="Ubicación" items={[
+            ["Municipio", center.municipality],
+            ["Dirección", cleanValue(center.address)]
+          ]} />
+          <InfoBlock title="Contacto" items={[
+            ["Web oficial", centerUrl ? center.website : "No indicado"],
+            ["Email", centerEmail ? center.email : "No indicado"],
+            ["Teléfono", cleanValue(center.phone)]
+          ]} />
+          <InfoBlock title="Oferta educativa" items={[
+            ["Etapas", center.stages.join(", ")],
+            ["Idiomas", center.languages.join(", ")],
+            ["Servicios", center.services.join(", ")]
+          ]} />
+          <Link href={`/sugerencias?context=centro&item=${center.slug}`} className="inline-flex text-sm font-semibold text-ink underline">¿Hay algún dato incorrecto? Avísanos</Link>
         </section>
+
         <aside className="card h-fit p-6">
           <h2 className="text-xl font-semibold text-ink">Validar esta ficha</h2>
           <p className="mt-2 text-sm leading-6 text-muted">Si representas este centro, puedes corregir datos, aportar una imagen oficial o solicitar que el equipo de Tenlo valide la ficha.</p>
           <Link href={`/validar-ficha?tipo=centro&id=${center.slug}`} className="btn-primary mt-5 w-full" {...trackingAttrs("claim_profile_click", { item: center.id, type: "center" })}>Validar ficha</Link>
         </aside>
       </div>
-      <section className="mt-8 grid gap-4 md:grid-cols-5">
-        {["Uniformes", "Puertas abiertas", "Becas", "Extraescolares", "Admisiones"].map((item) => (
-          <Link key={item} href={`/buscar?centro=${center.id}`} className="card p-4 text-sm font-bold text-slatecopy hover:text-ink">
-            {item}
-          </Link>
-        ))}
-      </section>
     </div>
   );
+}
+
+function InfoBlock({ title, items }: { title: string; items: string[][] }) {
+  return (
+    <section className="card p-6">
+      <h2 className="text-2xl font-semibold text-ink">{title}</h2>
+      <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+        {items.map(([label, value]) => (
+          <div key={label} className="rounded-xl border border-line bg-soft p-4">
+            <dt className="label">{label}</dt>
+            <dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function cleanValue(value?: string) {
+  if (!value || value.toLowerCase().includes("pendiente")) return "No indicado";
+  return value;
 }

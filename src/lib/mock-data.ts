@@ -69,17 +69,17 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   religiousCharacter,
   stages,
   municipality,
-  address: "Consultar dirección pública en web oficial",
+  address: "Consultar dirección pública",
   phone,
-  email: "Pendiente de validar",
-  website: "Pendiente de validar",
+  email: "",
+  website: "",
   languages: ["Inglés"],
   services: ["Comedor", "Extraescolares", "Orientación"],
   description,
-  source: "Información pública pendiente de validar",
+  source: "",
   sourceUrl: undefined,
   lastReviewed: "Mayo de 2026",
-  verificationStatus: "Pendiente de validar",
+  verificationStatus: "",
   isPublicInformation: true,
   tags: [...baseTags, ...tags, municipality],
   image: stages.includes("0-3 años") ? images.nursery : images.center,
@@ -138,16 +138,16 @@ const providerSeeds: ProviderSeed[] = [
 ];
 
 providerSeeds.push(
-  ["las-rozas-campamentos-activa", "Activa Campamentos Las Rozas", "Campamentos", "campamentos urbanos, días sin cole, conciliación", images.activity, "campamentos", "Las Rozas de Madrid", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para campamentos urbanos por semanas y días sin cole.", "Consultar calendario por temporada."],
-  ["pozuelo-robotica-lab", "Robótica Lab Pozuelo", "Talleres tecnológicos", "robótica, programación, tecnología", images.activity, "tecnologia", "Pozuelo de Alarcón", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para talleres de robótica, programación y pensamiento computacional por grupos de edad.", "Tardes entre semana y campamentos tecnológicos en vacaciones."],
-  ["majadahonda-club-raqueta", "Club Raqueta Majadahonda", "Centros deportivos", "tenis, pádel, escuela deportiva", images.sport, "centros-deportivos", "Majadahonda", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para escuela deportiva con tenis, pádel y actividades de iniciación.", "Consultar horarios de escuela y grupos."],
-  ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "Pendiente de validar", "Pendiente de validar", "", "Ficha pendiente de validar para uniformes, prendas escolares y pequeños arreglos.", "Horario comercial habitual."]
+  ["las-rozas-campamentos-activa", "Activa Campamentos Las Rozas", "Campamentos", "campamentos urbanos, días sin cole, conciliación", images.activity, "campamentos", "Las Rozas de Madrid", "", "", "", "Campamentos urbanos por semanas y días sin cole para familias de Las Rozas de Madrid.", "Consultar calendario por temporada."],
+  ["pozuelo-robotica-lab", "Robótica Lab Pozuelo", "Talleres tecnológicos", "robótica, programación, tecnología", images.activity, "tecnologia", "Pozuelo de Alarcón", "", "", "", "Talleres de robótica, programación y pensamiento computacional por grupos de edad en Pozuelo.", "Tardes entre semana y campamentos tecnológicos en vacaciones."],
+  ["majadahonda-club-raqueta", "Club Raqueta Majadahonda", "Centros deportivos", "tenis, pádel, escuela deportiva", images.sport, "centros-deportivos", "Majadahonda", "", "", "", "Escuela deportiva con tenis, pádel y actividades de iniciación en Majadahonda.", "Consultar horarios de escuela y grupos."],
+  ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "", "", "", "Uniformes, prendas escolares y pequeños arreglos en Boadilla del Monte.", "Horario comercial habitual."]
 );
 
 export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => {
   const hasOfficialWebsite = Boolean(website?.startsWith("http"));
   const protectedContact = phone.includes("Contacto protegido") || email.includes("tenlo.es");
-  const verificationStatus = hasOfficialWebsite ? "Verificado" : protectedContact ? "Información recopilada" : "Pendiente de validar";
+  const verificationStatus = hasOfficialWebsite ? "Verificado" : "";
 
   return {
     id,
@@ -160,7 +160,7 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
     website: hasOfficialWebsite ? website! : "",
     phone,
     email,
-    sourceName: hasOfficialWebsite ? "Web oficial del proveedor" : "Información pendiente de validar por Tenlo",
+    sourceName: hasOfficialWebsite ? "Web oficial del proveedor" : "",
     sourceUrl: hasOfficialWebsite ? website : undefined,
     lastReviewed: "Mayo de 2026",
     verificationStatus,
@@ -259,7 +259,7 @@ export const listings: Listing[] = [
         Contacto: provider.phone,
         Email: provider.email,
         Horario: availability,
-        Web: provider.website || "Pendiente de validar"
+        Web: provider.website || "No indicado"
       }
     };
   })

@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock3, Database, ShieldCheck, type LucideIcon } from "lucide-react";
+import { CheckCircle2, Clock3, ShieldCheck } from "lucide-react";
 import type { ModerationStatus, TrustLevel } from "@/lib/types";
 
 export function VerifiedBadge({ verified }: { verified?: boolean }) {
@@ -11,17 +11,14 @@ export function VerifiedBadge({ verified }: { verified?: boolean }) {
 }
 
 export function TrustBadge({ level, variant = "soft" }: { level: TrustLevel; variant?: "soft" | "solid" }) {
-  const config = {
-    collected: { label: "Información recopilada", Icon: Database, className: "bg-soft text-slatecopy ring-line" },
-    verified: { label: "Verificado", Icon: CheckCircle2, className: "bg-sage/10 text-black ring-sage/20" },
-    official: { label: "Verificado", Icon: ShieldCheck, className: "bg-sage/10 text-black ring-sage/20" }
-  } satisfies Record<TrustLevel, { label: string; Icon: LucideIcon; className: string }>;
-  const { label, Icon, className } = config[level];
-  const solidClassName = level === "collected" ? "bg-white text-slatecopy ring-line shadow-sm" : "bg-white text-black ring-line shadow-sm";
+  if (level === "collected") return null;
+
+  const Icon = level === "official" ? ShieldCheck : CheckCircle2;
+  const className = variant === "solid" ? "bg-white text-black ring-line shadow-sm" : "bg-sage/10 text-black ring-sage/20";
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${variant === "solid" ? solidClassName : className}`}>
-      <Icon size={14} aria-hidden /> {label}
+    <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${className}`}>
+      <Icon className="text-black" size={14} aria-hidden /> Verificado
     </span>
   );
 }

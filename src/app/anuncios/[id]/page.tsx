@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Bookmark, Flag, MessageCircle, ShieldAlert } from "lucide-react";
+import { Bookmark, Flag, MessageCircle, ShieldAlert, ShieldCheck } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { StatusBadge, TrustBadge } from "@/components/Badge";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
 import { ageLabel, categories, centers, findListing, listings } from "@/lib/mock-data";
 
@@ -19,10 +20,10 @@ export function generateMetadata({ params }: { params: { id: string } }): Metada
 }
 
 function fallbackImage(categoryId: string) {
-  if (categoryId === "centros") return "/images/cards/centro-educativo.svg";
-  if (categoryId === "extraescolares" || categoryId === "campamentos" || categoryId === "centros-deportivos" || categoryId === "tecnologia") return "/images/cards/actividad.svg";
-  if (categoryId === "uniformes" || categoryId === "libros-material") return "/images/cards/producto.svg";
-  return "/images/cards/servicio-familiar.svg";
+  if (categoryId === "centros") return "https://images.pexels.com/photos/5212320/pexels-photo-5212320.jpeg?auto=compress&cs=tinysrgb&w=1600";
+  if (categoryId === "uniformes" || categoryId === "libros-material") return "https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=1600";
+  if (categoryId === "campamentos" || categoryId === "extraescolares" || categoryId === "centros-deportivos") return "https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=1600";
+  return "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600";
 }
 
 export default function ListingDetailPage({ params }: { params: { id: string } }) {
@@ -30,54 +31,52 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
   if (!listing) notFound();
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
+  const isVerified = listing.trustLevel === "verified" || listing.trustLevel === "official";
 
   return (
     <div className="page py-10">
       <Breadcrumbs items={[{ label: category?.name ?? "Recursos", href: category ? `/categoria/${category.slug}` : "/buscar" }, { label: listing.title }]} />
       <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <article>
-          <img src={listing.image ?? fallbackImage(listing.categoryId)} alt={`Imagen de ${listing.title}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
-          <div className="mb-4 flex flex-wrap gap-2">
-            <span className="chip">{category?.name}</span>
-            <TrustBadge level={listing.trustLevel} />
-            <StatusBadge status={listing.status} />
+          <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId)} alt={`Imagen de ${listing.title}`} className="mb-6 aspect-[16/7] w-full rounded-2xl border border-line object-cover" />
+          <div className="flex items-start gap-3">
+            {isVerified ? <ShieldCheck className="mt-1 shrink-0 text-emerald-700" size={28} aria-label="Ficha verificada" /> : null}
+            <h1 className="text-4xl font-bold leading-tight text-ink">{listing.title}</h1>
           </div>
-          <h1 className="text-4xl font-bold leading-tight text-ink">{listing.title}</h1>
           <p className="mt-5 text-lg leading-8 text-slatecopy">{listing.description}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {listing.tags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
+            {category ? <span className="chip">{category.name}</span> : null}
+            {listing.tags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
           </div>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {[
+
+          <section className="mt-8 grid gap-5">
+            <InfoBlock title="Ubicación y contexto" items={[
               ["Zona", `${listing.municipality} · ${listing.area}`],
               ["Centro relacionado", center?.name ?? "No indicado"],
-              ["Edad recomendada", ageLabel(listing)],
+              ["Edad recomendada", ageLabel(listing)]
+            ]} />
+            <InfoBlock title="Condiciones" items={[
               ["Precio", listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")],
-              ["Estado", listing.condition ?? "No aplica"],
               ["Disponibilidad", listing.availability ?? "Consultar"],
-              ["Fuente", listing.sourceName ?? "Información recopilada por Tenlo"],
-              ["Última revisión", listing.lastReviewed ?? "Información pendiente de revisión"],
-              ["Verificación", listing.verificationStatus ?? "Información pendiente de revisión"]
-            ].map(([label, value]) => (
-              <div key={label} className="rounded-xl border border-line bg-panel p-4">
-                <p className="label">{label}</p>
-                <p className="mt-2 font-semibold text-ink">{value}</p>
-              </div>
-            ))}
-          </div>
-          <section className="mt-8 card p-6">
-            <h2 className="text-2xl font-semibold text-ink">Información específica</h2>
-            <dl className="mt-4 grid gap-3">
-              {Object.entries(listing.details).map(([key, value]) => (
-                <div key={key} className="flex justify-between gap-4 border-b border-line pb-3 text-sm">
-                  <dt className="font-semibold capitalize text-slatecopy">{key.replace(/([A-Z])/g, " $1")}</dt>
-                  <dd className="text-right text-ink">{value}</dd>
-                </div>
-              ))}
-            </dl>
-            <a href="/contacto" className="mt-5 inline-flex text-sm font-semibold text-ink underline">¿Hay un dato incorrecto? Avísanos</a>
+              ["Condición", listing.condition ?? "No aplica"]
+            ]} />
+            {Object.keys(listing.details).length > 0 ? (
+              <section className="card p-6">
+                <h2 className="text-2xl font-semibold text-ink">Información específica</h2>
+                <dl className="mt-4 grid gap-3">
+                  {Object.entries(listing.details).map(([key, value]) => (
+                    <div key={key} className="flex justify-between gap-4 border-b border-line pb-3 text-sm">
+                      <dt className="font-semibold capitalize text-slatecopy">{key.replace(/([A-Z])/g, " $1")}</dt>
+                      <dd className="text-right text-ink">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ) : null}
+            <Link href={`/sugerencias?context=anuncio&item=${listing.slug}`} className="inline-flex text-sm font-semibold text-ink underline">¿Hay algún dato incorrecto? Avísanos</Link>
           </section>
         </article>
+
         <aside className="space-y-4">
           <div className="card p-5">
             <h2 className="text-xl font-semibold text-ink">Contacto protegido</h2>
@@ -94,5 +93,21 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
         </aside>
       </div>
     </div>
+  );
+}
+
+function InfoBlock({ title, items }: { title: string; items: string[][] }) {
+  return (
+    <section className="card p-6">
+      <h2 className="text-2xl font-semibold text-ink">{title}</h2>
+      <dl className="mt-5 grid gap-4 sm:grid-cols-2">
+        {items.map(([label, value]) => (
+          <div key={label} className="rounded-xl border border-line bg-soft p-4">
+            <dt className="label">{label}</dt>
+            <dd className="mt-2 break-words text-sm font-semibold text-ink">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
