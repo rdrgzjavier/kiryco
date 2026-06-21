@@ -80,14 +80,14 @@ export default function CommunityPage() {
                 <img src={initiative.image} alt={`Imagen de ${initiative.name}`} className="h-44 w-full object-cover" loading="lazy" />
               </Link>
               <div className="flex flex-1 flex-col p-5">
-                <div className="flex flex-wrap gap-2">{initiative.tags.slice(0, 2).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
-                <h3 className="mt-4 text-lg font-semibold text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
+                <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={`/comunidad/${initiative.id}`}>{initiative.name}</Link></h3>
                 <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{initiative.summary}</p>
+                <div className="mt-4 flex flex-wrap gap-2">{initiative.tags.slice(0, 2).map((tag) => <span key={tag} className="chip">{tag}</span>)}</div>
                 <div className="mt-4 grid gap-2 pb-5 text-sm">
                   <p className="font-semibold text-slatecopy">{initiative.municipality}</p>
                   <p className="text-muted">Contenido comunitario revisado</p>
                 </div>
-                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Consultar recurso comunitario {initiative.name}</Link>
+                <Link href={`/comunidad/${initiative.id}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
               </div>
             </article>
           ))}
@@ -102,7 +102,7 @@ export default function CommunityPage() {
               <h2 className="mt-3 text-xl font-semibold text-ink">{post.title}</h2>
               <p className="mt-2 text-sm leading-6 text-muted">{post.summary}</p>
               <p className="mt-3 text-sm font-semibold text-slatecopy">{post.municipality}</p>
-              <Link href="/publicar?tipo=comunidad" className="btn-primary mt-4 w-full justify-center">Consultar publicación comunitaria</Link>
+              <Link href="/publicar?tipo=comunidad" className="btn-primary mt-4 w-full justify-center">Saber más</Link>
             </article>
           ))}
         </div>

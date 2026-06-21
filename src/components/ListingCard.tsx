@@ -75,33 +75,29 @@ export default function ListingCard({ listing }: { listing: Listing }) {
 
   return (
     <article className="card flex flex-col overflow-hidden">
-      <Link href={detailHref} aria-label={`Ver ficha de ${listing.title}`} className="relative block">
-        <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId, listing.slug)} alt={`Imagen de ${listing.title}`} className="h-40 w-full object-cover" />
+      <Link href={detailHref} aria-label={`Saber más sobre ${listing.title}`} className="relative block">
+        <ImageWithFallback src={listing.image} fallbackSrc={fallbackImage(listing.categoryId, listing.slug)} alt={`Imagen de ${listing.title}`} className="h-44 w-full object-cover" />
         <span className="absolute right-3 top-3"><TrustBadge level={listing.trustLevel} variant="solid" /></span>
       </Link>
-      <div className="flex flex-col p-5">
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{listing.title}</Link></h3>
+        <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
           <span className="chip">{category?.name}</span>
           {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
+          {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
         </div>
-        <h3 className="mt-4 text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{listing.title}</Link></h3>
-        <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
         <div className="mt-4 rounded-xl bg-soft px-3 py-3 text-sm">
           <p className="font-semibold text-ink">{typeLabel}</p>
           <p className="mt-1 line-clamp-2 text-muted">{detailLabel}</p>
           <p className="mt-2 flex items-center gap-1.5 text-slatecopy"><MapPin size={15} className="text-ink" aria-hidden />{listing.municipality}</p>
         </div>
-        {visibleTags.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {visibleTags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
-          </div>
-        ) : null}
         <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Edad</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
           <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Link href={detailHref} aria-label={`Ver ficha de ${listing.title}`} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Ver ficha</Link>
+        <div className="mt-auto flex flex-wrap gap-2 pt-5">
+          <Link href={detailHref} aria-label={`Saber más sobre ${listing.title}`} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Saber más</Link>
           <button className="icon-button" aria-label="Contactar" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={18} /></button>
           <button className="icon-button" aria-label="Guardar" {...trackingAttrs("save_favorite", { item: listing.id, category: listing.categoryId })}><Bookmark size={18} /></button>
         </div>

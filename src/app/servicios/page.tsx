@@ -8,6 +8,7 @@ import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import JsonLd from "@/components/JsonLd";
 import LoadMoreGrid from "@/components/LoadMoreGrid";
 import { trackingAttrs } from "@/lib/analytics";
+import { uniqueDisplayTags } from "@/lib/display-labels";
 import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -122,17 +123,23 @@ export default function ServicesPage() {
       <LoadMoreGrid className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((provider) => (
           <article key={provider.id} className="card flex h-full flex-col overflow-hidden">
-            <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="relative block">
+            <Link href={`/servicios/${provider.id}`} aria-label={`Saber más sobre ${provider.businessName}`} className="relative block">
               <ImageWithFallback src={provider.image} fallbackSrc={providerFallback(provider.id)} alt={`Imagen de ${provider.businessName}`} className="h-44 w-full object-cover" />
               <span className="absolute right-3 top-3"><TrustBadge level={provider.trustLevel} variant="solid" /></span>
             </Link>
             <div className="flex flex-1 flex-col p-5">
-              <div className="mb-3 flex flex-wrap gap-2"><span className="chip">{provider.category}</span></div>
-              <h3 className="text-lg font-semibold text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
+              <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
-              <p className="mt-4 text-sm font-semibold text-slatecopy">{provider.serviceArea}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="chip">{provider.category}</span>
+                {uniqueDisplayTags(provider.tags, [provider.category, provider.municipality, provider.serviceArea]).slice(0, 3).map((tag) => <span key={tag} className="chip">{tag}</span>)}
+              </div>
+              <div className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
+                <div className="flex justify-between gap-3"><span>Zona</span><span className="text-right font-medium text-ink">{provider.municipality}</span></div>
+                <div className="flex justify-between gap-3"><span>Cobertura</span><span className="text-right font-medium text-ink">{provider.serviceArea}</span></div>
+              </div>
               <div className="mt-auto flex gap-2 pt-5">
-                <Link href={`/servicios/${provider.id}`} aria-label={`Consultar servicio de ${provider.businessName}`} className="btn-primary flex-1" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Consultar</Link>
+                <Link href={`/servicios/${provider.id}`} aria-label={`Saber más sobre ${provider.businessName}`} className="btn-primary flex-1 justify-center" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Saber más</Link>
                 {provider.website.startsWith("http") ? <a href={provider.website} target="_blank" rel="noreferrer" className="icon-button" aria-label="Web oficial" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}><ExternalLink size={18} /></a> : null}
               </div>
             </div>

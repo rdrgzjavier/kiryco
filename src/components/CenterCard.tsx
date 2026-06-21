@@ -23,28 +23,24 @@ export default function CenterCard({ center }: { center: Center }) {
 
   return (
     <article className="card flex h-full flex-col overflow-hidden">
-      <Link href={detailHref} aria-label={`Ver centro educativo ${center.name}`} className="relative block">
-        <ImageWithFallback src={center.image} fallbackSrc={fallbackImage(center.slug)} alt={`Imagen de ${center.name}`} className="h-40 w-full object-cover" />
+      <Link href={detailHref} aria-label={`Saber más sobre ${center.name}`} className="relative block">
+        <ImageWithFallback src={center.image} fallbackSrc={fallbackImage(center.slug)} alt={`Imagen de ${center.name}`} className="h-44 w-full object-cover" />
         <span className="absolute right-3 top-3"><TrustBadge level={center.trustLevel} variant="solid" /></span>
       </Link>
       <div className="flex flex-1 flex-col p-5">
-        <div className="mb-3 flex flex-wrap items-center gap-2">
+        <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{center.name}</Link></h3>
+        <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{center.description}</p>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="chip">{typeLabel}</span>
           {religiousLabel ? <span className="chip">{religiousLabel}</span> : null}
+          {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
         </div>
-        <h3 className="text-xl font-semibold text-ink"><Link href={detailHref}>{center.name}</Link></h3>
-        <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{center.description}</p>
-        {visibleTags.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {visibleTags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy">{tag}</span>)}
-          </div>
-        ) : null}
         <dl className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Municipio</dt><dd className="font-medium text-ink">{center.municipality}</dd></div>
           <div className="flex justify-between gap-3"><dt>Etapas</dt><dd className="text-right font-medium text-ink">{center.stages.join(", ")}</dd></div>
           <div className="flex justify-between gap-3"><dt>Idiomas</dt><dd className="font-medium text-ink">{center.languages.join(", ")}</dd></div>
         </dl>
-        <Link href={detailHref} aria-label={`Ver centro educativo ${center.name}`} className="btn-primary mt-auto w-full justify-center">Ver centro</Link>
+        <Link href={detailHref} aria-label={`Saber más sobre ${center.name}`} className="btn-primary mt-auto w-full justify-center">Saber más</Link>
       </div>
     </article>
   );
