@@ -31,7 +31,68 @@ export const categories: Category[] = [
   { id: "centros", name: "Centros educativos", slug: "centros", description: "Fichas estructuradas de colegios, escuelas infantiles e institutos con información pública.", seoTitle: "Colegios y centros educativos en Las Rozas | Tenlo", seoDescription: "Consulta colegios y centros educativos con información pública, etapas, servicios, etiquetas y reseñas moderadas." }
 ];
 
-const baseTags = ["Madrid noroeste", "Familias"];
+const excludedTagKeys = new Set([
+  "familia",
+  "familias",
+  "nino",
+  "ninos",
+  "nina",
+  "ninas",
+  "madrid noroeste",
+  "ocio familiar"
+]);
+
+const preferredTagLabels: Record<string, string> = {
+  "0-3 anos": "0-3 años",
+  cumpleanos: "Cumpleaños",
+  ingles: "Inglés",
+  matematicas: "Matemáticas",
+  musica: "Música",
+  tecnologia: "Tecnología",
+  robotica: "Robótica",
+  reutilizacion: "Reutilización",
+  "dias sin cole": "Días sin cole",
+  "metodo propio": "Método propio",
+  "material escolar": "Material escolar",
+  "sala multiusos": "Sala multiusos",
+  "salas multiusos": "Salas multiusos",
+  "parque infantil": "Parque infantil",
+  "centro cultural": "Centro cultural",
+  "actividades familiares": "Actividades familiares",
+  "cesion de espacios": "Cesión de espacios",
+  "escuela deportiva": "Escuela deportiva",
+  "eso": "ESO"
+};
+
+function tagKey(value: string) {
+  return value
+    .trim()
+    .toLocaleLowerCase("es-ES")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function formatTag(value: string) {
+  const cleaned = value.trim().replace(/\s+/g, " ");
+  const key = tagKey(cleaned);
+  if (preferredTagLabels[key]) return preferredTagLabels[key];
+  const lower = cleaned.toLocaleLowerCase("es-ES");
+  return lower.charAt(0).toLocaleUpperCase("es-ES") + lower.slice(1);
+}
+
+function normalizeTags(values: string[]) {
+  const seen = new Set<string>();
+  const tags: string[] = [];
+
+  values.forEach((value) => {
+    const key = tagKey(value);
+    if (!key || excludedTagKeys.has(key) || seen.has(key)) return;
+    seen.add(key);
+    tags.push(formatTag(value));
+  });
+
+  return tags;
+}
 
 type CenterSeed = [string, string, string, Center["type"], NonNullable<Center["religiousCharacter"]>, string[], string, string[], string, string];
 const centerSeeds: CenterSeed[] = [
@@ -81,7 +142,7 @@ export const centers: Center[] = centerSeeds.map(([id, slug, name, type, religio
   lastReviewed: "Mayo de 2026",
   verificationStatus: "",
   isPublicInformation: true,
-  tags: [...baseTags, ...tags, municipality],
+  tags: normalizeTags(tags),
   image: stages.includes("0-3 años") ? images.nursery : images.center,
   verified: false,
   trustLevel: "collected"
@@ -168,7 +229,7 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
     verified: hasOfficialWebsite,
     trustLevel: hasOfficialWebsite ? "verified" : "collected",
     plan: "gratuito",
-    tags: Array.from(new Set(rawTags.split(", ").concat([municipality, category]))),
+    tags: normalizeTags(rawTags.split(", ")),
     image
   };
 });
@@ -265,6 +326,15 @@ export const listings: Listing[] = [
   })
 ];
 
+const communityTagOverrides: Record<string, string[]> = {
+  "afn-boadilla": normalizeTags(["Familias numerosas", "Beneficios"]),
+  "cruz-roja-boadilla": normalizeTags(["Acción social", "Voluntariado"]),
+  "banco-alimentos-pozuelo": normalizeTags(["Acción social", "Alimentos"]),
+  "fundacion-cana-pozuelo": normalizeTags(["Inclusión", "Discapacidad"]),
+  "asur-majadahonda": normalizeTags(["Acción social", "Urgencia social"]),
+  "majadahonda-ayuda": normalizeTags(["Apoyo mutuo", "Voluntariado"])
+};
+
 export const communityInitiatives: CommunityInitiative[] = [
   { id: "afn-boadilla", name: "Asociación Familias Numerosas Boadilla", url: "", municipality: "Boadilla del Monte", summary: "Apoyo y beneficios para familias numerosas de Boadilla.", tags: ["Familias", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
   { id: "cruz-roja-boadilla", name: "Cruz Roja Boadilla", url: "", municipality: "Boadilla del Monte", summary: "Acción social y apoyo comunitario en Boadilla.", tags: ["Social", "Boadilla"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
@@ -272,7 +342,10 @@ export const communityInitiatives: CommunityInitiative[] = [
   { id: "fundacion-cana-pozuelo", name: "Fundación Caná", url: "", municipality: "Pozuelo de Alarcón", summary: "Atención a personas con discapacidad y sus familias.", tags: ["Inclusión", "Pozuelo"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
   { id: "asur-majadahonda", name: "ASUR Majadahonda", url: "", municipality: "Majadahonda", summary: "Asistencia social de urgencia en Majadahonda.", tags: ["Social", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" },
   { id: "majadahonda-ayuda", name: "Majadahonda Ayuda", url: "", municipality: "Majadahonda", summary: "Movimiento ciudadano de apoyo mutuo.", tags: ["Comunidad", "Majadahonda"], image: images.community, ctaLabel: "Consultar recurso comunitario" }
-];
+].map((initiative) => ({
+  ...initiative,
+  tags: communityTagOverrides[initiative.id] ?? normalizeTags(initiative.tags)
+}));
 
 export const searchTags = Array.from(new Set([
   ...centers.flatMap((center) => center.tags),
