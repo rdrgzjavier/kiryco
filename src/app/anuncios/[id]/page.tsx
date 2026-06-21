@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Bookmark, Flag, MessageCircle, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Bookmark, CalendarDays, Clock3, Euro, Flag, MessageCircle, ShieldAlert, ShieldCheck, Sparkles } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
 import { uniqueDisplayTags } from "@/lib/display-labels";
 import { ageLabel, categories, centers, findListing, listings } from "@/lib/mock-data";
+import type { Listing } from "@/lib/types";
 
 export function generateStaticParams() {
   return listings.map((listing) => ({ id: listing.slug }));
@@ -27,13 +28,48 @@ function fallbackImage(categoryId: string) {
   return "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600";
 }
 
+function isChildcareListing(categoryId: string) {
+  return categoryId === "canguros";
+}
+
+function categoryDisplayName(categoryId: string, categoryName?: string) {
+  return isChildcareListing(categoryId) ? "Canguro" : categoryName;
+}
+
+function weeklyAvailability(value?: string) {
+  const fallback = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"].map((day) => [day, "Consultar"] as const);
+  if (!value) return fallback;
+  const rows = value.split(";").map((item) => {
+    const [day, status] = item.split(":");
+    return [day?.trim() || "", status?.trim() || "Consultar"] as const;
+  }).filter(([day]) => day);
+  return rows.length ? rows : fallback;
+}
+
+function availabilityTone(status: string) {
+  const normalized = status.toLowerCase();
+  if (normalized.includes("no disponible")) return "border-line bg-panel text-muted";
+  if (normalized.includes("consultar")) return "border-amber-300 bg-amber-50 text-slatecopy";
+  return "border-ink/30 bg-ink/5 text-slatecopy";
+}
+
+function monthAvailability(value?: string) {
+  const days = weeklyAvailability(value);
+  return Array.from({ length: 4 }, (_, week) => ({
+    label: `Semana ${week + 1}`,
+    days
+  }));
+}
+
 export default function ListingDetailPage({ params }: { params: { id: string } }) {
   const listing = findListing(params.id);
   if (!listing) notFound();
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
   const isVerified = listing.trustLevel === "verified" || listing.trustLevel === "official";
-  const visibleTags = uniqueDisplayTags(listing.tags, [category?.name, listing.municipality, listing.area]);
+  const childcareListing = isChildcareListing(listing.categoryId);
+  const categoryLabel = categoryDisplayName(listing.categoryId, category?.name);
+  const visibleTags = uniqueDisplayTags(listing.tags, [categoryLabel, category?.name, listing.municipality, listing.area, "Canguros", "Referencias"]);
 
   return (
     <div className="page py-10">
@@ -47,7 +83,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
           </div>
           <p className="mt-5 text-lg leading-8 text-slatecopy">{listing.description}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {category ? <span className="chip">{category.name}</span> : null}
+            {categoryLabel ? <span className="chip">{categoryLabel}</span> : null}
             {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
           </div>
 
@@ -55,14 +91,15 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             <InfoBlock title="Ubicación y contexto" items={[
               ["Zona", `${listing.municipality} · ${listing.area}`],
               ["Centro relacionado", center?.name ?? "No indicado"],
-              ["Edad recomendada", ageLabel(listing)]
+              [childcareListing ? "Edades orientativas" : "Edad recomendada", ageLabel(listing)]
             ]} />
-            <InfoBlock title="Condiciones" items={[
+            {!childcareListing ? <InfoBlock title="Condiciones" items={[
               ["Precio", listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")],
               ["Disponibilidad", listing.availability ?? "Consultar"],
               ["Condición", listing.condition ?? "No aplica"]
-            ]} />
-            {Object.keys(listing.details).length > 0 ? (
+            ]} /> : null}
+            {childcareListing ? <ChildcareListingProfile listing={listing} /> : null}
+            {!childcareListing && Object.keys(listing.details).length > 0 ? (
               <section className="card p-6">
                 <h2 className="text-2xl font-semibold text-ink">Información específica</h2>
                 <dl className="mt-4 grid gap-3">
@@ -81,9 +118,9 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
 
         <aside className="space-y-4">
           <div className="card p-5">
-            <h2 className="text-xl font-semibold text-ink">Contacto protegido</h2>
+            <h2 className="text-xl font-semibold text-ink">{childcareListing ? "Solicitud protegida" : "Contacto protegido"}</h2>
             <p className="mt-2 text-sm leading-6 text-muted">El contacto se inicia desde la plataforma. No compartas datos personales de menores, horarios personales ni información sensible.</p>
-            <button className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={16} /> Contactar</button>
+            <button className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={16} /> {childcareListing ? "Solicitar contacto" : "Contactar"}</button>
             <button className="btn-secondary mt-3 w-full" {...trackingAttrs("save_favorite", { item: listing.id, category: listing.categoryId })}><Bookmark size={16} /> Guardar favorito</button>
             <button className="btn-secondary mt-3 w-full"><Flag size={16} /> Reportar publicación</button>
           </div>
@@ -95,6 +132,72 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
         </aside>
       </div>
     </div>
+  );
+}
+
+function ChildcareListingProfile({ listing }: { listing: Listing }) {
+  const details = listing.details;
+  const summary = [
+    { label: "Tarifa", value: listing.priceLabel ?? details.Tarifa ?? "Consultar", Icon: Euro },
+    { label: "Disponibilidad", value: listing.availability ?? details.Disponibilidad ?? "Consultar", Icon: CalendarDays },
+    { label: "Preaviso", value: details.Preaviso ?? "Confirmar antes de reservar", Icon: Clock3 },
+    { label: "Experiencia", value: details.Experiencia ?? "Consultar", Icon: Sparkles }
+  ];
+
+  return (
+    <>
+      <section className="card p-5 md:p-6">
+        <h2 className="text-2xl font-semibold text-ink">Datos clave para reservar</h2>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {summary.map(({ label, value, Icon }) => (
+            <div key={label} className="rounded-2xl border border-line bg-soft p-4">
+              <Icon size={20} className="text-ink" aria-hidden />
+              <p className="mt-3 text-xs font-bold uppercase tracking-[0.05em] text-muted">{label}</p>
+              <p className="mt-1 text-base font-semibold leading-6 text-slatecopy">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="card p-5 md:p-6">
+        <h2 className="text-2xl font-semibold text-ink">Calendario orientativo del mes</h2>
+        <div className="mt-5 space-y-3">
+          {monthAvailability(details["Disponibilidad semanal"]).map((week) => (
+            <div key={week.label} className="grid gap-2 lg:grid-cols-[82px_1fr] lg:items-center">
+              <p className="text-xs font-bold uppercase tracking-[0.05em] text-muted">{week.label}</p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+                {week.days.map(([day, status]) => (
+                  <div key={`${week.label}-${day}`} className={`min-h-20 rounded-2xl border p-3 text-center ${availabilityTone(status)}`}>
+                    <p className="text-sm font-bold text-ink">{day}</p>
+                    <p className="mt-1 text-xs font-semibold leading-5">{status}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-muted">
+          <span className="rounded-full border border-ink/30 bg-ink/5 px-3 py-1">Disponible</span>
+          <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1">Consultar</span>
+          <span className="rounded-full border border-line bg-panel px-3 py-1">Sin servicio</span>
+        </div>
+        <p className="mt-4 text-sm leading-6 text-muted">La disponibilidad es orientativa y debe confirmarse entre adultos antes de reservar.</p>
+      </section>
+
+      <InfoBlock title="Experiencia y confianza" items={[
+        ["Experiencia", details.Experiencia ?? "Consultar"],
+        ["Referencias y opiniones", "Se mostrarán como verificaciones del perfil"],
+        ["Verificaciones", details.Verificaciones ?? "Pendiente de validación"],
+        ["Idiomas", details.Idiomas ?? "Consultar"]
+      ]} />
+
+      <InfoBlock title="Condiciones y preferencias" items={[
+        ["Edades orientativas", details.Edades ?? ageLabel(listing)],
+        ["Modalidad", details.Modalidad ?? "Consultar"],
+        ["Apoyo incluido", details.Comodidades ?? "Consultar"],
+        ["Preaviso", details.Preaviso ?? "Confirmar"]
+      ]} />
+    </>
   );
 }
 

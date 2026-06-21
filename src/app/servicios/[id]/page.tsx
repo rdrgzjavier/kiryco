@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalendarDays, Clock3, Euro, ExternalLink, Mail, Phone, ShieldCheck, Sparkles } from "lucide-react";
+import { CalendarDays, Clock3, Euro, ExternalLink, Mail, MessageCircle, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
@@ -37,6 +37,25 @@ function weeklyAvailability(value?: string) {
   return rows.length ? rows : fallback;
 }
 
+function availabilityTone(status: string) {
+  const normalized = status.toLowerCase();
+  if (normalized.includes("no disponible")) return "border-line bg-panel text-muted";
+  if (normalized.includes("consultar")) return "border-amber-300 bg-amber-50 text-slatecopy";
+  return "border-ink/30 bg-ink/5 text-slatecopy";
+}
+
+function monthAvailability(value?: string) {
+  const days = weeklyAvailability(value);
+  return Array.from({ length: 4 }, (_, week) => ({
+    label: `Semana ${week + 1}`,
+    days
+  }));
+}
+
+function providerCategoryLabel(provider: Provider) {
+  return isChildcareProvider(provider) ? "Canguro" : provider.category;
+}
+
 export function generateStaticParams() {
   return providers.map((provider) => ({ id: provider.id }));
 }
@@ -57,7 +76,8 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   const providerUrl = provider.website?.startsWith("http") ? provider.website : undefined;
   const providerEmail = provider.email.includes("@") ? provider.email : undefined;
   const isVerified = provider.trustLevel === "verified" || provider.trustLevel === "official";
-  const visibleTags = uniqueDisplayTags(provider.tags, [provider.category, provider.municipality, provider.serviceArea]).slice(0, 6);
+  const categoryLabel = providerCategoryLabel(provider);
+  const visibleTags = uniqueDisplayTags(provider.tags, [categoryLabel, provider.category, provider.municipality, provider.serviceArea, "Canguros", "Referencias"]).slice(0, 6);
   const relatedServices = providers
     .filter((item) => item.id !== provider.id && (item.municipality === provider.municipality || item.category === provider.category))
     .slice(0, 3);
@@ -89,7 +109,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
           <p className="lead">{provider.description}</p>
 
           <div className="mt-5 flex flex-wrap gap-2">
-            <span className="chip">{provider.category}</span>
+            <span className="chip">{categoryLabel}</span>
             {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
           </div>
 
@@ -134,13 +154,19 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         </article>
 
         <aside className="card h-fit p-6">
-          <h2 className="text-xl font-semibold text-ink">{personalProvider ? "Contacto entre adultos" : "Contacto del servicio"}</h2>
+          <h2 className="text-xl font-semibold text-ink">{childcareProvider ? "Solicitud protegida" : personalProvider ? "Contacto entre adultos" : "Contacto del servicio"}</h2>
           <p className="mt-2 text-sm leading-6 text-muted">
-            {personalProvider
+            {childcareProvider
+              ? "Primero envía una solicitud protegida desde Tenlo. Si ambas partes encajan, podréis acordar el canal de confirmación sin publicar datos de menores."
+              : personalProvider
               ? "En servicios entre particulares, acuerda siempre la comunicación como adulto responsable y evita compartir datos identificativos de menores."
               : "Consulta la web o los datos públicos del proveedor antes de reservar o contratar."}
           </p>
-          {providerUrl ? (
+          {childcareProvider ? (
+            <button className="btn-primary mt-5 w-full" {...trackingAttrs("contact_email", { item: provider.id, type: "provider" })}>
+              <MessageCircle size={16} /> Solicitar contacto
+            </button>
+          ) : providerUrl ? (
             <a href={providerUrl} target="_blank" rel="noreferrer" className="btn-primary mt-5 w-full" {...trackingAttrs("external_web", { item: provider.id, type: "provider" })}>
               Web oficial<ExternalLink size={16} />
             </a>
@@ -185,21 +211,33 @@ function ChildcareProfile({ provider, listing }: { provider: Provider; listing: 
       </section>
 
       <section className="card p-5 md:p-6">
-        <h2 className="text-2xl font-semibold text-ink">Disponibilidad semanal</h2>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-          {weeklyAvailability(details["Disponibilidad semanal"]).map(([day, status]) => (
-            <div key={day} className={`rounded-2xl border p-3 text-center ${status === "No disponible" ? "border-line bg-panel text-muted" : "border-ink/25 bg-ink/5 text-slatecopy"}`}>
-              <p className="text-sm font-bold text-ink">{day}</p>
-              <p className="mt-1 text-xs font-semibold leading-5">{status}</p>
+        <h2 className="text-2xl font-semibold text-ink">Calendario orientativo del mes</h2>
+        <div className="mt-5 space-y-3">
+          {monthAvailability(details["Disponibilidad semanal"]).map((week) => (
+            <div key={week.label} className="grid gap-2 lg:grid-cols-[82px_1fr] lg:items-center">
+              <p className="text-xs font-bold uppercase tracking-[0.05em] text-muted">{week.label}</p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+                {week.days.map(([day, status]) => (
+                  <div key={`${week.label}-${day}`} className={`min-h-20 rounded-2xl border p-3 text-center ${availabilityTone(status)}`}>
+                    <p className="text-sm font-bold text-ink">{day}</p>
+                    <p className="mt-1 text-xs font-semibold leading-5">{status}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-muted">
+          <span className="rounded-full border border-ink/30 bg-ink/5 px-3 py-1">Disponible</span>
+          <span className="rounded-full border border-amber-300 bg-amber-50 px-3 py-1">Consultar</span>
+          <span className="rounded-full border border-line bg-panel px-3 py-1">Sin servicio</span>
         </div>
         <p className="mt-4 text-sm leading-6 text-muted">La disponibilidad es orientativa y debe confirmarse entre adultos antes de reservar.</p>
       </section>
 
       <InfoBlock title="Experiencia y confianza" items={[
         ["Experiencia", details.Experiencia ?? "Consultar"],
-        ["Referencias", details.Referencias ?? "Consultar"],
+        ["Referencias y opiniones", "Se mostrarán como verificaciones del perfil"],
         ["Verificaciones", details.Verificaciones ?? "Pendiente de validación"],
         ["Contacto", cleanValue(provider.phone)]
       ]} />

@@ -39,6 +39,8 @@ const excludedTagKeys = new Set([
   "ninos",
   "nina",
   "ninas",
+  "canguros",
+  "referencias",
   "madrid noroeste",
   "ocio familiar"
 ]);
@@ -183,7 +185,7 @@ const providerSeeds: ProviderSeed[] = [
   ["majadahonda-hvieja", "Polideportivo Huerta Vieja", "Extraescolares", "deporte, natación, municipal", images.sport, "extraescolares", "Majadahonda", "916 34 94 24", "deportes@majadahonda.org"],
   ["majadahonda-kidsus", "Kids&Us Majadahonda", "Idiomas", "inglés, niños, método propio", images.activity, "clases-particulares", "Majadahonda", "916 39 82 25", "majadahonda@kidsandus.es"],
   ["profesor-mates", "Carlos P.", "Clases particulares", "matemáticas, eso, bachillerato", images.activity, "clases-particulares", "Las Rozas de Madrid", "Contacto protegido", "contacto@tenlo.es"],
-  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, referencias", images.service, "canguros", "Las Rozas de Madrid", "Contacto protegido", "contacto@tenlo.es"],
+  ["canguro-ana", "Ana M.", "Canguros", "canguro, tardes, ayuda con deberes", images.service, "canguros", "Las Rozas de Madrid", "Contacto protegido", "contacto@tenlo.es"],
   ["canguro-laura", "Laura R.", "Canguros", "canguro, fines de semana", images.service, "canguros", "Pozuelo de Alarcón", "Contacto protegido", "contacto@tenlo.es"],
   ["hanky-planet-las-rozas-sala-1", "Hanky Planet Las Rozas - Sala 1", "Salas multiusos", "cumpleaños, salas multiusos, ocio familiar", images.birthday, "extraescolares", "Las Rozas de Madrid", "666 222 269", "lasrozas@hankyplanet.com", "https://www.hankyplanet.com/celebracion-de-cumpleanos-en-las-rozas/", "Sala equipada para cumpleaños, comuniones y fiestas familiares, con servicios opcionales de monitores, decoración y catering.", "Turnos publicados: mañana 10:00-14:30, comida 12:00-18:00, tarde 16:30-21:00, cena 20:00-01:00 y noche 22:00-02:00."],
   ["hanky-planet-las-rozas-sala-2", "Hanky Planet Las Rozas - Sala 2", "Salas multiusos", "cumpleaños, salas multiusos, ocio familiar", images.birthday, "extraescolares", "Las Rozas de Madrid", "666 222 269", "lasrozas@hankyplanet.com", "https://fiestalasrozas.com/", "Sala para fiestas privadas con configuración útil para cumpleaños y celebraciones familiares.", "Turnos publicados: mañana 10:00-14:30, comida 12:00-18:00, tarde 16:30-21:00, cena 19:30-01:00 y noche 22:00-00:00."],
@@ -235,6 +237,11 @@ const childcareProfileDetails: Record<string, Record<string, string>> = {
   }
 };
 
+const childcareDescriptions: Record<string, string> = {
+  "canguro-ana": "Soy Ana, canguro en Las Rozas. Acompaño rutinas de tarde, merienda y deberes con un trato tranquilo, responsable y cercano.",
+  "canguro-laura": "Soy Laura, canguro en Pozuelo. Trabajo fines de semana y noches puntuales, cuidando rutinas de cena, juego tranquilo y descanso."
+};
+
 export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => {
   const hasOfficialWebsite = Boolean(website?.startsWith("http"));
   const protectedContact = phone.includes("Contacto protegido") || email.includes("tenlo.es");
@@ -245,7 +252,7 @@ export const providers: Provider[] = providerSeeds.map(([id, businessName, categ
     userId: id,
     businessName,
     category,
-    description: description ?? providerDescription(businessName, category, municipality),
+    description: childcareDescriptions[id] ?? description ?? providerDescription(businessName, category, municipality),
     municipality,
     serviceArea: `${municipality} y alrededores`,
     website: hasOfficialWebsite ? website! : "",

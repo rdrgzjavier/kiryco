@@ -124,6 +124,15 @@ function needsMinorSafetyNotice(type: UserTypeId, subtype: string) {
   return type === "profesional-independiente" || normalized.includes("canguro") || normalized.includes("profesor") || normalized.includes("particular");
 }
 
+function isChildcareSubtype(subtype: string) {
+  return subtype.toLowerCase().includes("canguro");
+}
+
+function profileRoleForSelection(type: UserTypeId, subtype: string): ProfileRole {
+  if (isChildcareSubtype(subtype)) return "childcare";
+  return roleByType[type];
+}
+
 function nextPath(value: string | null) {
   return value?.startsWith("/") ? value : "/area-personal";
 }
@@ -183,6 +192,7 @@ export default function LoginRegistration() {
   const showAgeAndAvailability = needsAgeAndAvailability(userType);
   const showCredentials = needsCredentials(userType);
   const showMinorSafety = needsMinorSafetyNotice(userType, subtype);
+  const showChildcareFields = isChildcareSubtype(subtype);
   const passwordMismatch = passwordConfirm.length > 0 && password !== passwordConfirm;
   const subtypeOptions = useMemo(() => current.subtypes ?? [], [current]);
 
@@ -222,7 +232,7 @@ export default function LoginRegistration() {
   }
 
   async function createOrUpdateProfile(userId: string) {
-    const role = roleByType[userType];
+    const role = profileRoleForSelection(userType, subtype);
     const status = role === "family" ? "approved" : "pending_review";
     const fallbackName = registerEmail.split("@")[0] || loginEmail.split("@")[0] || "Usuario Tenlo";
 
@@ -334,7 +344,7 @@ export default function LoginRegistration() {
         emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
         data: {
           display_name: displayName,
-          role: roleByType[userType]
+          role: profileRoleForSelection(userType, subtype)
         }
       }
     });
@@ -515,14 +525,23 @@ export default function LoginRegistration() {
                   </select>
                 </label>
                 <label className="field-label">Web o enlace público<input className="field font-normal placeholder:text-muted" placeholder="https://" /></label>
-                <label className="field-label md:col-span-2">Descripción breve<textarea required className="field min-h-28 py-3 font-normal placeholder:text-muted" placeholder="Cuenta qué ofreces, para quién y en qué zona trabajas." /></label>
+                <label className="field-label md:col-span-2">Descripción breve<textarea required className="field min-h-28 py-3 font-normal placeholder:text-muted" placeholder={showChildcareFields ? "Preséntate en primera persona: cómo trabajas, qué rutinas acompañas y en qué zona puedes ayudar." : "Cuenta qué ofreces, para quién y en qué zona trabajas."} /></label>
                 <label className="field-label">Dirección o zona de servicio<input className="field font-normal placeholder:text-muted" placeholder="Ej. Majadahonda y alrededores" /></label>
                 <label className="field-label">Modalidad<select className="field" defaultValue=""><option value="">Selecciona modalidad</option><option>Presencial</option><option>Online</option><option>Presencial y online</option><option>A domicilio</option></select></label>
                 {showAgeAndAvailability && (
                   <>
-                    <label className="field-label">Edades orientativas<input className="field font-normal placeholder:text-muted" placeholder="Ej. 6-12 años, familias, adultos" /></label>
-                    <label className="field-label">Disponibilidad<input className="field font-normal placeholder:text-muted" placeholder="Ej. tardes, fines de semana, vacaciones" /></label>
-                    <label className="field-label md:col-span-2">Horarios o franjas<textarea className="field min-h-24 py-3 font-normal placeholder:text-muted" placeholder="Indica horarios de apertura, clases, turnos o disponibilidad sin incluir horarios personales de menores." /></label>
+                    <label className="field-label">Edades orientativas<input className="field font-normal placeholder:text-muted" placeholder={showChildcareFields ? "Ej. Infantil y Primaria, 3-12 años" : "Ej. 6-12 años, familias, adultos"} /></label>
+                    <label className="field-label">Disponibilidad<input className="field font-normal placeholder:text-muted" placeholder={showChildcareFields ? "Ej. tardes entre semana, noches puntuales" : "Ej. tardes, fines de semana, vacaciones"} /></label>
+                    <label className="field-label md:col-span-2">Horarios o franjas<textarea className="field min-h-24 py-3 font-normal placeholder:text-muted" placeholder={showChildcareFields ? "Ej. Lu tarde; Ma tarde; Mi consultar; Ju tarde; Vi noche; Sa mañana; Do sin servicio." : "Indica horarios de apertura, clases, turnos o disponibilidad sin incluir horarios personales de menores."} /></label>
+                  </>
+                )}
+                {showChildcareFields && (
+                  <>
+                    <label className="field-label">Tarifa por hora<input className="field font-normal placeholder:text-muted" placeholder="Ej. 12 €/hora" /></label>
+                    <label className="field-label">Preaviso para confirmar<input className="field font-normal placeholder:text-muted" placeholder="Ej. 24 h, 48 h" /></label>
+                    <label className="field-label">Tipo de cuidado<select className="field" defaultValue=""><option value="">Selecciona tipo</option><option>Ocasional</option><option>Regular</option><option>Después del colegio</option><option>Noches puntuales</option><option>Fines de semana</option></select></label>
+                    <label className="field-label">Verificaciones disponibles<select className="field" defaultValue=""><option value="">Pendiente de validar</option><option>Identidad verificable</option><option>Referencias disponibles</option><option>Formación relacionada</option><option>Certificado aportable</option></select></label>
+                    <label className="field-label md:col-span-2">Experiencia, referencias y preferencias<textarea className="field min-h-24 py-3 font-normal placeholder:text-muted" placeholder="Años de experiencia, edades con las que trabajas, idiomas, apoyo con deberes, rutinas y referencias que podrás aportar." /></label>
                   </>
                 )}
                 {showCredentials && (

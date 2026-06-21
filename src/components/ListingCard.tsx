@@ -55,19 +55,31 @@ function centerTypeLabel(type?: string) {
   return "Centro educativo";
 }
 
+function isChildcareListing(listing: Listing) {
+  return listing.categoryId === "canguros";
+}
+
+function categoryDisplayName(listing: Listing, categoryName?: string) {
+  return isChildcareListing(listing) ? "Canguro" : categoryName;
+}
+
 export default function ListingCard({ listing }: { listing: Listing }) {
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
   const provider = providers.find((item) => item.userId === listing.userId);
-  const typeLabel = center ? centerTypeLabel(center.type) : provider?.category ?? category?.name ?? "Recurso local";
+  const primaryCategory = categoryDisplayName(listing, category?.name);
+  const typeLabel = center ? centerTypeLabel(center.type) : isChildcareListing(listing) ? "Perfil de canguro" : provider?.category ?? category?.name ?? "Recurso local";
   const detailLabel = center ? center.stages.slice(0, 3).join(", ") : listing.availability ?? listing.area;
   const detailHref = `/anuncios/${listing.slug}`;
   const hiddenTags = [
+    primaryCategory,
     category?.name,
     category?.id,
     listing.municipality,
     listing.municipality.replace(" de Madrid", ""),
     "Familias",
+    "Canguros",
+    "Referencias",
     "Madrid noroeste",
     "cumpleaños"
   ];
@@ -83,7 +95,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={detailHref}>{listing.title}</Link></h3>
         <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{listing.description}</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <span className="chip">{category?.name}</span>
+          {primaryCategory ? <span className="chip">{primaryCategory}</span> : null}
           {listing.status !== "published" ? <StatusBadge status={listing.status} /> : null}
           {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
         </div>
@@ -93,12 +105,12 @@ export default function ListingCard({ listing }: { listing: Listing }) {
           <p className="mt-2 flex items-center gap-1.5 text-slatecopy"><MapPin size={15} className="text-ink" aria-hidden />{listing.municipality}</p>
         </div>
         <dl className="mt-4 grid gap-2 text-sm text-slatecopy">
-          <div className="flex justify-between gap-3"><dt>Edad</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
+          <div className="flex justify-between gap-3"><dt>{isChildcareListing(listing) ? "Edades" : "Edad"}</dt><dd className="font-medium text-ink">{ageLabel(listing)}</dd></div>
           <div className="flex justify-between gap-3"><dt>Precio</dt><dd className="font-medium text-ink">{listing.priceLabel ?? (listing.price ? `${listing.price} €` : "Consultar")}</dd></div>
         </dl>
         <div className="mt-auto flex flex-wrap gap-2 pt-5">
           <Link href={detailHref} aria-label={`Saber más sobre ${listing.title}`} className="btn-primary flex-1 text-center" {...trackingAttrs("view_detail", { item: listing.id, category: listing.categoryId, municipality: listing.municipality })}>Saber más</Link>
-          <button className="icon-button" aria-label="Contactar" {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={18} /></button>
+          <button className="icon-button" aria-label={isChildcareListing(listing) ? "Solicitar contacto" : "Contactar"} {...trackingAttrs("contact_email", { item: listing.id, category: listing.categoryId })}><MessageCircle size={18} /></button>
           <button className="icon-button" aria-label="Guardar" {...trackingAttrs("save_favorite", { item: listing.id, category: listing.categoryId })}><Bookmark size={18} /></button>
         </div>
       </div>

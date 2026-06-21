@@ -33,6 +33,14 @@ function providerFallback(id: string) {
   return serviceFallbacks[index];
 }
 
+function isChildcareProvider(provider: (typeof providers)[number]) {
+  return provider.category.toLowerCase().includes("canguro");
+}
+
+function providerCategoryLabel(provider: (typeof providers)[number]) {
+  return isChildcareProvider(provider) ? "Canguro" : provider.category;
+}
+
 const plans = [
   ["Gratuito", "Perfil básico, aparición en búsqueda, datos de contacto, categoría y zona."],
   ["Destacado", "Mejor posición, sello destacado, más fotos, CTA directo y métricas básicas."],
@@ -128,12 +136,21 @@ export default function ServicesPage() {
               <span className="absolute right-3 top-3"><TrustBadge level={provider.trustLevel} variant="solid" /></span>
             </Link>
             <div className="flex flex-1 flex-col p-5">
+              {(() => {
+                const categoryLabel = providerCategoryLabel(provider);
+                const visibleTags = uniqueDisplayTags(provider.tags, [categoryLabel, provider.category, provider.municipality, provider.serviceArea, "Canguros", "Referencias"]).slice(0, 3);
+
+                return (
+                  <>
               <h3 className="text-lg font-semibold leading-7 text-ink"><Link href={`/servicios/${provider.id}`}>{provider.businessName}</Link></h3>
               <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{provider.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <span className="chip">{provider.category}</span>
-                {uniqueDisplayTags(provider.tags, [provider.category, provider.municipality, provider.serviceArea]).slice(0, 3).map((tag) => <span key={tag} className="chip">{tag}</span>)}
+                <span className="chip">{categoryLabel}</span>
+                {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
               </div>
+                  </>
+                );
+              })()}
               <div className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
                 {providerCardFacts(provider).map(([label, value]) => (
                   <div key={label} className="flex justify-between gap-3"><span>{label}</span><span className="text-right font-medium text-ink">{value}</span></div>
@@ -170,7 +187,7 @@ export default function ServicesPage() {
 
 function providerCardFacts(provider: (typeof providers)[number]) {
   const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
-  if (provider.category.toLowerCase().includes("canguro")) {
+  if (isChildcareProvider(provider)) {
     return [
       ["Tarifa", listing?.priceLabel ?? "Consultar"],
       ["Disponibilidad", listing?.availability ?? "Consultar"],
