@@ -67,7 +67,7 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
 
       <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {quickLinks.map((item) => (
-          <Link key={item} href={`/buscar?centro=${center.id}`} className="card inline-flex min-h-14 items-center justify-center px-4 py-3 text-center text-sm font-bold text-ink transition-colors hover:border-primary hover:text-primary">
+          <Link key={item} href={`/buscar?centro=${center.id}`} className="inline-flex min-h-14 items-center justify-center rounded-2xl border border-ink bg-ink/5 px-4 py-3 text-center text-sm font-bold text-ink shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink hover:text-white hover:shadow-lift focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2 active:translate-y-0">
             {item}
           </Link>
         ))}
