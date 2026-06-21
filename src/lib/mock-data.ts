@@ -206,6 +206,35 @@ providerSeeds.push(
   ["boadilla-uniformes-local", "Uniformes Boadilla", "Uniformes", "uniformes, arreglos, reutilización", images.uniform, "uniformes", "Boadilla del Monte", "", "", "", "Uniformes, prendas escolares y pequeños arreglos en Boadilla del Monte.", "Horario comercial habitual."]
 );
 
+const childcareProfileDetails: Record<string, Record<string, string>> = {
+  "canguro-ana": {
+    Tarifa: "12 €/hora",
+    Disponibilidad: "Tardes entre semana y sábados por la mañana",
+    Preaviso: "Confirmación recomendada con 24 h de antelación",
+    Experiencia: "4 años de experiencia",
+    Referencias: "Referencias disponibles bajo solicitud",
+    Verificaciones: "Identidad y documentación pendientes de validación por Tenlo",
+    Edades: "Infantil y Primaria",
+    Modalidad: "En casa de la familia",
+    Comodidades: "Ayuda con deberes, merienda y rutinas de tarde",
+    Idiomas: "Español",
+    "Disponibilidad semanal": "Lu:Tarde; Ma:Tarde; Mi:Tarde; Ju:Tarde; Vi:Consultar; Sa:Mañana; Do:No disponible"
+  },
+  "canguro-laura": {
+    Tarifa: "14 €/hora",
+    Disponibilidad: "Fines de semana y noches puntuales",
+    Preaviso: "Confirmación recomendada con 48 h de antelación",
+    Experiencia: "3 años de experiencia",
+    Referencias: "Referencias disponibles bajo solicitud",
+    Verificaciones: "Identidad y documentación pendientes de validación por Tenlo",
+    Edades: "Primaria y primeros cursos de ESO",
+    Modalidad: "En casa de la familia",
+    Comodidades: "Cenas sencillas, rutinas de noche y apoyo puntual con deberes",
+    Idiomas: "Español e inglés básico",
+    "Disponibilidad semanal": "Lu:No disponible; Ma:No disponible; Mi:Tarde; Ju:Consultar; Vi:Noche; Sa:Tarde y noche; Do:Mañana"
+  }
+};
+
 export const providers: Provider[] = providerSeeds.map(([id, businessName, category, rawTags, image, categoryId, municipality, phone, email, website, description]) => {
   const hasOfficialWebsite = Boolean(website?.startsWith("http"));
   const protectedContact = phone.includes("Contacto protegido") || email.includes("tenlo.es");
@@ -292,6 +321,7 @@ export const listings: Listing[] = [
   ...providers.map((provider) => {
     const seed = providerSeeds.find(([id]) => id === provider.id);
     const availability = seed?.[11] ?? "Consultar disponibilidad";
+    const childcareDetails = childcareProfileDetails[provider.id];
 
     return {
       id: `p-${provider.id}`,
@@ -302,10 +332,10 @@ export const listings: Listing[] = [
       description: provider.description,
       municipality: provider.municipality,
       area: provider.serviceArea,
-      recommendedAgeMin: provider.category.toLowerCase().includes("cumpleaños") ? 3 : 3,
-      recommendedAgeMax: provider.category.toLowerCase().includes("cumpleaños") ? 14 : 16,
-      priceLabel: "Consultar",
-      availability,
+      recommendedAgeMin: provider.category.toLowerCase().includes("canguro") ? 3 : provider.category.toLowerCase().includes("cumpleaños") ? 3 : 3,
+      recommendedAgeMax: provider.category.toLowerCase().includes("canguro") ? 14 : provider.category.toLowerCase().includes("cumpleaños") ? 14 : 16,
+      priceLabel: childcareDetails?.Tarifa ?? "Consultar",
+      availability: childcareDetails?.Disponibilidad ?? availability,
       sourceName: provider.sourceName,
       sourceUrl: provider.sourceUrl,
       lastReviewed: provider.lastReviewed,
@@ -318,9 +348,10 @@ export const listings: Listing[] = [
       tags: provider.tags,
       image: provider.image,
       details: {
+        ...childcareDetails,
         Contacto: provider.phone,
         Email: provider.email,
-        Horario: availability,
+        Horario: childcareDetails?.Disponibilidad ?? availability,
         Web: provider.website || "No indicado"
       }
     };

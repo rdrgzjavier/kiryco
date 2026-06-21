@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ExternalLink, Mail, Phone, ShieldCheck } from "lucide-react";
+import { CalendarDays, Clock3, Euro, ExternalLink, Mail, Phone, ShieldCheck, Sparkles } from "lucide-react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
@@ -9,6 +9,7 @@ import ProfileAvatar from "@/components/ProfileAvatar";
 import { trackingAttrs } from "@/lib/analytics";
 import { uniqueDisplayTags } from "@/lib/display-labels";
 import { ageLabel, findProvider, listings, providers } from "@/lib/mock-data";
+import type { Listing, Provider } from "@/lib/types";
 
 const serviceFallbackImage = "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600";
 
@@ -17,9 +18,23 @@ function isPersonalProvider(provider: NonNullable<ReturnType<typeof findProvider
   return value.includes("canguro") || value.includes("profesor") || value.includes("particular");
 }
 
+function isChildcareProvider(provider: NonNullable<ReturnType<typeof findProvider>>) {
+  return provider.category.toLowerCase().includes("canguro");
+}
+
 function cleanValue(value?: string) {
   if (!value || value.toLowerCase().includes("pendiente")) return "No indicado";
   return value;
+}
+
+function weeklyAvailability(value?: string) {
+  const fallback = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"].map((day) => [day, "Consultar"] as const);
+  if (!value) return fallback;
+  const rows = value.split(";").map((item) => {
+    const [day, status] = item.split(":");
+    return [day?.trim() || "", status?.trim() || "Consultar"] as const;
+  }).filter(([day]) => day);
+  return rows.length ? rows : fallback;
 }
 
 export function generateStaticParams() {
@@ -37,6 +52,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   if (!provider) notFound();
 
   const personalProvider = isPersonalProvider(provider);
+  const childcareProvider = isChildcareProvider(provider);
   const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
   const providerUrl = provider.website?.startsWith("http") ? provider.website : undefined;
   const providerEmail = provider.email.includes("@") ? provider.email : undefined;
@@ -78,6 +94,10 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
           </div>
 
           <section className="mt-8 grid gap-5">
+            {childcareProvider && listing ? (
+              <ChildcareProfile provider={provider} listing={listing} />
+            ) : (
+              <>
             <InfoBlock title="Ubicación y modalidad" items={[
               ["Zona de cobertura", provider.serviceArea],
               ["Municipio", provider.municipality],
@@ -94,6 +114,8 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
               ["Disponibilidad", listing?.availability ?? "Consultar disponibilidad"],
               ["Condiciones", listing?.details.Horario ?? "Confirmar directamente con el proveedor"]
             ]} />
+              </>
+            )}
             <Link href={`/sugerencias?context=servicio&item=${provider.id}`} className="inline-flex text-sm font-semibold text-ink underline">¿Hay algún dato incorrecto? Avísanos</Link>
           </section>
 
@@ -135,6 +157,60 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
         </aside>
       </div>
     </div>
+  );
+}
+
+function ChildcareProfile({ provider, listing }: { provider: Provider; listing: Listing }) {
+  const details = listing.details;
+  const summary = [
+    { label: "Tarifa", value: listing.priceLabel ?? details.Tarifa ?? "Consultar", Icon: Euro },
+    { label: "Disponibilidad", value: listing.availability ?? details.Disponibilidad ?? "Consultar", Icon: CalendarDays },
+    { label: "Preaviso", value: details.Preaviso ?? "Confirmar antes de reservar", Icon: Clock3 },
+    { label: "Experiencia", value: details.Experiencia ?? "Consultar", Icon: Sparkles }
+  ];
+
+  return (
+    <>
+      <section className="card p-5 md:p-6">
+        <h2 className="text-2xl font-semibold text-ink">Datos clave para reservar</h2>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {summary.map(({ label, value, Icon }) => (
+            <div key={label} className="rounded-2xl border border-line bg-soft p-4">
+              <Icon size={20} className="text-ink" aria-hidden />
+              <p className="mt-3 text-xs font-bold uppercase tracking-[0.05em] text-muted">{label}</p>
+              <p className="mt-1 text-base font-semibold leading-6 text-slatecopy">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="card p-5 md:p-6">
+        <h2 className="text-2xl font-semibold text-ink">Disponibilidad semanal</h2>
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+          {weeklyAvailability(details["Disponibilidad semanal"]).map(([day, status]) => (
+            <div key={day} className={`rounded-2xl border p-3 text-center ${status === "No disponible" ? "border-line bg-panel text-muted" : "border-ink/25 bg-ink/5 text-slatecopy"}`}>
+              <p className="text-sm font-bold text-ink">{day}</p>
+              <p className="mt-1 text-xs font-semibold leading-5">{status}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-sm leading-6 text-muted">La disponibilidad es orientativa y debe confirmarse entre adultos antes de reservar.</p>
+      </section>
+
+      <InfoBlock title="Experiencia y confianza" items={[
+        ["Experiencia", details.Experiencia ?? "Consultar"],
+        ["Referencias", details.Referencias ?? "Consultar"],
+        ["Verificaciones", details.Verificaciones ?? "Pendiente de validación"],
+        ["Contacto", cleanValue(provider.phone)]
+      ]} />
+
+      <InfoBlock title="Condiciones y preferencias" items={[
+        ["Edades orientativas", details.Edades ?? ageLabel(listing)],
+        ["Modalidad", details.Modalidad ?? "Consultar"],
+        ["Apoyo incluido", details.Comodidades ?? "Consultar"],
+        ["Idiomas", details.Idiomas ?? "Consultar"]
+      ]} />
+    </>
   );
 }
 

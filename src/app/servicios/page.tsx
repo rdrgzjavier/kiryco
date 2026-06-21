@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronDown, ExternalLink, Search } from "lucide-react";
-import { categories, municipalities, providers } from "@/lib/mock-data";
+import { categories, listings, municipalities, providers } from "@/lib/mock-data";
 import { TrustBadge } from "@/components/Badge";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import ValidatedSearchForm from "@/components/ValidatedSearchForm";
@@ -135,8 +135,9 @@ export default function ServicesPage() {
                 {uniqueDisplayTags(provider.tags, [provider.category, provider.municipality, provider.serviceArea]).slice(0, 3).map((tag) => <span key={tag} className="chip">{tag}</span>)}
               </div>
               <div className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
-                <div className="flex justify-between gap-3"><span>Zona</span><span className="text-right font-medium text-ink">{provider.municipality}</span></div>
-                <div className="flex justify-between gap-3"><span>Cobertura</span><span className="text-right font-medium text-ink">{provider.serviceArea}</span></div>
+                {providerCardFacts(provider).map(([label, value]) => (
+                  <div key={label} className="flex justify-between gap-3"><span>{label}</span><span className="text-right font-medium text-ink">{value}</span></div>
+                ))}
               </div>
               <div className="mt-auto flex gap-2 pt-5">
                 <Link href={`/servicios/${provider.id}`} aria-label={`Saber más sobre ${provider.businessName}`} className="btn-primary flex-1 justify-center" {...trackingAttrs("view_detail", { item: provider.id, type: "provider" })}>Saber más</Link>
@@ -165,4 +166,20 @@ export default function ServicesPage() {
       </section>
     </div>
   );
+}
+
+function providerCardFacts(provider: (typeof providers)[number]) {
+  const listing = listings.find((item) => item.userId === provider.userId && item.publicationType === "proveedor");
+  if (provider.category.toLowerCase().includes("canguro")) {
+    return [
+      ["Tarifa", listing?.priceLabel ?? "Consultar"],
+      ["Disponibilidad", listing?.availability ?? "Consultar"],
+      ["Preaviso", listing?.details.Preaviso ?? "Confirmar antes de reservar"]
+    ];
+  }
+
+  return [
+    ["Zona", provider.municipality],
+    ["Cobertura", provider.serviceArea]
+  ];
 }
