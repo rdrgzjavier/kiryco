@@ -44,17 +44,17 @@ export default function FeedbackForm({ context = "general", itemId = "" }: Feedb
     <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="field-label">
-          Nombre
-          <input name="name" className="field" placeholder="Tu nombre" autoComplete="name" />
+          Nombre usuario
+          <input name="name" className="field font-normal placeholder:text-muted" placeholder="Ej. Marta G." autoComplete="name" />
         </label>
         <label className="field-label">
-          Email
-          <input name="email" type="email" className="field" placeholder="tu@email.com" autoComplete="email" />
+          Email de contacto
+          <input name="email" type="email" className="field font-normal placeholder:text-muted" placeholder="tu@email.com" autoComplete="email" />
         </label>
       </div>
       <label className="field-label">
-        ¿Qué echas en falta o qué mejorarías?
-        <textarea name="message" required minLength={10} rows={6} className="field min-h-36 resize-y py-3" placeholder="Cuéntanos qué servicio, centro, recurso local o mejora te ayudaría a usar mejor Tenlo." />
+        Sugerencia o mejora
+        <textarea name="message" required minLength={10} rows={6} className="field min-h-36 resize-y py-3 font-normal placeholder:text-muted" placeholder="Cuenta qué servicio, centro, recurso local o mejora te ayudaría a usar mejor Tenlo." />
       </label>
       {error ? <p className="rounded-xl border border-coral/30 bg-coral/10 p-3 text-sm font-semibold text-coral">{error}</p> : null}
       {status === "sent" ? <p className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold leading-6 text-slatecopy">Gracias. Hemos recibido tu sugerencia y la revisaremos.</p> : null}
