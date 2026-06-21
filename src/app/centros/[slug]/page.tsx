@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
 import { trackingAttrs } from "@/lib/analytics";
+import { centerTypeLabel, religiousCharacterLabel, uniqueDisplayTags } from "@/lib/display-labels";
 import { centers, findCenter } from "@/lib/mock-data";
 
 const centerFallbackImage = "https://images.pexels.com/photos/5212320/pexels-photo-5212320.jpeg?auto=compress&cs=tinysrgb&w=1600";
@@ -19,7 +20,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!center) return { title: "Centro educativo | Tenlo" };
   return {
     title: `${center.name} en ${center.municipality} | Tenlo`,
-    description: `${center.name}: ${center.type}, etapas ${center.stages.join(", ")}, servicios ${center.services.slice(0, 3).join(", ")}. Ficha pública para familias.`
+    description: `${center.name}: ${centerTypeLabel(center.type)}, etapas ${center.stages.join(", ")}, servicios ${center.services.slice(0, 3).join(", ")}. Ficha pública para familias.`
   };
 }
 
@@ -31,6 +32,9 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
   const centerEmail = center.email.includes("@") ? center.email : undefined;
   const isVerified = center.trustLevel === "verified" || center.trustLevel === "official";
   const quickLinks = ["Uniformes", "Puertas abiertas", "Becas", "Extraescolares", "Admisiones"];
+  const typeLabel = centerTypeLabel(center.type);
+  const religiousLabel = religiousCharacterLabel(center.religiousCharacter);
+  const visibleTags = uniqueDisplayTags(center.tags, [typeLabel, religiousLabel]);
 
   return (
     <div className="page py-10">
@@ -56,9 +60,9 @@ export default function CenterDetailPage({ params }: { params: { slug: string } 
       <p className="mt-3 max-w-3xl text-lg leading-8 text-slatecopy">{center.description}</p>
 
       <div className="mt-5 flex flex-wrap gap-2">
-        <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold capitalize text-slatecopy">{center.type}</span>
-        {center.religiousCharacter ? <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold capitalize text-slatecopy">{center.religiousCharacter}</span> : null}
-        {center.tags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
+        <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{typeLabel}</span>
+        {religiousLabel ? <span className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{religiousLabel}</span> : null}
+        {visibleTags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-xs font-semibold text-slatecopy">{tag}</span>)}
       </div>
 
       <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

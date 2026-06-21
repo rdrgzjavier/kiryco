@@ -1,4 +1,5 @@
 import type { Category, Center, CommunityInitiative, CommunityPost, Listing, Municipality, Provider } from "./types";
+import { centerTypeLabel } from "./display-labels";
 
 const images = {
   center: "https://images.unsplash.com/photo-1577891729319-f4871c6ec217?auto=format&fit=crop&w=1200&q=80",
@@ -282,7 +283,7 @@ export const listings: Listing[] = [
     tags: center.tags,
     image: center.image,
     details: {
-      Tipo: center.type,
+      Tipo: centerTypeLabel(center.type),
       Etapas: center.stages.join(", "),
       Teléfono: center.phone,
       Web: center.website

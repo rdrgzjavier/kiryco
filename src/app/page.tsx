@@ -23,6 +23,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import { TrustBadge } from "@/components/Badge";
 import ValidatedSearchForm from "@/components/ValidatedSearchForm";
 import { trackingAttrs } from "@/lib/analytics";
+import { centerTypeLabel } from "@/lib/display-labels";
 import { centers, listings, municipalities } from "@/lib/mock-data";
 import { formatStat, getSiteStats } from "@/lib/site-stats";
 import { siteConfig } from "@/lib/site";
@@ -298,7 +299,7 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-3">
           {featuredCenters.map((center) => (
             <Link key={center.id} href={`/centros/${center.slug}`} className="card p-5 hover:border-ink">
-              <span className="chip capitalize">{center.type}</span>
+              <span className="chip">{centerTypeLabel(center.type)}</span>
               <h3 className="mt-4 text-lg font-bold text-slatecopy">{center.name}</h3>
               <p className="mt-2 text-sm leading-6 text-muted">{center.description}</p>
               <p className="mt-4 text-sm font-semibold text-ink">{center.municipality}</p>

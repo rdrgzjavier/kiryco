@@ -7,6 +7,7 @@ import ImageWithFallback from "@/components/ImageWithFallback";
 import JsonLd from "@/components/JsonLd";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { trackingAttrs } from "@/lib/analytics";
+import { uniqueDisplayTags } from "@/lib/display-labels";
 import { ageLabel, findProvider, listings, providers } from "@/lib/mock-data";
 
 const serviceFallbackImage = "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600";
@@ -40,6 +41,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
   const providerUrl = provider.website?.startsWith("http") ? provider.website : undefined;
   const providerEmail = provider.email.includes("@") ? provider.email : undefined;
   const isVerified = provider.trustLevel === "verified" || provider.trustLevel === "official";
+  const visibleTags = uniqueDisplayTags(provider.tags, [provider.category, provider.municipality, provider.serviceArea]).slice(0, 6);
   const relatedServices = providers
     .filter((item) => item.id !== provider.id && (item.municipality === provider.municipality || item.category === provider.category))
     .slice(0, 3);
@@ -72,7 +74,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
 
           <div className="mt-5 flex flex-wrap gap-2">
             <span className="chip">{provider.category}</span>
-            {provider.tags.slice(0, 6).map((tag) => <span key={tag} className="chip">{tag}</span>)}
+            {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
           </div>
 
           <section className="mt-8 grid gap-5">

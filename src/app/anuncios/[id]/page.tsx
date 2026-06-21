@@ -5,6 +5,7 @@ import { Bookmark, Flag, MessageCircle, ShieldAlert, ShieldCheck } from "lucide-
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
+import { uniqueDisplayTags } from "@/lib/display-labels";
 import { ageLabel, categories, centers, findListing, listings } from "@/lib/mock-data";
 
 export function generateStaticParams() {
@@ -32,6 +33,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
   const category = categories.find((item) => item.id === listing.categoryId);
   const center = centers.find((item) => item.id === listing.centerId);
   const isVerified = listing.trustLevel === "verified" || listing.trustLevel === "official";
+  const visibleTags = uniqueDisplayTags(listing.tags, [category?.name, listing.municipality, listing.area]);
 
   return (
     <div className="page py-10">
@@ -46,7 +48,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
           <p className="mt-5 text-lg leading-8 text-slatecopy">{listing.description}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {category ? <span className="chip">{category.name}</span> : null}
-            {listing.tags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
+            {visibleTags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
           </div>
 
           <section className="mt-8 grid gap-5">

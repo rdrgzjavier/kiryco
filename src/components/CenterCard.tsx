@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import { centerTypeLabel, religiousCharacterLabel, uniqueDisplayTags } from "@/lib/display-labels";
 import type { Center } from "@/lib/types";
 import { TrustBadge } from "./Badge";
 
@@ -16,6 +17,9 @@ function fallbackImage(slug: string) {
 
 export default function CenterCard({ center }: { center: Center }) {
   const detailHref = `/centros/${center.slug}`;
+  const typeLabel = centerTypeLabel(center.type);
+  const religiousLabel = religiousCharacterLabel(center.religiousCharacter);
+  const visibleTags = uniqueDisplayTags(center.tags, [typeLabel, religiousLabel]).slice(0, 6);
 
   return (
     <article className="card flex h-full flex-col overflow-hidden">
@@ -25,14 +29,16 @@ export default function CenterCard({ center }: { center: Center }) {
       </Link>
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="chip capitalize">{center.type}</span>
-          {center.religiousCharacter ? <span className="chip capitalize">{center.religiousCharacter}</span> : null}
+          <span className="chip">{typeLabel}</span>
+          {religiousLabel ? <span className="chip">{religiousLabel}</span> : null}
         </div>
         <h3 className="text-xl font-semibold text-ink"><Link href={detailHref}>{center.name}</Link></h3>
         <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted">{center.description}</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {center.tags.slice(0, 6).map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy">{tag}</span>)}
-        </div>
+        {visibleTags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {visibleTags.map((tag) => <span key={tag} className="rounded-full bg-soft px-3 py-1 text-sm font-semibold text-slatecopy">{tag}</span>)}
+          </div>
+        ) : null}
         <dl className="mt-4 grid gap-2 pb-5 text-sm text-slatecopy">
           <div className="flex justify-between gap-3"><dt>Municipio</dt><dd className="font-medium text-ink">{center.municipality}</dd></div>
           <div className="flex justify-between gap-3"><dt>Etapas</dt><dd className="text-right font-medium text-ink">{center.stages.join(", ")}</dd></div>

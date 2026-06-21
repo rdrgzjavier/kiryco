@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bookmark, MapPin, MessageCircle } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import { trackingAttrs } from "@/lib/analytics";
+import { uniqueDisplayTags } from "@/lib/display-labels";
 import { ageLabel, categories, centers, providers } from "@/lib/mock-data";
 import type { Listing } from "@/lib/types";
 import { StatusBadge, TrustBadge } from "./Badge";
@@ -70,9 +71,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
     "Madrid noroeste",
     "cumpleaños"
   ];
-  const visibleTags = listing.tags
-    .filter((tag) => !hiddenTags.some((item) => item?.toLowerCase() === tag.toLowerCase()))
-    .slice(0, 4);
+  const visibleTags = uniqueDisplayTags(listing.tags, hiddenTags).slice(0, 4);
 
   return (
     <article className="card flex flex-col overflow-hidden">
