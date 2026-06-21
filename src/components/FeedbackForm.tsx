@@ -41,23 +41,23 @@ export default function FeedbackForm({ context = "general", itemId = "" }: Feedb
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
+    <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-2 text-sm font-semibold text-ink">
+        <label className="field-label">
           Nombre
-          <input name="name" className="input" placeholder="Tu nombre" autoComplete="name" />
+          <input name="name" className="field" placeholder="Tu nombre" autoComplete="name" />
         </label>
-        <label className="grid gap-2 text-sm font-semibold text-ink">
+        <label className="field-label">
           Email
-          <input name="email" type="email" className="input" placeholder="tu@email.com" autoComplete="email" />
+          <input name="email" type="email" className="field" placeholder="tu@email.com" autoComplete="email" />
         </label>
       </div>
-      <label className="grid gap-2 text-sm font-semibold text-ink">
+      <label className="field-label">
         ¿Qué echas en falta o qué mejorarías?
-        <textarea name="message" required minLength={10} rows={6} className="input min-h-36 resize-y py-4" placeholder="Cuéntanos qué servicio, centro, recurso local o mejora te ayudaría a usar mejor Tenlo." />
+        <textarea name="message" required minLength={10} rows={6} className="field min-h-36 resize-y py-3" placeholder="Cuéntanos qué servicio, centro, recurso local o mejora te ayudaría a usar mejor Tenlo." />
       </label>
-      {error ? <p className="text-sm font-semibold text-coral">{error}</p> : null}
-      {status === "sent" ? <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">Gracias. Hemos recibido tu sugerencia y la revisaremos.</p> : null}
+      {error ? <p className="rounded-xl border border-coral/30 bg-coral/10 p-3 text-sm font-semibold text-coral">{error}</p> : null}
+      {status === "sent" ? <p className="rounded-xl border border-line bg-soft p-4 text-sm font-semibold leading-6 text-slatecopy">Gracias. Hemos recibido tu sugerencia y la revisaremos.</p> : null}
       <button type="submit" className="btn-primary w-full sm:w-fit" disabled={status === "sending"}>
         {status === "sending" ? "Enviando..." : "Enviar sugerencia"}
       </button>
